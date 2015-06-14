@@ -25,10 +25,17 @@ public class Trip extends ParseObject {
 	}
 
 	public String getDateIni() {
+		if(getDate(Constants.TRIP_DATEINI)==null){
+			return null;
+		}
 		return df.format(getDate(Constants.TRIP_DATEINI));
 	}
 
 	public String getDateFin() {
+
+		if(getDate(Constants.TRIP_DATEFIN)==null){
+			return null;
+		}
 		return df.format(getDate(Constants.TRIP_DATEFIN));
 	}
 
