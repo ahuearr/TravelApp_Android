@@ -8,6 +8,12 @@ android {
         applicationId "com.gusycorp.travel"
         minSdkVersion 8
         targetSdkVersion 21
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
     }
 
     buildTypes {
@@ -18,6 +24,8 @@ android {
     }
 }
 
+repositories { jcenter() }
+
 dependencies {
     compile 'com.android.support:support-v4:22.2.0'
     compile files('libs/bolts-android-1.2.0.jar')
@@ -25,4 +33,13 @@ dependencies {
     compile files('libs/Parse-1.9.2.jar')
     compile files('libs/ParseCrashReporting-1.9.2.jar')
     compile files('libs/ParseFacebookUtilsV3-1.9.2.jar')
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+    androidTestCompile 'com.android.support.test:runner:0.3'
+    testCompile 'junit:junit:4.12'
+    // required if you want to use Mockito for unit tests
+    testCompile 'org.mockito:mockito-core:1.+'
+    // required if you want to use Mockito for Android instrumentation tests
+    androidTestCompile 'org.mockito:mockito-core:1.+'
+    androidTestCompile "com.google.dexmaker:dexmaker:1.2"
+    androidTestCompile "com.google.dexmaker:dexmaker-mockito:1.2"
 }
