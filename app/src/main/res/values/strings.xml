@@ -16,4 +16,11 @@
     <string name="date_empty">Falta fecha</string>
     <string name="destiny_name">Destinos</string>
     <string name="destiny_name_empty">Falta destino</string>
+
+    <!-- MenuTripActivity -->
+    <string name="transporte">Transporte</string>
+    <string name="alojamiento">Alojamiento</string>
+    <string name="calendario">Calendario</string>
+    <string name="mapa">Mapa</string>
+    <string name="companeros">Compañeros</string>
 </resources>

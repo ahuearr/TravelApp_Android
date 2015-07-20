@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="azul_bloque">#234b75</color>
+    <color name="azul_fondo">#2a5582</color>
+    <color name="backgroundMenu">#598abc</color>
+    <color name="backgroundMenuSelected">#80abd6</color>
+    <color name="azul_titulo">#386697</color>
+    <color name="blanco_texto">#FFFFFF</color>
+</resources>

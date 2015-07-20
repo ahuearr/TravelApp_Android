@@ -13,12 +13,14 @@
         android:id="@+id/text_trip_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:textStyle="bold"
         android:textSize="25sp" />
     <TextView 
         android:id="@+id/label_date_ini"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="@string/date_ini"
         android:textStyle="bold"
         android:textSize="20sp" />
@@ -26,11 +28,13 @@
         android:id="@+id/text_date_ini"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:textSize="15sp" />
     <TextView 
         android:id="@+id/label_date_fin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="@string/date_fin"
         android:textStyle="bold"
         android:textSize="20sp" />
@@ -38,11 +42,13 @@
         android:id="@+id/text_date_fin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:textSize="15sp" />
     <TextView 
         android:id="@+id/label_destiny_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="@string/destiny_name"
         android:textStyle="bold"
         android:textSize="20sp" />
@@ -50,6 +56,20 @@
         android:id="@+id/text_destiny_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:textSize="15sp" />
-    
+
+    <LinearLayout
+        android:id="@+id/layout_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="vertical" >
+        <fragment
+            android:id="@+id/menu"
+            android:name="com.gusycorp.travel.fragment.MenuFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 </LinearLayout>
