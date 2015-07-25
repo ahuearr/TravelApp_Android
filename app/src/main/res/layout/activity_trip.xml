@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gusycorp.travel.activity.HomeActivity"
+    tools:context="com.gusycorp.travel.activity.TripActivity"
     android:orientation="vertical" >
     
     <TextView 
@@ -65,9 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:orientation="vertical" >
-        <fragment
-            android:id="@+id/menu"
-            android:name="com.gusycorp.travel.fragment.MenuFragment"
+        <include layout="@layout/menu_trip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

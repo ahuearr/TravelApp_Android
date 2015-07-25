@@ -12,14 +12,10 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
-    <?xml version="1.0" encoding="utf-8"?>
-    <resources xmlns:android="http://schemas.android.com/apk/res/android">
-        <style name="iconoMenu">
+    <style name="iconoMenu">
             <item name="android:gravity">center_horizontal</item>
             <item name="android:paddingTop">5dp</item>
             <item name="android:paddingBottom">5dp</item>
             <item name="android:textSize">15sp</item>
-        </style>
-    </resources>
+    </style>
 </resources>

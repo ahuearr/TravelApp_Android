@@ -36,7 +36,7 @@ public class HomeActivity extends ListActivity {
 
 	private void getTrips() {
 		mAdapter = new ListTripAdapter(HomeActivity.this,
-				R.layout.list_trip_row, new ArrayList<Trip>());
+				R.layout.row_list_trip, new ArrayList<Trip>());
 		mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
 		HashMap<String, Object> filter = new HashMap();
 		filter.put(Constants.TRIP_ORGANIZERID, "1");

@@ -79,13 +79,13 @@ public class ListTripAdapter extends ArrayAdapter<Trip> {
 			holder = new ViewHolder();
 			switch (rowType) {
 			case TYPE_ITEM:
-				convertView = mInflater.inflate(R.layout.list_trip_row, null);
+				convertView = mInflater.inflate(R.layout.row_list_trip, null);
 				holder.textView = (TextView) convertView
 						.findViewById(R.id.text);
 				break;
 			case TYPE_SEPARATOR:
 				convertView = mInflater
-						.inflate(R.layout.list_trip_header, null);
+						.inflate(R.layout.header_list_trip, null);
 				holder.textView = (TextView) convertView
 						.findViewById(R.id.textSeparator);
 				break;

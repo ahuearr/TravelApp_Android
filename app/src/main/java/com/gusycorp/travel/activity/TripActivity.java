@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 
 import com.gusycorp.travel.R;
@@ -12,7 +13,8 @@ import com.gusycorp.travel.util.Constants;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 
-public class TripActivity extends Activity {
+
+public class TripActivity extends MenuActivity {
 
 	private TextView tripNameText;
 	private TextView dateIniLabel;
@@ -23,7 +25,6 @@ public class TripActivity extends Activity {
 	private TextView destinyNameText;
 
 	private static final String TAG = Constants.TAG_TRIPACTIVITY;
-	private String tripObjectId;
 	private Trip trip;
 
 	@Override
@@ -52,6 +53,7 @@ public class TripActivity extends Activity {
 			public void done(Trip tripFind, ParseException e) {
 				trip = tripFind;
 				tripNameText.setText(tripFind.getTripName());
+				tripName = tripFind.getTripName();
 				if (tripFind.getDateIni() != null) {
 					dateIniText.setText(tripFind.getDateIni());
 				} else {
