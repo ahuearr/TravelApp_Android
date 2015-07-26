@@ -31,11 +31,13 @@ public class Constants {
 	public final static String TRIPTRANSPORT_FROM = "from";
 	public final static String TRIPTRANSPORT_TO = "to";
 	public final static String TRIPTRANSPORT_OBJECTIDTRIP = "objectIdTrip";
+	public final static String TRIPTRANSPORT_OBJECTIDTRANSPORT = "objectIdTransport";
 
 	//TripTransportList
 	public static final String TRIPTRANSPORTLIST_COLUMN_ONE="Fecha";
 	public static final String TRIPTRANSPORTLIST_COLUMN_TWO="De";
 	public static final String TRIPTRANSPORTLIST_COLUMN_THREE="A";
+	public static final String TRIPTRANSPORTLIST_COLUMN_FOUR="Medio Transporte";
 
 	// Others
 	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
