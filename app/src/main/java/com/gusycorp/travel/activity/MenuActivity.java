@@ -35,6 +35,8 @@ public class MenuActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_trip);
+        final TravelApplication app = (TravelApplication) getApplication();
+        menus = app.getMenus();
     }
 
     @Override
@@ -48,8 +50,6 @@ public class MenuActivity extends Activity implements View.OnClickListener {
                     R.color.backgroundMenu));
         }
 
-        final TravelApplication app = (TravelApplication) getApplication();
-        final List<Integer> menus = app.getMenus();
         if (menus.size() - 1 >= 0) {
             final TextView textView = (TextView) findViewById(
                     menus.get(menus.size() - 1));
@@ -93,9 +93,6 @@ public class MenuActivity extends Activity implements View.OnClickListener {
             textView.setBackgroundColor(context.getResources().getColor(
                     R.color.backgroundMenu));
         }
-        final View v = context.findViewById(id);
-        v.setBackgroundColor(context.getResources().getColor(
-                R.color.backgroundMenuSelected));
 
         menus.add(id);
         app.setMenus(menus);
@@ -105,7 +102,6 @@ public class MenuActivity extends Activity implements View.OnClickListener {
         intent.putExtra("tripObjectId", tripObjectId);
         intent.putExtra("tripName", tripName);
         context.startActivity(intent);
-        context.finish();
     }
 
 }

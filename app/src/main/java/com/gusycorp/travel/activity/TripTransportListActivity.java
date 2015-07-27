@@ -80,4 +80,10 @@ public class TripTransportListActivity extends MenuActivity {
 
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        menus.clear();
+    }
 }
