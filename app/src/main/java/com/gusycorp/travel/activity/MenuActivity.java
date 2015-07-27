@@ -25,6 +25,7 @@ public class MenuActivity extends Activity implements View.OnClickListener {
     public static final String URL = "URL";
     public String tripObjectId = "";
     public String tripName = "";
+    public List<Integer> menus;
 
     private final List<Integer> options = Arrays.asList(new Integer[]{
             R.id.transporte, R.id.alojamiento, R.id.calendario,
@@ -96,10 +97,9 @@ public class MenuActivity extends Activity implements View.OnClickListener {
         v.setBackgroundColor(context.getResources().getColor(
                 R.color.backgroundMenuSelected));
 
-		/*
-		 * Si la opcione escogida es cerrar sesion, la que hay que añadir a la
-		 * pila del menu es la de tareas pendientes
-		 */
+        menus.add(id);
+        app.setMenus(menus);
+
         final Intent intent = new Intent(context, destination);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("tripObjectId", tripObjectId);

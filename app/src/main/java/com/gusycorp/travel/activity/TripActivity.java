@@ -32,6 +32,7 @@ public class TripActivity extends MenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_trip);
 
+		if(menus!=null)		menus.clear();
 		tripNameText = (TextView) findViewById(R.id.text_trip_name);
 		dateIniLabel = (TextView) findViewById(R.id.label_date_ini);
 		dateIniText = (TextView) findViewById(R.id.text_date_ini);

@@ -25,8 +25,7 @@ public class TravelApplication extends Application {
 		Parse.initialize(this, Utils.APPLICATION_ID, Utils.PARSE_KEY);
 	}
 
-	private List<Integer> menus = new ArrayList<Integer>(
-			Arrays.asList(new Integer[]{R.id.transporte}));
+	private List<Integer> menus = new ArrayList<Integer>();
 
 	public List<Integer> getMenus() {
 		return menus;
