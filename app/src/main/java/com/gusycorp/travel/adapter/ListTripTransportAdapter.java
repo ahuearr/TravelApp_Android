@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.util.Constants;
 
 import java.util.ArrayList;
@@ -22,12 +23,12 @@ import java.util.TreeSet;
 /**
  * Created by agustin.huerta on 24/07/2015.
  */
-public class ListTripTransportAdapter extends ArrayAdapter<HashMap<String,String>> {
+public class ListTripTransportAdapter extends ArrayAdapter<TripTransport> {
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_SEPARATOR = 1;
 
-    private ArrayList<HashMap<String, String>> mData = new ArrayList<HashMap<String, String>>();
+    private ArrayList<TripTransport> mData = new ArrayList<TripTransport>();
     private ArrayList<HashMap<String, String>> mDataHeader = new ArrayList<HashMap<String, String>>();
     private TreeSet<Integer> sectionHeader = new TreeSet<Integer>();
 
@@ -37,13 +38,13 @@ public class ListTripTransportAdapter extends ArrayAdapter<HashMap<String,String
 
     private LayoutInflater mInflater;
 
-    public ListTripTransportAdapter(Context context, int resource, List<HashMap<String,String>> objects) {
+    public ListTripTransportAdapter(Context context, int resource, List<TripTransport> objects) {
         super(context, resource, objects);
         mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void addItem(final HashMap<String, String> item) {
+    public void addItem(final TripTransport item) {
         mData.add(item);
         mDataHeader.add(null);
         notifyDataSetChanged();
@@ -72,7 +73,7 @@ public class ListTripTransportAdapter extends ArrayAdapter<HashMap<String,String
     }
 
     @Override
-    public HashMap<String, String> getItem(int position) {
+    public TripTransport getItem(int position) {
         return mData.get(position);
     }
 
@@ -109,9 +110,9 @@ public class ListTripTransportAdapter extends ArrayAdapter<HashMap<String,String
             holder = (ListTripTransportAdapter.ViewHolder) convertView.getTag();
         }
         if (mData.get(position) != null) {
-            holder.columnDate.setText(mData.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_ONE));
-            holder.columnOrigin.setText(mData.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_TWO));
-            holder.columnDestination.setText(mData.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_THREE));
+            holder.columnDate.setText(mData.get(position).getDateFrom());
+            holder.columnOrigin.setText(mData.get(position).getFrom());
+            holder.columnDestination.setText(mData.get(position).getTo());
         } else {
             holder.columnDate.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_ONE));
             holder.columnOrigin.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_TWO));

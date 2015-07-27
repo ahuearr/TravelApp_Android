@@ -6,6 +6,9 @@ public class Constants {
 	public final static String TAG_HOMEACTIVITY = "HomeActivity";
 	public final static String TAG_TRIPACTIVITY = "TripActivity";
 	public final static String TAG_MENUACTIVITY = "MenuActivity";
+	public final static String TAG_TRIPTRANSPORTLISTACTIVITY = "TripTransportListActivity";
+	public final static String TAG_TRIPTRANSPORTACTIVITY = "TripTransportActivity";
+
 	// Adapters
 	public final static String TAG_TRAVELAPPLICACION = "TravelApplication";
 
@@ -31,6 +34,8 @@ public class Constants {
 	public final static String TRIPTRANSPORT_FROM = "from";
 	public final static String TRIPTRANSPORT_TO = "to";
 	public final static String TRIPTRANSPORT_OBJECTIDTRIP = "objectIdTrip";
+	public final static String TRIPTRANSPORT_PRIZE = "prize";
+	public final static String TRIPTRANSPORT_LOCATOR = "locator";
 	public final static String TRIPTRANSPORT_OBJECTIDTRANSPORT = "objectIdTransport";
 
 	//TripTransportList

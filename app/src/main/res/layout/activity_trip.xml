@@ -21,26 +21,26 @@
             android:textStyle="bold"
             android:textSize="25sp" />
         <TextView
-            android:id="@+id/label_date_ini"
+            android:id="@+id/label_date_depart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date_ini"
+            android:text="@string/date_depart"
             android:textStyle="bold"
             android:textSize="20sp" />
         <TextView
-            android:id="@+id/text_date_ini"
+            android:id="@+id/text_date_depart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp" />
         <TextView
-            android:id="@+id/label_date_fin"
+            android:id="@+id/label_date_arrival"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date_fin"
+            android:text="@string/date_arrival"
             android:textStyle="bold"
             android:textSize="20sp" />
         <TextView
-            android:id="@+id/text_date_fin"
+            android:id="@+id/text_date_arrival"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp" />

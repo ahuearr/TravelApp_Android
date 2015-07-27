@@ -34,10 +34,10 @@ public class TripActivity extends MenuActivity {
 
 		if(menus!=null)		menus.clear();
 		tripNameText = (TextView) findViewById(R.id.text_trip_name);
-		dateIniLabel = (TextView) findViewById(R.id.label_date_ini);
-		dateIniText = (TextView) findViewById(R.id.text_date_ini);
-		dateFinLabel = (TextView) findViewById(R.id.label_date_fin);
-		dateFinText = (TextView) findViewById(R.id.text_date_fin);
+		dateIniLabel = (TextView) findViewById(R.id.label_date_depart);
+		dateIniText = (TextView) findViewById(R.id.text_date_depart);
+		dateFinLabel = (TextView) findViewById(R.id.label_date_arrival);
+		dateFinText = (TextView) findViewById(R.id.text_date_arrival);
 		destinyNameLabel = (TextView) findViewById(R.id.label_destiny_name);
 		destinyNameText = (TextView) findViewById(R.id.text_destiny_name);
 

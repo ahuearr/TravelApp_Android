@@ -11,11 +11,20 @@
     <string name="future_trips">Viajes futuros</string>
     
     <!--  TripActivity -->
-    <string name="date_ini">Fecha de salida</string>
-    <string name="date_fin">Fecha de vuelta</string>
+    <string name="date_depart">Fecha de salida</string>
+    <string name="date_arrival">Fecha de vuelta</string>
     <string name="date_empty">Falta fecha</string>
     <string name="destiny_name">Destinos</string>
     <string name="destiny_name_empty">Falta destino</string>
+
+    <!-- TripTransportActivity -->
+    <string name="mean_of_transport">Tipo de medio de transporte</string>
+    <string name="city_depart">Ciudad de salida</string>
+    <string name="city_arrival">Ciudad de destino</string>
+    <string name="prize">Precio</string>
+    <string name="locator">Localizador</string>
+    <string name="bidi">Bidi</string>
+    <string name="pdf">PDF</string>
 
     <!-- MenuTripActivity -->
     <string name="transporte">Transporte</string>
