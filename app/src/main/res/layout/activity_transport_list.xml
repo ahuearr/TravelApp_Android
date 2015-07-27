@@ -26,10 +26,12 @@
                 android:textSize="25sp"
                 android:layout_alignParentLeft="true"/>
             <Button
+                android:id="@+id/add_transport_trip"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@color/backgroundHeader"
                 android:text="+"
+                android:textColor="@color/blanco_texto"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
