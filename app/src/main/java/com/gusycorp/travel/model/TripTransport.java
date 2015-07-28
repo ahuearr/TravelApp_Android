@@ -18,7 +18,7 @@ import java.util.Map;
 public class TripTransport extends ParseObject {
 
 	private static String TAG = Constants.TAG_TRIPTRANSPORTMODEL;
-	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
 
 	public String getObjectIdTrip() { return getString(Constants.TRIPTRANSPORT_OBJECTIDTRIP);	}
 

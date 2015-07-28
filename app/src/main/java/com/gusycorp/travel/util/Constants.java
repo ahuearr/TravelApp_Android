@@ -2,6 +2,8 @@ package com.gusycorp.travel.util;
 
 public class Constants {
 
+	public final static String DATE_MASK = "dd/MM/yyyy HH:mm";
+
 	// Activities
 	public final static String TAG_HOMEACTIVITY = "HomeActivity";
 	public final static String TAG_TRIPACTIVITY = "TripActivity";

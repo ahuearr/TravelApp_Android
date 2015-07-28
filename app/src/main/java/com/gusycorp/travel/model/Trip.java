@@ -18,7 +18,7 @@ import com.parse.ParseQuery;
 public class Trip extends ParseObject {
 
 	private static String TAG = Constants.TAG_TRIPMODEL;
-	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
 
 	public String getTripName() {
 		return getString(Constants.TRIP_TRIPNAME);
