@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripTransport;
+import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -27,6 +28,8 @@ public class TripTransportActivity extends MenuActivity {
 	private TripTransport tripTransport;
 	private String objectId;
 	private String objectIdTrip;
+
+	List<TypeTransport> typeTransportList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +57,11 @@ public class TripTransportActivity extends MenuActivity {
 				locator.setText(bundle.getString("locator"));
 			}
 		}
+
+		getTypeTransportList();
+	}
+
+	void getTypeTransportList(){
+
 	}
 }

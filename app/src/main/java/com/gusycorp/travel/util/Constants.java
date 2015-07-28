@@ -39,6 +39,11 @@ public class Constants {
 	public final static String TRIPTRANSPORT_LOCATOR = "locator";
 	public final static String TRIPTRANSPORT_OBJECTIDTRANSPORT = "objectIdTransport";
 
+	// TypeTransport
+	public final static String TAG_TYPETRANSPORTMODEL = "TypeTransport";
+	public final static String TYPETRANSPORT_TRANSPORTNAME = "transportName";
+	public final static String TYPETRANSPORT_TRANSPORTIMAGENAME = "transportImageName";
+
 	//TripTransportList
 	public static final String TRIPTRANSPORTLIST_COLUMN_ONE="Fecha";
 	public static final String TRIPTRANSPORTLIST_COLUMN_TWO="De";
