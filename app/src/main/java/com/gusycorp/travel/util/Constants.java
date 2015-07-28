@@ -12,7 +12,6 @@ public class Constants {
 	// Adapters
 	public final static String TAG_TRAVELAPPLICACION = "TravelApplication";
 
-
 	// Model
 	public final static String OBJECTID = "objectId";
 

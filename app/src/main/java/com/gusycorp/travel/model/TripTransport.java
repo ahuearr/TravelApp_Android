@@ -20,8 +20,6 @@ public class TripTransport extends ParseObject {
 	private static String TAG = Constants.TAG_TRIPTRANSPORTMODEL;
 	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
-	public String getObjectId() { return getString(Constants.OBJECTID);	}
-
 	public String getObjectIdTrip() { return getString(Constants.TRIPTRANSPORT_OBJECTIDTRIP);	}
 
 	public String getDateFrom() {
@@ -47,9 +45,11 @@ public class TripTransport extends ParseObject {
 		return getString(Constants.TRIPTRANSPORT_TO);
 	}
 
+
 	public Double getPrize() { return getDouble(Constants.TRIPTRANSPORT_PRIZE);}
 
 	public String getLocator() { return getString(Constants.TRIPTRANSPORT_LOCATOR);}
+
 
 	public static void findTripTransportInBackground(String objectId,
 			final GetCallback<TripTransport> callback) {
