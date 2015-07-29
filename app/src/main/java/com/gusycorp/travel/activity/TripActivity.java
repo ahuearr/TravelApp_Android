@@ -24,7 +24,6 @@ public class TripActivity extends MenuActivity {
 	private TextView destinyNameLabel;
 	private TextView destinyNameText;
 
-	private static final String TAG = Constants.TAG_TRIPACTIVITY;
 	private Trip trip;
 
 	@Override

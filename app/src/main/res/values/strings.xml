@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="save">Guardar</string>
+    <string name="message_ok">Grabación realizada correctamente</string>
 
     <!-- HomeActivity -->
     <string name="past_trips">Viajes pasados</string>
@@ -13,7 +14,7 @@
     
     <!--  TripActivity -->
     <string name="date_depart">Fecha de salida</string>
-    <string name="date_arrival">Fecha de vuelta</string>
+    <string name="date_arrival">Fecha de llegada</string>
     <string name="date_empty">Falta fecha</string>
     <string name="destiny_name">Destinos</string>
     <string name="destiny_name_empty">Falta destino</string>

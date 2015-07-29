@@ -21,8 +21,6 @@ import com.parse.ParseException;
 
 public class HomeActivity extends ListActivity {
 
-	private static final String TAG = Constants.TAG_HOMEACTIVITY;
-
 	private ListTripAdapter mAdapter;
 
 	@Override

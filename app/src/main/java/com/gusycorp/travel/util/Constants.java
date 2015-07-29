@@ -4,13 +4,6 @@ public class Constants {
 
 	public final static String DATE_MASK = "dd/MM/yyyy HH:mm";
 
-	// Activities
-	public final static String TAG_HOMEACTIVITY = "HomeActivity";
-	public final static String TAG_TRIPACTIVITY = "TripActivity";
-	public final static String TAG_MENUACTIVITY = "MenuActivity";
-	public final static String TAG_TRIPTRANSPORTLISTACTIVITY = "TripTransportListActivity";
-	public final static String TAG_TRIPTRANSPORTACTIVITY = "TripTransportActivity";
-
 	// Adapters
 	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
 	public final static String TAG_LISTRIPTRANSPORTADAPTER = "ListTripTransportAdapter";
@@ -40,7 +33,7 @@ public class Constants {
 	public final static String TRIPTRANSPORT_OBJECTIDTRIP = "objectIdTrip";
 	public final static String TRIPTRANSPORT_PRIZE = "prize";
 	public final static String TRIPTRANSPORT_LOCATOR = "locator";
-	public final static String TRIPTRANSPORT_OBJECTIDTRANSPORT = "objectIdTransport";
+	public final static String TRIPTRANSPORT_TYPETRANSPORT = "typeTransport";
 
 	// TypeTransport
 	public final static String TAG_TYPETRANSPORTMODEL = "TypeTransport";

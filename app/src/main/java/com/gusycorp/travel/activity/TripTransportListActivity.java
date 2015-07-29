@@ -22,8 +22,6 @@ import java.util.List;
 
 public class TripTransportListActivity extends MenuActivity implements View.OnClickListener{
 
-    private static final String TAG = Constants.TAG_TRIPTRANSPORTLISTACTIVITY;
-
     private Button addTransportTrip;
     private TextView tripNameText;
     private ListView listView;
@@ -52,10 +50,10 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        Log.e("TAG", "Click");
         switch (v.getId()){
             case R.id.add_transport_trip:
                 Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
+                intent.putExtra(Constants.TRIPTRANSPORT_OBJECTIDTRIP, tripObjectId);
                 startActivity(intent);
                 break;
         }
@@ -88,14 +86,14 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
                         TripTransport tripTransport = (TripTransport) listView.getAdapter().getItem(position);
                         if(tripTransport!=null){
                             Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
-                            intent.putExtra("objectId", tripTransport.getObjectId());
-                            intent.putExtra("objectIdTrip", tripTransport.getObjectIdTrip());
-                            intent.putExtra("dateFrom", tripTransport.getDateFrom());
-                            intent.putExtra("dateTo", tripTransport.getDateTo());
-                            intent.putExtra("from", tripTransport.getFrom());
-                            intent.putExtra("to", tripTransport.getTo());
-                            intent.putExtra("prize", tripTransport.getPrize());
-                            intent.putExtra("locator", tripTransport.getLocator());
+                            intent.putExtra(Constants.OBJECTID, tripTransport.getObjectId());
+                            intent.putExtra(Constants.TRIPTRANSPORT_OBJECTIDTRIP, tripTransport.getObjectIdTrip());
+                            intent.putExtra(Constants.TRIPTRANSPORT_DATEFROM, tripTransport.getDateFrom());
+                            intent.putExtra(Constants.TRIPTRANSPORT_DATETO, tripTransport.getDateTo());
+                            intent.putExtra(Constants.TRIPTRANSPORT_FROM, tripTransport.getFrom());
+                            intent.putExtra(Constants.TRIPTRANSPORT_TO, tripTransport.getTo());
+                            intent.putExtra(Constants.TRIPTRANSPORT_PRIZE, tripTransport.getPrize());
+                            intent.putExtra(Constants.TRIPTRANSPORT_LOCATOR, tripTransport.getLocator());
                             startActivity(intent);
                         }
                     }

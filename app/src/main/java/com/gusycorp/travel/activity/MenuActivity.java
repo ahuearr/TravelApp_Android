@@ -20,8 +20,6 @@ import java.util.List;
 
 public class MenuActivity extends Activity implements View.OnClickListener {
 
-    private static final String TAG = Constants.TAG_MENUACTIVITY;
-
     public static final String URL = "URL";
     public String tripObjectId = "";
     public String tripName = "";

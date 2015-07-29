@@ -1,7 +1,13 @@
 package com.gusycorp.travel.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,11 +20,15 @@ import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.SaveCallback;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
-public class TripTransportActivity extends MenuActivity {
+public class TripTransportActivity extends MenuActivity implements OnClickListener{
 
 	private Spinner typeTransport;
 	private EditText dateDepart;
@@ -27,13 +37,15 @@ public class TripTransportActivity extends MenuActivity {
 	private EditText cityArrival;
 	private EditText prize;
 	private EditText locator;
+	private Button save;
 
-	private static final String TAG = Constants.TAG_TRIPTRANSPORTACTIVITY;
-	private TripTransport tripTransport;
+	private TripTransport tripTransport = new TripTransport();
 	private String objectId;
 	private String objectIdTrip;
 
 	List<TypeTransport> typeTransportList;
+
+	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +62,9 @@ public class TripTransportActivity extends MenuActivity {
 		cityArrival = (EditText) findViewById(R.id.city_arrival);
 		prize = (EditText) findViewById(R.id.prize);
 		locator = (EditText) findViewById(R.id.locator);
+		save = (Button) findViewById(R.id.save_button);
+
+		save.setOnClickListener(this);
 
 		final ArrayAdapter<TypeTransport> typeTransportAdapter = new ArrayAdapter<TypeTransport>(getBaseContext(),android.R.layout.simple_spinner_item,typeTransportList);
 		typeTransportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -57,17 +72,85 @@ public class TripTransportActivity extends MenuActivity {
 		Bundle bundle = getIntent().getExtras();
 
 		if(bundle!=null){
-			objectId = bundle.getString("objectId");
+			objectId = bundle.getString(Constants.OBJECTID);
+			objectIdTrip = bundle.getString(Constants.TRIPTRANSPORT_OBJECTIDTRIP);
 			if(objectId !=null){
-				objectIdTrip = bundle.getString("objectIdTrip");
-				dateDepart.setText(bundle.getString("dateFrom"));
-				dateArrival.setText(bundle.getString("dateTo"));
-				cityDepart.setText(bundle.getString("from"));
-				cityArrival.setText(bundle.getString("to"));
-				prize.setText(bundle.getString("prize"));
-				locator.setText(bundle.getString("locator"));
+				dateDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_DATEFROM));
+				dateArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_DATETO));
+				cityDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_FROM));
+				cityArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_TO));
+				prize.setText(bundle.getString(Constants.TRIPTRANSPORT_PRIZE));
+				locator.setText(bundle.getString(Constants.TRIPTRANSPORT_LOCATOR));
 			}
 		}
+	}
 
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.save_button:
+				if(checkMandatory()){
+					try{
+						if(objectId!=null){
+							update();
+						} else {
+							save();
+						}
+					} catch (java.text.ParseException e){
+						e.printStackTrace();
+					}
+				} else{
+				}
+				break;
+		}
+	}
+
+	private void save() throws java.text.ParseException {
+		tripTransport.put(Constants.TRIPTRANSPORT_OBJECTIDTRIP, objectIdTrip);
+		Date date = df.parse(dateDepart.getText().toString());
+		tripTransport.put(Constants.TRIPTRANSPORT_DATEFROM, date);
+		date = df.parse(dateArrival.getText().toString());
+		tripTransport.put(Constants.TRIPTRANSPORT_DATETO, date);
+		tripTransport.put(Constants.TRIPTRANSPORT_FROM, cityDepart.getText().toString());
+		tripTransport.put(Constants.TRIPTRANSPORT_TO, cityArrival.getText().toString());
+		tripTransport.put(Constants.TRIPTRANSPORT_PRIZE, Double.parseDouble(prize.getText().toString()));
+		tripTransport.put(Constants.TRIPTRANSPORT_LOCATOR, locator.getText().toString());
+
+		final TypeTransport typeTransportSelected = (TypeTransport) typeTransport.getSelectedItem();
+		tripTransport.put(Constants.TRIPTRANSPORT_TYPETRANSPORT, typeTransportSelected);
+
+		tripTransport.saveInBackground(new SaveCallback(){
+
+			@Override
+			public void done(ParseException e) {
+				goOK();
+			}
+		});
+	}
+
+	private void update() {
+
+	}
+	private boolean checkMandatory(){
+		if(viewIsEmpty(dateDepart) || viewIsEmpty(dateArrival)
+				|| viewIsEmpty(cityDepart) || viewIsEmpty(cityArrival)
+				|| viewIsEmpty(prize) || viewIsEmpty(locator)){
+			return false;
+		}
+		return true;
+	}
+
+	private boolean viewIsEmpty(final TextView view) {
+		boolean empty = false;
+		if (TextUtils.isEmpty(view.getText().toString())) {
+			empty = true;
+		}
+		return empty;
+	}
+
+	private void goOK(){
+		Intent intent = new Intent(TripTransportActivity.this, TripTransportActivityOK.class);
+		startActivity(intent);
+		finish();
 	}
 }
