@@ -12,6 +12,9 @@ public class Constants {
 	public final static String TAG_TRIPTRANSPORTACTIVITY = "TripTransportActivity";
 
 	// Adapters
+	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
+	public final static String TAG_LISTRIPTRANSPORTADAPTER = "ListTripTransportAdapter";
+
 	public final static String TAG_TRAVELAPPLICACION = "TravelApplication";
 
 	// Model
@@ -51,6 +54,5 @@ public class Constants {
 	public static final String TRIPTRANSPORTLIST_COLUMN_FOUR="Medio Transporte";
 
 	// Others
-	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
 	public final static String TAG_UTILS = "Utils";
 }

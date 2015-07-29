@@ -1,10 +1,13 @@
 package com.gusycorp.travel.activity;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
@@ -17,6 +20,7 @@ import java.util.List;
 
 public class TripTransportActivity extends MenuActivity {
 
+	private Spinner typeTransport;
 	private EditText dateDepart;
 	private EditText dateArrival;
 	private EditText cityDepart;
@@ -36,6 +40,10 @@ public class TripTransportActivity extends MenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transport_trip);
 
+		TravelApplication app = (TravelApplication) getApplication();
+		typeTransportList = app.getTransportTypes();
+
+		typeTransport = (Spinner) findViewById(R.id.type_transport);
 		dateDepart = (EditText) findViewById(R.id.date_depart);
 		dateArrival = (EditText) findViewById(R.id.date_arrival);
 		cityDepart = (EditText) findViewById(R.id.city_depart);
@@ -43,6 +51,9 @@ public class TripTransportActivity extends MenuActivity {
 		prize = (EditText) findViewById(R.id.prize);
 		locator = (EditText) findViewById(R.id.locator);
 
+		final ArrayAdapter<TypeTransport> typeTransportAdapter = new ArrayAdapter<TypeTransport>(getBaseContext(),android.R.layout.simple_spinner_item,typeTransportList);
+		typeTransportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		typeTransport.setAdapter(typeTransportAdapter);
 		Bundle bundle = getIntent().getExtras();
 
 		if(bundle!=null){
@@ -57,11 +68,6 @@ public class TripTransportActivity extends MenuActivity {
 				locator.setText(bundle.getString("locator"));
 			}
 		}
-
-		getTypeTransportList();
-	}
-
-	void getTypeTransportList(){
 
 	}
 }

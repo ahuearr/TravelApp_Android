@@ -61,4 +61,9 @@ public class TypeTransport extends ParseObject {
 			}
 		});
 	}
+
+	@Override
+	public String toString() {
+		return getTransportName();
+	}
 }

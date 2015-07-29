@@ -2,8 +2,10 @@ package com.gusycorp.travel.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
 
     private static final String TAG = Constants.TAG_TRIPTRANSPORTLISTACTIVITY;
 
+    private Button addTransportTrip;
     private TextView tripNameText;
     private ListView listView;
 
@@ -33,6 +36,9 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
         setContentView(R.layout.activity_transport_trip_list);
 
         tripNameText = (TextView) findViewById(R.id.text_trip_name);
+        addTransportTrip = (Button) findViewById(R.id.add_transport_trip);
+        addTransportTrip.setOnClickListener(this);
+
 
         Bundle extras = getIntent().getExtras();
         tripObjectId = extras.getString("tripObjectId");
@@ -46,7 +52,7 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        super.onClick(v);
+        Log.e("TAG", "Click");
         switch (v.getId()){
             case R.id.add_transport_trip:
                 Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
