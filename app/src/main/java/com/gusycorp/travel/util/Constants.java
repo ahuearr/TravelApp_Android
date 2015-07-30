@@ -30,7 +30,7 @@ public class Constants {
 	public final static String TRIPTRANSPORT_DATETO = "dateTo";
 	public final static String TRIPTRANSPORT_FROM = "from";
 	public final static String TRIPTRANSPORT_TO = "to";
-	public final static String TRIPTRANSPORT_OBJECTIDTRIP = "objectIdTrip";
+	public final static String TRIPTRANSPORT_TRIPTRANSPORT = "tripTransport";
 	public final static String TRIPTRANSPORT_PRIZE = "prize";
 	public final static String TRIPTRANSPORT_LOCATOR = "locator";
 	public final static String TRIPTRANSPORT_TYPETRANSPORT = "typeTransport";

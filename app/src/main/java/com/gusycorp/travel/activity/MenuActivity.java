@@ -21,7 +21,6 @@ import java.util.List;
 public class MenuActivity extends Activity implements View.OnClickListener {
 
     public static final String URL = "URL";
-    public String tripObjectId = "";
     public String tripName = "";
     public List<Integer> menus;
 
@@ -97,7 +96,6 @@ public class MenuActivity extends Activity implements View.OnClickListener {
 
         final Intent intent = new Intent(context, destination);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra("tripObjectId", tripObjectId);
         intent.putExtra("tripName", tripName);
         context.startActivity(intent);
     }

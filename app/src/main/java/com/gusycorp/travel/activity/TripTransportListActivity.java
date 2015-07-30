@@ -11,10 +11,13 @@ import android.widget.TextView;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.adapter.ListTripTransportAdapter;
+import com.gusycorp.travel.application.TravelApplication;
+import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.util.Constants;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseRelation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,24 +31,28 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
 
     private ListTripTransportAdapter mAdapter;
 
+    private TravelApplication app;
+
+    private Trip currentTrip;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transport_trip_list);
 
+        app = (TravelApplication) getApplication();
+        currentTrip = app.getCurrentTrip();
+
         tripNameText = (TextView) findViewById(R.id.text_trip_name);
         addTransportTrip = (Button) findViewById(R.id.add_transport_trip);
         addTransportTrip.setOnClickListener(this);
 
-
         Bundle extras = getIntent().getExtras();
-        tripObjectId = extras.getString("tripObjectId");
         tripName = extras.getString("tripName");
         tripNameText.setText(tripName);
 
         listView=(ListView)findViewById(R.id.transport_list);
 
-        getTripTransports(tripObjectId);
+        getTripTransports(currentTrip.getObjectId());
     }
 
     @Override
@@ -53,7 +60,6 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
         switch (v.getId()){
             case R.id.add_transport_trip:
                 Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
-                intent.putExtra(Constants.TRIPTRANSPORT_OBJECTIDTRIP, tripObjectId);
                 startActivity(intent);
                 break;
         }
@@ -71,36 +77,37 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
         itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_FOUR, Constants.TRIPTRANSPORTLIST_COLUMN_FOUR);
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        HashMap<String, Object> filter = new HashMap();
-        filter.put(Constants.TRIPTRANSPORT_OBJECTIDTRIP, tripObjectId);
+        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIPTRANSPORT_TRIPTRANSPORT);
 
-        TripTransport.findTripTransportListByFieldsInBackground(filter, new FindCallback<TripTransport>() {
+        tripTransport.getQuery().findInBackground(new FindCallback<TripTransport>() {
             public void done(List<TripTransport> tripTransportList, ParseException e) {
-                for (TripTransport tripTransport : tripTransportList) {
-                    mAdapter.addItem(tripTransport);
-                }
-                listView.setAdapter(mAdapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        TripTransport tripTransport = (TripTransport) listView.getAdapter().getItem(position);
-                        if(tripTransport!=null){
-                            Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
-                            intent.putExtra(Constants.OBJECTID, tripTransport.getObjectId());
-                            intent.putExtra(Constants.TRIPTRANSPORT_OBJECTIDTRIP, tripTransport.getObjectIdTrip());
-                            intent.putExtra(Constants.TRIPTRANSPORT_DATEFROM, tripTransport.getDateFrom());
-                            intent.putExtra(Constants.TRIPTRANSPORT_DATETO, tripTransport.getDateTo());
-                            intent.putExtra(Constants.TRIPTRANSPORT_FROM, tripTransport.getFrom());
-                            intent.putExtra(Constants.TRIPTRANSPORT_TO, tripTransport.getTo());
-                            intent.putExtra(Constants.TRIPTRANSPORT_PRIZE, tripTransport.getPrize());
-                            intent.putExtra(Constants.TRIPTRANSPORT_LOCATOR, tripTransport.getLocator());
-                            startActivity(intent);
-                        }
+                if (e != null) {
+                    // There was an error
+                } else {
+                    for (TripTransport tripTransport : tripTransportList) {
+                        mAdapter.addItem(tripTransport);
                     }
-                });
+                    listView.setAdapter(mAdapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            TripTransport tripTransport = (TripTransport) listView.getAdapter().getItem(position);
+                            if(tripTransport!=null){
+                                Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
+                                intent.putExtra(Constants.OBJECTID, tripTransport.getObjectId());
+                                intent.putExtra(Constants.TRIPTRANSPORT_DATEFROM, tripTransport.getDateFrom());
+                                intent.putExtra(Constants.TRIPTRANSPORT_DATETO, tripTransport.getDateTo());
+                                intent.putExtra(Constants.TRIPTRANSPORT_FROM, tripTransport.getFrom());
+                                intent.putExtra(Constants.TRIPTRANSPORT_TO, tripTransport.getTo());
+                                intent.putExtra(Constants.TRIPTRANSPORT_PRIZE, tripTransport.getPrize());
+                                intent.putExtra(Constants.TRIPTRANSPORT_LOCATOR, tripTransport.getLocator());
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                }
             }
         });
-
     }
 
     @Override

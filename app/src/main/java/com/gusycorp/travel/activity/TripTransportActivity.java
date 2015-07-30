@@ -20,6 +20,7 @@ import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseRelation;
 import com.parse.SaveCallback;
 
 import java.text.DateFormat;
@@ -41,9 +42,12 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 	private TripTransport tripTransport = new TripTransport();
 	private String objectId;
-	private String objectIdTrip;
+
+	private Trip currentTrip;
 
 	List<TypeTransport> typeTransportList;
+
+	TravelApplication app;
 
 	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
 
@@ -52,8 +56,9 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transport_trip);
 
-		TravelApplication app = (TravelApplication) getApplication();
+		app = (TravelApplication) getApplication();
 		typeTransportList = app.getTransportTypes();
+		currentTrip = app.getCurrentTrip();
 
 		typeTransport = (Spinner) findViewById(R.id.type_transport);
 		dateDepart = (EditText) findViewById(R.id.date_depart);
@@ -73,7 +78,6 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 		if(bundle!=null){
 			objectId = bundle.getString(Constants.OBJECTID);
-			objectIdTrip = bundle.getString(Constants.TRIPTRANSPORT_OBJECTIDTRIP);
 			if(objectId !=null){
 				dateDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_DATEFROM));
 				dateArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_DATETO));
@@ -106,8 +110,6 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 	}
 
 	private void save() throws java.text.ParseException {
-		tripTransport.put(Constants.TRIPTRANSPORT_OBJECTIDTRIP, objectIdTrip);
-
 		Date date = df.parse(dateDepart.getText().toString());
 		tripTransport.put(Constants.TRIPTRANSPORT_DATEFROM, date);
 		date = df.parse(dateArrival.getText().toString());
@@ -122,6 +124,9 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 		try {
 			tripTransport.save();
+			ParseRelation<TripTransport> tripTransportRelation = currentTrip.getRelation(Constants.TRIPTRANSPORT_TRIPTRANSPORT);
+			tripTransportRelation.add(tripTransport);
+			currentTrip.save();
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

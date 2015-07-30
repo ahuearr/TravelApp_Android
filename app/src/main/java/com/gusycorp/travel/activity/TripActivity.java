@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.util.Constants;
 import com.parse.GetCallback;
@@ -24,14 +25,18 @@ public class TripActivity extends MenuActivity {
 	private TextView destinyNameLabel;
 	private TextView destinyNameText;
 
-	private Trip trip;
-
+	private TravelApplication app;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_trip);
 
+		String tripObjectId;
+
+		app = (TravelApplication) getApplication();
+
 		if(menus!=null)		menus.clear();
+
 		tripNameText = (TextView) findViewById(R.id.text_trip_name);
 		dateIniLabel = (TextView) findViewById(R.id.label_date_depart);
 		dateIniText = (TextView) findViewById(R.id.text_date_depart);
@@ -51,7 +56,7 @@ public class TripActivity extends MenuActivity {
 
 			@Override
 			public void done(Trip tripFind, ParseException e) {
-				trip = tripFind;
+				app.setCurrentTrip(tripFind);
 				tripNameText.setText(tripFind.getTripName());
 				tripName = tripFind.getTripName();
 				if (tripFind.getDateIni() != null) {

@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.adapter.ListTripAdapter;
+import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.util.Constants;
 import com.parse.FindCallback;
@@ -27,6 +28,9 @@ public class HomeActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+
+		TravelApplication app = (TravelApplication) getApplication();
+		app.setCurrentTrip(new Trip());
 
 		super.onCreate(savedInstanceState);
 		getTrips();

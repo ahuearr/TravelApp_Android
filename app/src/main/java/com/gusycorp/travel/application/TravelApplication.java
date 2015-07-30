@@ -23,6 +23,7 @@ public class TravelApplication extends Application {
 	private static final String TAG = Constants.TAG_TRAVELAPPLICACION;
 	private List<Integer> menus = new ArrayList<Integer>();
 	private List<TypeTransport> transportstype = new ArrayList<TypeTransport>();
+	private Trip currentTrip;
 
 	public void onCreate() {
 		ParseObject.registerSubclass(Trip.class);
@@ -38,14 +39,21 @@ public class TravelApplication extends Application {
 		return menus;
 	}
 
-	public List<TypeTransport> getTransportTypes() {
-		return transportstype;
-	}
-
 	public void setMenus(final List<Integer> menus) {
 		this.menus = menus;
 	}
 
+	public List<TypeTransport> getTransportTypes() {
+		return transportstype;
+	}
+
+	public Trip getCurrentTrip(){
+		return currentTrip;
+	}
+
+	public void setCurrentTrip(Trip currentTrip){
+		this.currentTrip=currentTrip;
+	}
 	void getListsSpinners(){
 		HashMap<String, Object> filter = new HashMap();
 		TypeTransport.findTripListByFieldsInBackground(filter,new FindCallback<TypeTransport>() {
