@@ -115,6 +115,23 @@ public class ListTripTransportAdapter extends ArrayAdapter<TripTransport> {
             holder.columnDate.setText(mData.get(position).getDateFrom());
             holder.columnOrigin.setText(mData.get(position).getFrom());
             holder.columnDestination.setText(mData.get(position).getTo());
+            switch(mData.get(position).getTypeTransport().getTransportName()){
+                case Constants.TYPETRANSPORT_BUS:
+                    holder.columnTransport.setImageResource(R.drawable.bus);
+                    break;
+                case Constants.TYPETRANSPORT_CAR:
+                    holder.columnTransport.setImageResource(R.drawable.coche);
+                    break;
+                case Constants.TYPETRANSPORT_PLANE:
+                    holder.columnTransport.setImageResource(R.drawable.avion);
+                    break;
+                case Constants.TYPETRANSPORT_SHIP:
+                    holder.columnTransport.setImageResource(R.drawable.barco);
+                    break;
+                case Constants.TYPETRANSPORT_TRAIN:
+                    holder.columnTransport.setImageResource(R.drawable.tren);
+                    break;
+            }
         } else {
             holder.columnDate.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_ONE));
             holder.columnOrigin.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_TWO));
