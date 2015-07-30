@@ -107,6 +107,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 	private void save() throws java.text.ParseException {
 		tripTransport.put(Constants.TRIPTRANSPORT_OBJECTIDTRIP, objectIdTrip);
+
 		Date date = df.parse(dateDepart.getText().toString());
 		tripTransport.put(Constants.TRIPTRANSPORT_DATEFROM, date);
 		date = df.parse(dateArrival.getText().toString());
@@ -119,13 +120,13 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		final TypeTransport typeTransportSelected = (TypeTransport) typeTransport.getSelectedItem();
 		tripTransport.put(Constants.TRIPTRANSPORT_TYPETRANSPORT, typeTransportSelected);
 
-		tripTransport.saveInBackground(new SaveCallback(){
+		try {
+			tripTransport.save();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
-			@Override
-			public void done(ParseException e) {
-				goOK();
-			}
-		});
+		goOK();
 	}
 
 	private void update() {
@@ -135,7 +136,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		if(viewIsEmpty(dateDepart) || viewIsEmpty(dateArrival)
 				|| viewIsEmpty(cityDepart) || viewIsEmpty(cityArrival)
 				|| viewIsEmpty(prize) || viewIsEmpty(locator)){
-			return false;
+			return true;
 		}
 		return true;
 	}
