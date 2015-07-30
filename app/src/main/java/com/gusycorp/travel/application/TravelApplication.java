@@ -24,6 +24,7 @@ public class TravelApplication extends Application {
 	private List<Integer> menus = new ArrayList<Integer>();
 	private List<TypeTransport> transportstype = new ArrayList<TypeTransport>();
 	private Trip currentTrip;
+	private TripTransport currentTripTransport;
 
 	public void onCreate() {
 		ParseObject.registerSubclass(Trip.class);
@@ -54,6 +55,15 @@ public class TravelApplication extends Application {
 	public void setCurrentTrip(Trip currentTrip){
 		this.currentTrip=currentTrip;
 	}
+
+	public TripTransport getCurrentTripTransport(){
+		return currentTripTransport;
+	}
+
+	public void setCurrentTripTransport(TripTransport currentTripTransport){
+		this.currentTripTransport=currentTripTransport;
+	}
+
 	void getListsSpinners(){
 		HashMap<String, Object> filter = new HashMap();
 		TypeTransport.findTripListByFieldsInBackground(filter,new FindCallback<TypeTransport>() {

@@ -43,12 +43,13 @@ public class TripTransport extends ParseObject {
 		return getString(Constants.TRIPTRANSPORT_TO);
 	}
 
-
 	public Double getPrize() { return getDouble(Constants.TRIPTRANSPORT_PRIZE);}
 
 	public String getLocator() { return getString(Constants.TRIPTRANSPORT_LOCATOR);}
 
-
+	public TypeTransport getTypeTransport(){
+		return (TypeTransport) getParseObject(Constants.TRIPTRANSPORT_TYPETRANSPORT);
+	}
 	public static void findTripTransportInBackground(String objectId,
 			final GetCallback<TripTransport> callback) {
 		ParseQuery<TripTransport> TripTransportQuery = ParseQuery.getQuery(TripTransport.class);

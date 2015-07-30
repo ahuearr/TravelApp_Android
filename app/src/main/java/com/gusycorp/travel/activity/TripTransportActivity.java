@@ -45,6 +45,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 	private Trip currentTrip;
 
+
 	List<TypeTransport> typeTransportList;
 
 	TravelApplication app;
@@ -79,12 +80,25 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		if(bundle!=null){
 			objectId = bundle.getString(Constants.OBJECTID);
 			if(objectId !=null){
+				tripTransport = app.getCurrentTripTransport();
 				dateDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_DATEFROM));
 				dateArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_DATETO));
 				cityDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_FROM));
 				cityArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_TO));
-				prize.setText(bundle.getString(Constants.TRIPTRANSPORT_PRIZE));
+				prize.setText(Double.toString(bundle.getDouble(Constants.TRIPTRANSPORT_PRIZE)));
 				locator.setText(bundle.getString(Constants.TRIPTRANSPORT_LOCATOR));
+
+				String typeTransportName = bundle.getString(Constants.TRIPTRANSPORT_TYPETRANSPORT);
+				int posTypeTransport = 0;
+				if (typeTransportName != null) {
+					for (int i = 0; i < typeTransportList.size(); i++) {
+						if (typeTransportList.get(i).getTransportName()
+								.equals(typeTransportName)) {
+							posTypeTransport = i;
+						}
+					}
+				}
+				typeTransport.setSelection(posTypeTransport);
 			}
 		}
 	}
@@ -95,6 +109,18 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
+						Date date = df.parse(dateDepart.getText().toString());
+						tripTransport.put(Constants.TRIPTRANSPORT_DATEFROM, date);
+						date = df.parse(dateArrival.getText().toString());
+						tripTransport.put(Constants.TRIPTRANSPORT_DATETO, date);
+						tripTransport.put(Constants.TRIPTRANSPORT_FROM, cityDepart.getText().toString());
+						tripTransport.put(Constants.TRIPTRANSPORT_TO, cityArrival.getText().toString());
+						tripTransport.put(Constants.TRIPTRANSPORT_PRIZE, Double.parseDouble(prize.getText().toString()));
+						tripTransport.put(Constants.TRIPTRANSPORT_LOCATOR, locator.getText().toString());
+
+						final TypeTransport typeTransportSelected = (TypeTransport) typeTransport.getSelectedItem();
+						tripTransport.put(Constants.TRIPTRANSPORT_TYPETRANSPORT, typeTransportSelected);
+
 						if(objectId!=null){
 							update();
 						} else {
@@ -110,18 +136,6 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 	}
 
 	private void save() throws java.text.ParseException {
-		Date date = df.parse(dateDepart.getText().toString());
-		tripTransport.put(Constants.TRIPTRANSPORT_DATEFROM, date);
-		date = df.parse(dateArrival.getText().toString());
-		tripTransport.put(Constants.TRIPTRANSPORT_DATETO, date);
-		tripTransport.put(Constants.TRIPTRANSPORT_FROM, cityDepart.getText().toString());
-		tripTransport.put(Constants.TRIPTRANSPORT_TO, cityArrival.getText().toString());
-		tripTransport.put(Constants.TRIPTRANSPORT_PRIZE, Double.parseDouble(prize.getText().toString()));
-		tripTransport.put(Constants.TRIPTRANSPORT_LOCATOR, locator.getText().toString());
-
-		final TypeTransport typeTransportSelected = (TypeTransport) typeTransport.getSelectedItem();
-		tripTransport.put(Constants.TRIPTRANSPORT_TYPETRANSPORT, typeTransportSelected);
-
 		try {
 			tripTransport.save();
 			ParseRelation<TripTransport> tripTransportRelation = currentTrip.getRelation(Constants.TRIPTRANSPORT_TRIPTRANSPORT);
@@ -135,7 +149,13 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 	}
 
 	private void update() {
+		try {
+			tripTransport.save();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
+		goOK();
 	}
 	private boolean checkMandatory(){
 		if(viewIsEmpty(dateDepart) || viewIsEmpty(dateArrival)

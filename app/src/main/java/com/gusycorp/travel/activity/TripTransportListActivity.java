@@ -2,7 +2,6 @@ package com.gusycorp.travel.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -14,6 +13,7 @@ import com.gusycorp.travel.adapter.ListTripTransportAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripTransport;
+import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -34,6 +34,8 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
     private TravelApplication app;
 
     private Trip currentTrip;
+    private TripTransport currentTripTransport;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,7 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
 
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();
+        app.setCurrentTripTransport(new TripTransport());
 
         tripNameText = (TextView) findViewById(R.id.text_trip_name);
         addTransportTrip = (Button) findViewById(R.id.add_transport_trip);
@@ -92,7 +95,8 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             TripTransport tripTransport = (TripTransport) listView.getAdapter().getItem(position);
-                            if(tripTransport!=null){
+                            if (tripTransport != null) {
+                                app.setCurrentTripTransport(tripTransport);
                                 Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
                                 intent.putExtra(Constants.OBJECTID, tripTransport.getObjectId());
                                 intent.putExtra(Constants.TRIPTRANSPORT_DATEFROM, tripTransport.getDateFrom());
@@ -101,6 +105,8 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
                                 intent.putExtra(Constants.TRIPTRANSPORT_TO, tripTransport.getTo());
                                 intent.putExtra(Constants.TRIPTRANSPORT_PRIZE, tripTransport.getPrize());
                                 intent.putExtra(Constants.TRIPTRANSPORT_LOCATOR, tripTransport.getLocator());
+                                TypeTransport typeTransport = tripTransport.getTypeTransport();
+                                intent.putExtra(Constants.TRIPTRANSPORT_TYPETRANSPORT, typeTransport.getTransportName());
                                 startActivity(intent);
                             }
                         }
