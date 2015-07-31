@@ -55,6 +55,11 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
 
         listView=(ListView)findViewById(R.id.transport_list);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getTripTransports(currentTrip.getObjectId());
     }
 

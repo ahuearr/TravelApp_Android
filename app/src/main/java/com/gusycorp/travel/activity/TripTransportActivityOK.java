@@ -27,21 +27,9 @@ public class TripTransportActivityOK extends MenuActivity {
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				goTripTransportList();
+				onBackPressed();
 			}
 		});
 	}
 
-	@Override
-	public void onBackPressed() {
-		goTripTransportList();
-	}
-
-	private void goTripTransportList(){
-		Intent intent = new Intent(this, TripTransportListActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		intent.putExtra("tripName", tripName);
-		startActivity(intent);
-		finish();
-	}
 }
