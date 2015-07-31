@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundMenu"
+    android:orientation="horizontal" >
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/transporte"
+                style="@style/iconoMenu"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/transporte"
+                android:text="@string/transporte"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/alojamiento"
+                style="@style/iconoMenu"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/alojamiento"
+                android:text="@string/alojamiento"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/calendario"
+                style="@style/iconoMenu"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/calendario"
+                android:text="@string/calendario"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/mapa"
+                style="@style/iconoMenu"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/mapa"
+                android:text="@string/mapa"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/companeros"
+                style="@style/iconoMenu"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/companeros"
+                android:text="@string/companeros"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout><!-- From: file:/C:/Desarrollo/Workspace/InmotorsTravel_ADT/app/src/main/res/layout/menu_trip.xml -->

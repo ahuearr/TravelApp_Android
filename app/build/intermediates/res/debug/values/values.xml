@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/Desarrollo/Workspace/InmotorsTravel_ADT/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="azul_bloque">#234b75</color>
+    <color name="azul_fondo">#2a5582</color>
+    <color name="azul_titulo">#386697</color>
+    <color name="backgroundHeader">#900000</color>
+    <color name="backgroundMenu">#a00000</color>
+    <color name="backgroundMenuSelected">#f00000</color>
+    <color name="blanco_texto">#FFFFFF</color>
+    <!-- From: file:/C:/Desarrollo/Workspace/InmotorsTravel_ADT/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- From: file:/C:/Desarrollo/Workspace/InmotorsTravel_ADT/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="action_settings">Settings</string>
+    <string name="alojamiento">Alojamiento</string>
+    <string name="app_name">InmotorsTravel</string>
+    <string name="back">Volver</string>
+    <string name="bidi">Bidi</string>
+    <string name="calendario">Calendario</string>
+    <string name="city_arrival">Ciudad de destino</string>
+    <string name="city_depart">Ciudad de salida</string>
+    <string name="companeros">Compañeros</string>
+    <string name="date_arrival">Fecha de llegada</string>
+    <string name="date_depart">Fecha de salida</string>
+    <string name="date_empty">Falta fecha</string>
+    <string name="destiny_name">Destinos</string>
+    <string name="destiny_name_empty">Falta destino</string>
+    <string name="field_mandatory">Faltan datos obligatorios</string>
+    <string name="future_trips">Viajes futuros</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="locator">Localizador</string>
+    <string name="mapa">Mapa</string>
+    <string name="mean_of_transport">Tipo de medio de transporte</string>
+    <string name="message_ok">Grabación realizada correctamente</string>
+    <string name="past_trips">Viajes pasados</string>
+    <string name="pdf">PDF</string>
+    <string name="prize">Precio</string>
+    <string name="save">Guardar</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="transporte">Transporte</string>
+    <string name="trip_name">Nombre del viaje</string>
+    <!-- From: file:/C:/Desarrollo/Workspace/InmotorsTravel_ADT/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <style name="iconoMenu">
+            <item name="android:gravity">center_horizontal</item>
+            <item name="android:paddingTop">5dp</item>
+            <item name="android:paddingBottom">5dp</item>
+            <item name="android:textSize">15sp</item>
+    </style>
+</resources>
