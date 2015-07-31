@@ -7,6 +7,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="save">Guardar</string>
     <string name="message_ok">Grabación realizada correctamente</string>
+    <string name="field_mandatory">Faltan datos obligatorios</string>
     <string name="back">Volver</string>
 
     <!-- HomeActivity -->
@@ -19,6 +20,7 @@
     <string name="date_empty">Falta fecha</string>
     <string name="destiny_name">Destinos</string>
     <string name="destiny_name_empty">Falta destino</string>
+    <string name="trip_name">Nombre del viaje</string>
 
     <!-- TripTransportActivity -->
     <string name="mean_of_transport">Tipo de medio de transporte</string>

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.application.TravelApplication;
@@ -130,12 +131,13 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 						e.printStackTrace();
 					}
 				} else{
+					Toast.makeText(this, getString(R.string.field_mandatory), Toast.LENGTH_LONG).show();
 				}
 				break;
 		}
 	}
 
-	private void save() throws java.text.ParseException {
+	private void save(){
 		try {
 			tripTransport.save();
 			ParseRelation<TripTransport> tripTransportRelation = currentTrip.getRelation(Constants.TRIPTRANSPORT_TRIPTRANSPORT);
@@ -161,7 +163,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		if(viewIsEmpty(dateDepart) || viewIsEmpty(dateArrival)
 				|| viewIsEmpty(cityDepart) || viewIsEmpty(cityArrival)
 				|| viewIsEmpty(prize) || viewIsEmpty(locator)){
-			return true;
+			return false;
 		}
 		return true;
 	}
