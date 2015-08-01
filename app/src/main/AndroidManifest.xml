@@ -32,6 +32,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.gusycorp.travel.activity.TripEditActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.gusycorp.travel.activity.TripTransportListActivity"
             android:label="@string/app_name" >
         </activity>
