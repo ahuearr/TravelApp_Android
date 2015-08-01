@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.gusycorp.travel.R;
@@ -24,15 +25,30 @@ public class HomeActivity extends ListActivity {
 
 	private ListTripAdapter mAdapter;
 
+	private Button add;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 
+		add = (Button) findViewById(R.id.add_transport_trip);
+		add.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(HomeActivity.this, TripEditActivity.class);
+				startActivity(intent);
+			}
+		});
 		TravelApplication app = (TravelApplication) getApplication();
 		app.setCurrentTrip(new Trip());
 
 		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 		getTrips();
 	}
 

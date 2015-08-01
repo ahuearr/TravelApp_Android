@@ -3,6 +3,7 @@ package com.gusycorp.travel.util;
 public class Constants {
 
 	public final static String DATE_MASK = "dd/MM/yyyy HH:mm";
+	public final static String ONLY_DATE_MASK = "dd/MM/yyyy";
 
 	// Adapters
 	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";

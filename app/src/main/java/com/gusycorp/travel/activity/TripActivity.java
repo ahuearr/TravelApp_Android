@@ -3,8 +3,12 @@ package com.gusycorp.travel.activity;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gusycorp.travel.R;
@@ -17,37 +21,47 @@ import com.parse.ParseException;
 
 public class TripActivity extends MenuActivity {
 
+	private ImageView edit;
 	private TextView tripNameText;
-	private TextView dateIniLabel;
 	private TextView dateIniText;
-	private TextView dateFinLabel;
 	private TextView dateFinText;
-	private TextView destinyNameLabel;
 	private TextView destinyNameText;
 
 	private TravelApplication app;
+
+	String tripObjectId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_trip);
 
-		String tripObjectId;
-
 		app = (TravelApplication) getApplication();
 
 		if(menus!=null)		menus.clear();
 
+		edit = (ImageView) findViewById(R.id.edit_trip);
 		tripNameText = (TextView) findViewById(R.id.text_trip_name);
-		dateIniLabel = (TextView) findViewById(R.id.label_date_depart);
 		dateIniText = (TextView) findViewById(R.id.text_date_depart);
-		dateFinLabel = (TextView) findViewById(R.id.label_date_arrival);
 		dateFinText = (TextView) findViewById(R.id.text_date_arrival);
-		destinyNameLabel = (TextView) findViewById(R.id.label_destiny_name);
 		destinyNameText = (TextView) findViewById(R.id.text_destiny_name);
 
 		Bundle extras = getIntent().getExtras();
 		tripObjectId = extras.getString("tripObjectId");
 
+		edit.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(TripActivity.this, TripEditActivity.class);
+				intent.putExtra("tripObjectId", tripObjectId);
+				startActivity(intent);
+			}
+		});
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 		getTrip(tripObjectId);
 	}
 
@@ -74,7 +88,7 @@ public class TripActivity extends MenuActivity {
 				if (destinyList != null) {
 					if (destinyList.size() > 0) {
 						for (String destiny : destinyList) {
-							destinies += destiny + ", ";
+							destinies += destiny + ",";
 						}
 						destinies = destinies.substring(0,
 								destinies.length() - 2);
