@@ -59,48 +59,37 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 		if(extras!=null){
 			tripObjectId = extras.getString("tripObjectId");
 
-			//TODO No hay que recuperar asi el viaje, hay que cogerlo de la app
-			getTrip(tripObjectId);
-		}
-	}
-
-	private void getTrip(String tripObjectId) {
-		Trip.findTripInBackground(tripObjectId, new GetCallback<Trip>() {
-
-			@Override
-			public void done(Trip tripFind, ParseException e) {
-				trip = tripFind;
-				tripNameText.setText(tripFind.getTripName());
-				if (tripFind.getDateIni() != null) {
-					dateIniText.setText(tripFind.getDateIni());
-				} else {
-					dateIniText.setText(getString(R.string.date_empty));
-				}
-				if (tripFind.getDateFin() != null) {
-					dateFinText.setText(tripFind.getDateFin());
-				} else {
-					dateFinText.setText(getString(R.string.date_empty));
-				}
-				List<String> destinyList = tripFind.getDestinyName();
-				String destinies = "";
-				if (destinyList != null) {
-					if (destinyList.size() > 0) {
-						for (String destiny : destinyList) {
-							destinies += destiny + ",";
-						}
-						destinies = destinies.substring(0,
-								destinies.length() - 1);
-						destinyNameText.setText(destinies);
-					} else {
-						destinyNameText
-								.setText(getString(R.string.destiny_name_empty));
+			trip = app.getCurrentTrip();
+			tripNameText.setText(trip.getTripName());
+			if (trip.getDateIni() != null) {
+				dateIniText.setText(trip.getDateIni());
+			} else {
+				dateIniText.setText(getString(R.string.date_empty));
+			}
+			if (trip.getDateFin() != null) {
+				dateFinText.setText(trip.getDateFin());
+			} else {
+				dateFinText.setText(getString(R.string.date_empty));
+			}
+			List<String> destinyList = trip.getDestinyName();
+			String destinies = "";
+			if (destinyList != null) {
+				if (destinyList.size() > 0) {
+					for (String destiny : destinyList) {
+						destinies += destiny + ",";
 					}
+					destinies = destinies.substring(0,
+							destinies.length() - 1);
+					destinyNameText.setText(destinies);
 				} else {
 					destinyNameText
 							.setText(getString(R.string.destiny_name_empty));
 				}
+			} else {
+				destinyNameText
+						.setText(getString(R.string.destiny_name_empty));
 			}
-		});
+		}
 	}
 
 	@Override
@@ -124,6 +113,7 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 						trip.put(Constants.TRIP_ORGANIZERID, "1");
 						try {
 							trip.save();
+							app.setCurrentTrip(trip);
 							if(tripObjectId!=null){
 								onBackPressed();
 							} else {
