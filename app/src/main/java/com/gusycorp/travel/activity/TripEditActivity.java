@@ -19,6 +19,7 @@ import com.parse.ParseException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +59,7 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 		if(extras!=null){
 			tripObjectId = extras.getString("tripObjectId");
 
+			//TODO No hay que recuperar asi el viaje, hay que cogerlo de la app
 			getTrip(tripObjectId);
 		}
 	}
@@ -87,7 +89,7 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 							destinies += destiny + ",";
 						}
 						destinies = destinies.substring(0,
-								destinies.length() - 2);
+								destinies.length() - 1);
 						destinyNameText.setText(destinies);
 					} else {
 						destinyNameText
@@ -111,8 +113,13 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 						Date date = df.parse(dateIniText.getText().toString());
 						trip.put(Constants.TRIP_DATEINI,date);
 						date = df.parse(dateFinText.getText().toString());
-						trip.put(Constants.TRIP_DATEFIN,date);
-						trip.addAllUnique(Constants.TRIP_DESTINYNAME, Arrays.asList(destinyNameText.getText().toString().split(",")));
+						trip.put(Constants.TRIP_DATEFIN, date);
+						List<String> destinyList = Arrays.asList(destinyNameText.getText().toString().split(","));
+						List<String> destinyListTrimmed = new ArrayList<>();
+						for(String destiny : destinyList){
+							destinyListTrimmed.add(destiny.trim());
+						}
+						trip.addAllUnique(Constants.TRIP_DESTINYNAME, destinyListTrimmed);
 						trip.put(Constants.TRIP_STATUS, Constants.TRIP_VALUE_STATUS_FUTURE);
 						trip.put(Constants.TRIP_ORGANIZERID, "1");
 						try {

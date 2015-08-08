@@ -91,7 +91,7 @@ public class TripActivity extends MenuActivity {
 							destinies += destiny + ",";
 						}
 						destinies = destinies.substring(0,
-								destinies.length() - 2);
+								destinies.length() - 1);
 						destinyNameText.setText(destinies);
 					} else {
 						destinyNameText
