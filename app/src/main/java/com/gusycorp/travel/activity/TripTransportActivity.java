@@ -177,8 +177,6 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 	}
 
 	private void goOK(){
-		Intent intent = new Intent(TripTransportActivity.this, TripTransportActivityOK.class);
-		startActivity(intent);
-		finish();
+		onBackPressed();
 	}
 }

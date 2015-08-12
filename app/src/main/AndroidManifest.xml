@@ -43,10 +43,6 @@
             android:name="com.gusycorp.travel.activity.TripTransportActivity"
             android:label="@string/app_name" >
         </activity>
-        <activity
-            android:name="com.gusycorp.travel.activity.TripTransportActivityOK"
-            android:label="@string/app_name" >
-        </activity>
-	</application>
+    </application>
 
 </manifest>
