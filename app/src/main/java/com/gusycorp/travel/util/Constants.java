@@ -8,6 +8,7 @@ public class Constants {
 	// Adapters
 	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
 	public final static String TAG_LISTRIPTRANSPORTADAPTER = "ListTripTransportAdapter";
+	public final static String TAG_LISTRIPACCOMODATIONADAPTER = "ListTripAccommodationAdapter";
 
 	public final static String TAG_TRAVELAPPLICACION = "TravelApplication";
 
@@ -52,6 +53,19 @@ public class Constants {
 	public static final String TRIPTRANSPORTLIST_COLUMN_TWO="De";
 	public static final String TRIPTRANSPORTLIST_COLUMN_THREE="A";
 	public static final String TRIPTRANSPORTLIST_COLUMN_FOUR="Medio Transporte";
+
+	// TripAccommodation
+	public final static String TAG_TRIPACCOMMODATIONMODEL = "TripAccommodation";
+	public final static String TRIPACCOMMODATION_PLACE = "place";
+	public final static String TRIPACCOMMODATION_CITY = "city";
+	public final static String TRIPACCOMMODATION_ADDRESS = "address";
+	public final static String TRIPACCOMMODATION_NUMROOMS = "numRooms";
+
+	//TripaccommodationList
+	public static final String TRIPACCOMODATIONLIST_COLUMN_ONE="Hotel";
+	public static final String TRIPACCOMODATIONLIST_COLUMN_TWO="Ciudad";
+	public static final String TRIPACCOMODATIONLIST_COLUMN_THREE="Entrada";
+	public static final String TRIPACCOMODATIONLIST_COLUMN_FOUR="Salida";
 
 	// Others
 	public final static String TAG_UTILS = "Utils";

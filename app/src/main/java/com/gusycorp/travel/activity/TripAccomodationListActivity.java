@@ -12,6 +12,7 @@ import com.gusycorp.travel.R;
 import com.gusycorp.travel.adapter.ListTripTransportAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
@@ -23,9 +24,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TripTransportListActivity extends MenuActivity implements View.OnClickListener{
+public class TripAccomodationListActivity extends MenuActivity implements View.OnClickListener{
 
-    private Button addTransportTrip;
+    private Button addAccommodationTrip;
     private TextView tripNameText;
     private ListView listView;
 
@@ -42,39 +43,39 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
 
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();
-        app.setCurrentTripTransport(new TripTransport());
+        app.setCurrentTripAccommodation(new TripAccommodation());
 
         tripNameText = (TextView) findViewById(R.id.text_trip_name);
-        addTransportTrip = (Button) findViewById(R.id.add_transport_trip);
-        addTransportTrip.setOnClickListener(this);
+        addAccommodationTrip = (Button) findViewById(R.id.add_accommodation_trip);
+        addAccommodationTrip.setOnClickListener(this);
 
         Bundle extras = getIntent().getExtras();
         tripName = extras.getString("tripName");
         tripNameText.setText(tripName);
 
-        listView=(ListView)findViewById(R.id.transport_list);
+        listView=(ListView)findViewById(R.id.accommodation_list);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getTripTransports(currentTrip.getObjectId());
+        getTripAccommodations(currentTrip.getObjectId());
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.add_transport_trip:
-                Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
+            case R.id.add_accommodation_trip:
+                Intent intent = new Intent(TripAccomodationListActivity.this, TripTransportActivity.class);
                 startActivity(intent);
                 break;
         }
     }
 
-    private void getTripTransports(String tripObjectId) {
+    private void getTripAccommodations(String tripObjectId) {
 
-        mAdapter = new ListTripTransportAdapter(TripTransportListActivity.this,
+        mAdapter = new ListTripTransportAdapter(TripAccomodationListActivity.this,
                 R.layout.row_list_transport_trip, new ArrayList<TripTransport>());
 
         HashMap<String,String> itemHeader=new HashMap<String, String>();
@@ -101,7 +102,7 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
                             TripTransport tripTransport = (TripTransport) listView.getAdapter().getItem(position);
                             if (tripTransport != null) {
                                 app.setCurrentTripTransport(tripTransport);
-                                Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
+                                Intent intent = new Intent(TripAccomodationListActivity.this, TripTransportActivity.class);
                                 intent.putExtra(Constants.OBJECTID, tripTransport.getObjectId());
                                 intent.putExtra(Constants.TRIPTRANSPORT_DATEFROM, tripTransport.getDateFrom());
                                 intent.putExtra(Constants.TRIPTRANSPORT_DATETO, tripTransport.getDateTo());
