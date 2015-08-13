@@ -5,30 +5,30 @@
     android:background="@color/backgroundHeader">
 
     <TextView
-        android:id="@+id/header_transport_date"
+        android:id="@+id/header_accommodation_place"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:textColor="@color/blanco_texto" />
 
     <TextView
-        android:id="@+id/header_transport_from"
+        android:id="@+id/header_accommodation_city"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:textColor="@color/blanco_texto"
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/header_transport_to"
+        android:id="@+id/header_accommodation_date_from"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:textColor="@color/blanco_texto"
         android:layout_weight="1"/>
 
     <TextView
-        android:id="@+id/header_transport_transport"
+        android:id="@+id/header_accommodation_date_to"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:textColor="@color/blanco_texto"
         android:layout_weight="1"/>
-</LinearLayout><!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/layout/header_list_transport_trip.xml -->
+</LinearLayout>

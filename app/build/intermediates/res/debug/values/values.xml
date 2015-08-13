@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Desarrollo/Workspace/InmotorsTravel_ADT/app/src/main/res/values/colors.xml -->
+    <!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="azul_bloque">#234b75</color>
     <color name="azul_fondo">#2a5582</color>
@@ -9,11 +9,11 @@
     <color name="backgroundMenu">#a00000</color>
     <color name="backgroundMenuSelected">#f00000</color>
     <color name="blanco_texto">#FFFFFF</color>
-    <!-- From: file:/C:/Desarrollo/Workspace/InmotorsTravel_ADT/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/C:/Desarrollo/Workspace/InmotorsTravel_ADT/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="action_settings">Settings</string>
     <string name="alojamiento">Alojamiento</string>
@@ -43,7 +43,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="transporte">Transporte</string>
     <string name="trip_name">Nombre del viaje</string>
-    <!-- From: file:/C:/Desarrollo/Workspace/InmotorsTravel_ADT/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--

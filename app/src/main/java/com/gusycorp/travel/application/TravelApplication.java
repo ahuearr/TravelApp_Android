@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
@@ -25,11 +26,13 @@ public class TravelApplication extends Application {
 	private List<TypeTransport> transportstype = new ArrayList<TypeTransport>();
 	private Trip currentTrip;
 	private TripTransport currentTripTransport;
+	private TripAccommodation currentTripAccommodation;
 
 	public void onCreate() {
 		ParseObject.registerSubclass(Trip.class);
 		ParseObject.registerSubclass(TripTransport.class);
 		ParseObject.registerSubclass(TypeTransport.class);
+		ParseObject.registerSubclass(TripAccommodation.class);
 		Parse.enableLocalDatastore(this);
 		Parse.initialize(this, Utils.APPLICATION_ID, Utils.PARSE_KEY);
 
@@ -62,6 +65,14 @@ public class TravelApplication extends Application {
 
 	public void setCurrentTripTransport(TripTransport currentTripTransport){
 		this.currentTripTransport=currentTripTransport;
+	}
+
+	public TripAccommodation getCurrentTripAccommodation(){
+		return currentTripAccommodation;
+	}
+
+	public void setCurrentTripAccommodation(TripAccommodation currentTripAccommodation){
+		this.currentTripAccommodation=currentTripAccommodation;
 	}
 
 	void getListsSpinners(){

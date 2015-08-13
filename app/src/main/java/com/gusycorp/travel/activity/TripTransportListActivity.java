@@ -34,7 +34,6 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
     private TravelApplication app;
 
     private Trip currentTrip;
-    private TripTransport currentTripTransport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +84,7 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
         itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_FOUR, Constants.TRIPTRANSPORTLIST_COLUMN_FOUR);
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIPTRANSPORT_TRIPTRANSPORT);
+        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIP_TRIPTRANSPORT);
 
         tripTransport.getQuery().findInBackground(new FindCallback<TripTransport>() {
             public void done(List<TripTransport> tripTransportList, ParseException e) {

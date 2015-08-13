@@ -8,6 +8,7 @@ public class Constants {
 	// Adapters
 	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
 	public final static String TAG_LISTRIPTRANSPORTADAPTER = "ListTripTransportAdapter";
+	public final static String TAG_LISTRIPACCOMODATIONADAPTER = "ListTripAccommodationAdapter";
 
 	public final static String TAG_TRAVELAPPLICACION = "TravelApplication";
 
@@ -30,6 +31,8 @@ public class Constants {
 	public final static String TRIP_ORGANIZERID = "organizerId";
 	public final static String TRIP_VALUE_STATUS_FUTURE = "Future";
 	public final static String TRIP_VALUE_STATUS_PAST = "Past";
+	public final static String TRIP_TRIPTRANSPORT = "tripTransport";
+	public final static String TRIP_TRIPACCOMMODATION = "tripAccommodation";
 
 	// TripTransport
 	public final static String TAG_TRIPTRANSPORTMODEL = "TripTransport";
@@ -37,7 +40,6 @@ public class Constants {
 	public final static String TRIPTRANSPORT_DATETO = "dateTo";
 	public final static String TRIPTRANSPORT_FROM = "from";
 	public final static String TRIPTRANSPORT_TO = "to";
-	public final static String TRIPTRANSPORT_TRIPTRANSPORT = "tripTransport";
 	public final static String TRIPTRANSPORT_PRIZE = "prize";
 	public final static String TRIPTRANSPORT_LOCATOR = "locator";
 	public final static String TRIPTRANSPORT_TYPETRANSPORT = "typeTransport";
@@ -52,6 +54,19 @@ public class Constants {
 	public static final String TRIPTRANSPORTLIST_COLUMN_TWO="De";
 	public static final String TRIPTRANSPORTLIST_COLUMN_THREE="A";
 	public static final String TRIPTRANSPORTLIST_COLUMN_FOUR="Medio Transporte";
+
+	// TripAccommodation
+	public final static String TAG_TRIPACCOMMODATIONMODEL = "TripAccommodation";
+	public final static String TRIPACCOMMODATION_PLACE = "place";
+	public final static String TRIPACCOMMODATION_CITY = "city";
+	public final static String TRIPACCOMMODATION_ADDRESS = "address";
+	public final static String TRIPACCOMMODATION_NUMROOMS = "numRooms";
+
+	//TripaccommodationList
+	public static final String TRIPACCOMMODATIONLIST_COLUMN_ONE="Hotel";
+	public static final String TRIPACCOMMODATIONLIST_COLUMN_TWO="Ciudad";
+	public static final String TRIPACCOMMODATIONLIST_COLUMN_THREE="Entrada";
+	public static final String TRIPACCOMMODATIONLIST_COLUMN_FOUR="Salida";
 
 	// Others
 	public final static String TAG_UTILS = "Utils";

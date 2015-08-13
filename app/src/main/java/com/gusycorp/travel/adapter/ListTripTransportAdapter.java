@@ -25,7 +25,7 @@ import java.util.TreeSet;
  */
 public class ListTripTransportAdapter extends ArrayAdapter<TripTransport> {
 
-    private static final String TAG = Constants.TAG_LISTRIPADAPTER;
+    private static final String TAG = Constants.TAG_LISTRIPTRANSPORTADAPTER;
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_SEPARATOR = 1;
@@ -33,10 +33,6 @@ public class ListTripTransportAdapter extends ArrayAdapter<TripTransport> {
     private ArrayList<TripTransport> mData = new ArrayList<TripTransport>();
     private ArrayList<HashMap<String, String>> mDataHeader = new ArrayList<HashMap<String, String>>();
     private TreeSet<Integer> sectionHeader = new TreeSet<Integer>();
-
-    TextView columnDate;
-    TextView columnOrigin;
-    TextView columnDestination;
 
     private LayoutInflater mInflater;
 

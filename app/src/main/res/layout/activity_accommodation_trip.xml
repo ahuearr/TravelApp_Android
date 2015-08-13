@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gusycorp.travel.activity.TripTransportActivity"
+    tools:context="com.gusycorp.travel.activity.TripAccommodationActivity"
     android:orientation="vertical" >
 
     <ScrollView
@@ -21,21 +21,22 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/mean_of_transport"
-                android:textStyle="bold"
-                android:textSize="20sp" />
-            <Spinner
-                android:id="@+id/type_transport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/date_depart"
+                android:text="@string/place"
                 android:textStyle="bold"
                 android:textSize="20sp" />
             <EditText
-                android:id="@+id/date_depart"
+                android:id="@+id/place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/city"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+            <EditText
+                android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp" />
@@ -53,22 +54,33 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/city_depart"
+                android:text="@string/date_depart"
                 android:textStyle="bold"
                 android:textSize="20sp" />
             <EditText
-                android:id="@+id/city_depart"
+                android:id="@+id/date_depart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/city_arrival"
+                android:text="@string/address"
                 android:textStyle="bold"
                 android:textSize="20sp" />
             <EditText
-                android:id="@+id/city_arrival"
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/numRooms"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+            <EditText
+                android:id="@+id/numRooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp" />
@@ -83,29 +95,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:textSize="20sp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/locator"
-                android:textStyle="bold"
-                android:textSize="20sp" />
-            <EditText
-                android:id="@+id/locator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/bidi"
-                android:textStyle="bold"
-                android:textSize="20sp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/pdf"
-                android:textStyle="bold"
                 android:textSize="20sp" />
             <Button
                 android:id="@+id/save_button"
@@ -127,4 +116,4 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-</LinearLayout><!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/layout/activity_transport_trip.xml -->
+</LinearLayout>

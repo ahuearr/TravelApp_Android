@@ -4,27 +4,27 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/transport_date"
+        android:id="@+id/accommodation_place"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1"/>
 
     <TextView
-        android:id="@+id/transport_from"
+        android:id="@+id/accommodation_city"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/transport_to"
+        android:id="@+id/accommodation_date_from"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1" />
 
-    <ImageView
-        android:id="@+id/transport_transport"
+    <TextView
+        android:id="@+id/accommodation_date_to"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_weight="1" />
 
-</LinearLayout><!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/layout/row_list_transport_trip.xml -->
+</LinearLayout>

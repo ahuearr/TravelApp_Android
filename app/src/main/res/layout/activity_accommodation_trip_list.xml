@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gusycorp.travel.activity.TripTransportListActivity"
+    tools:context="com.gusycorp.travel.activity.TripAccommodationListActivity"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -26,7 +26,7 @@
                 android:textSize="25sp"
                 android:layout_alignParentLeft="true"/>
             <Button
-                android:id="@+id/add_transport_trip"
+                android:id="@+id/add_accommodation_trip"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@color/backgroundHeader"
@@ -36,7 +36,7 @@
         </RelativeLayout>
 
         <ListView
-            android:id="@+id/transport_list"
+            android:id="@+id/accommodation_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </ListView>
@@ -53,4 +53,4 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-</LinearLayout><!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/layout/activity_transport_trip_list.xml -->
+</LinearLayout>
