@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.gusycorp.travel"
-        minSdkVersion 11
+        minSdkVersion 16
         targetSdkVersion 21
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
