@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
@@ -28,74 +29,56 @@ import java.util.List;
 
 public class TripAccommodationActivity extends MenuActivity implements OnClickListener{
 
-	private Spinner typeTransport;
+	private EditText place;
+	private EditText city;
 	private EditText dateDepart;
 	private EditText dateArrival;
-	private EditText cityDepart;
-	private EditText cityArrival;
+	private EditText address;
+	private EditText numRooms;
 	private EditText prize;
-	private EditText locator;
 	private Button save;
 
-	private TripTransport tripTransport = new TripTransport();
+	private TripAccommodation tripAccommodation = new TripAccommodation();
 	private String objectId;
 
 	private Trip currentTrip;
 
-
-	List<TypeTransport> typeTransportList;
-
 	TravelApplication app;
 
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+	private DateFormat df = new SimpleDateFormat(Constants.ONLY_DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_transport_trip);
+		setContentView(R.layout.activity_accommodation_trip);
 
 		app = (TravelApplication) getApplication();
-		typeTransportList = app.getTransportTypes();
 		currentTrip = app.getCurrentTrip();
 
-		typeTransport = (Spinner) findViewById(R.id.type_transport);
+		place = (EditText) findViewById(R.id.place);
+		city = (EditText) findViewById(R.id.city);
 		dateDepart = (EditText) findViewById(R.id.date_depart);
 		dateArrival = (EditText) findViewById(R.id.date_arrival);
-		cityDepart = (EditText) findViewById(R.id.city_depart);
-		cityArrival = (EditText) findViewById(R.id.city_arrival);
+		address = (EditText) findViewById(R.id.address);
+		numRooms = (EditText) findViewById(R.id.numRooms);
 		prize = (EditText) findViewById(R.id.prize);
-		locator = (EditText) findViewById(R.id.locator);
 		save = (Button) findViewById(R.id.save_button);
 
 		save.setOnClickListener(this);
 
-		final ArrayAdapter<TypeTransport> typeTransportAdapter = new ArrayAdapter<TypeTransport>(getBaseContext(),android.R.layout.simple_spinner_item,typeTransportList);
-		typeTransportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		typeTransport.setAdapter(typeTransportAdapter);
 		Bundle bundle = getIntent().getExtras();
 
 		if(bundle!=null){
 			objectId = bundle.getString(Constants.OBJECTID);
 			if(objectId !=null){
-				tripTransport = app.getCurrentTripTransport();
-				dateDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_DATEFROM));
-				dateArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_DATETO));
-				cityDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_FROM));
-				cityArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_TO));
+				tripAccommodation = app.getCurrentTripAccommodation();
+				place.setText(bundle.getString(Constants.TRIPACCOMMODATION_PLACE));
+				city.setText(bundle.getString(Constants.TRIPACCOMMODATION_CITY));
+				dateArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_DATEFROM));
+				dateDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_DATETO));
+				address.setText(bundle.getString(Constants.TRIPACCOMMODATION_ADDRESS));
+				numRooms.setText(Integer.toString(bundle.getInt(Constants.TRIPACCOMMODATION_NUMROOMS)));
 				prize.setText(Double.toString(bundle.getDouble(Constants.TRIPTRANSPORT_PRIZE)));
-				locator.setText(bundle.getString(Constants.TRIPTRANSPORT_LOCATOR));
-
-				String typeTransportName = bundle.getString(Constants.TRIPTRANSPORT_TYPETRANSPORT);
-				int posTypeTransport = 0;
-				if (typeTransportName != null) {
-					for (int i = 0; i < typeTransportList.size(); i++) {
-						if (typeTransportList.get(i).getTransportName()
-								.equals(typeTransportName)) {
-							posTypeTransport = i;
-						}
-					}
-				}
-				typeTransport.setSelection(posTypeTransport);
 			}
 		}
 	}
@@ -106,17 +89,15 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						Date date = df.parse(dateDepart.getText().toString());
-						tripTransport.put(Constants.TRIPTRANSPORT_DATEFROM, date);
-						date = df.parse(dateArrival.getText().toString());
-						tripTransport.put(Constants.TRIPTRANSPORT_DATETO, date);
-						tripTransport.put(Constants.TRIPTRANSPORT_FROM, cityDepart.getText().toString());
-						tripTransport.put(Constants.TRIPTRANSPORT_TO, cityArrival.getText().toString());
-						tripTransport.put(Constants.TRIPTRANSPORT_PRIZE, Double.parseDouble(prize.getText().toString()));
-						tripTransport.put(Constants.TRIPTRANSPORT_LOCATOR, locator.getText().toString());
-
-						final TypeTransport typeTransportSelected = (TypeTransport) typeTransport.getSelectedItem();
-						tripTransport.put(Constants.TRIPTRANSPORT_TYPETRANSPORT, typeTransportSelected);
+						Date date = df.parse(dateArrival.getText().toString());
+						tripAccommodation.put(Constants.TRIPTRANSPORT_DATEFROM, date);
+						date = df.parse(dateDepart.getText().toString());
+						tripAccommodation.put(Constants.TRIPTRANSPORT_DATETO, date);
+						tripAccommodation.put(Constants.TRIPACCOMMODATION_PLACE, place.getText().toString());
+						tripAccommodation.put(Constants.TRIPACCOMMODATION_CITY, city.getText().toString());
+						tripAccommodation.put(Constants.TRIPACCOMMODATION_ADDRESS, address.getText().toString());
+						tripAccommodation.put(Constants.TRIPACCOMMODATION_NUMROOMS, Integer.parseInt(numRooms.getText().toString()));
+						tripAccommodation.put(Constants.TRIPTRANSPORT_PRIZE, Double.parseDouble(prize.getText().toString()));
 
 						if(objectId!=null){
 							update();
@@ -135,9 +116,9 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 
 	private void save(){
 		try {
-			tripTransport.save();
-			ParseRelation<TripTransport> tripTransportRelation = currentTrip.getRelation(Constants.TRIP_TRIPTRANSPORT);
-			tripTransportRelation.add(tripTransport);
+			tripAccommodation.save();
+			ParseRelation<TripAccommodation> tripAccommodationRelation = currentTrip.getRelation(Constants.TRIP_TRIPACCOMMODATION);
+			tripAccommodationRelation.add(tripAccommodation);
 			currentTrip.save();
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -148,7 +129,7 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 
 	private void update() {
 		try {
-			tripTransport.save();
+			tripAccommodation.save();
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -156,9 +137,10 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 		goOK();
 	}
 	private boolean checkMandatory(){
-		if(viewIsEmpty(dateDepart) || viewIsEmpty(dateArrival)
-				|| viewIsEmpty(cityDepart) || viewIsEmpty(cityArrival)
-				|| viewIsEmpty(prize) || viewIsEmpty(locator)){
+		if(viewIsEmpty(place) || viewIsEmpty(city)
+				||viewIsEmpty(dateDepart) || viewIsEmpty(dateArrival)
+				|| viewIsEmpty(address) || viewIsEmpty(numRooms)
+				|| viewIsEmpty(prize)){
 			return false;
 		}
 		return true;

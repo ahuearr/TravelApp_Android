@@ -113,7 +113,7 @@ public class ListTripAccommodationAdapter extends ArrayAdapter<TripAccommodation
             holder.columnPlace.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_ONE));
             holder.columnCity.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_TWO));
             holder.columnDateFrom.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_THREE));
-            holder.columnDateFrom.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_THREE));
+            holder.columnDateTo.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR));
         }
 
         return convertView;

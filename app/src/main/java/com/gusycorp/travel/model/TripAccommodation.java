@@ -18,7 +18,7 @@ import java.util.Map;
 public class TripAccommodation extends ParseObject {
 
 	private static String TAG = Constants.TAG_TRIPACCOMMODATIONMODEL;
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+	private DateFormat df = new SimpleDateFormat(Constants.ONLY_DATE_MASK);
 
 	public String getDateFrom() {
 		if(getDate(Constants.TRIPTRANSPORT_DATEFROM)==null){

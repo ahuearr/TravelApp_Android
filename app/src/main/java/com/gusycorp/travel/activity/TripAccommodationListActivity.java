@@ -65,7 +65,7 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_accommodation_trip:
-                Intent intent = new Intent(TripAccommodationListActivity.this, TripTransportActivity.class);
+                Intent intent = new Intent(TripAccommodationListActivity.this, TripAccommodationActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -106,6 +106,7 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
                                 intent.putExtra(Constants.TRIPACCOMMODATION_CITY, tripAccommodation.getCity());
                                 intent.putExtra(Constants.TRIPTRANSPORT_DATEFROM, tripAccommodation.getDateFrom());
                                 intent.putExtra(Constants.TRIPTRANSPORT_DATETO, tripAccommodation.getDateTo());
+                                intent.putExtra(Constants.TRIPACCOMMODATION_ADDRESS, tripAccommodation.getAddress());
                                 intent.putExtra(Constants.TRIPACCOMMODATION_NUMROOMS, tripAccommodation.getNumRooms());
                                 intent.putExtra(Constants.TRIPTRANSPORT_PRIZE, tripAccommodation.getPrize());
                                 startActivity(intent);
