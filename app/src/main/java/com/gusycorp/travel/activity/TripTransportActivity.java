@@ -1,9 +1,7 @@
 package com.gusycorp.travel.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -19,10 +17,8 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseRelation;
-import com.parse.SaveCallback;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -140,7 +136,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 	private void save(){
 		try {
 			tripTransport.save();
-			ParseRelation<TripTransport> tripTransportRelation = currentTrip.getRelation(Constants.TRIPTRANSPORT_TRIPTRANSPORT);
+			ParseRelation<TripTransport> tripTransportRelation = currentTrip.getRelation(Constants.TRIP_TRIPTRANSPORT);
 			tripTransportRelation.add(tripTransport);
 			currentTrip.save();
 		} catch (ParseException e) {

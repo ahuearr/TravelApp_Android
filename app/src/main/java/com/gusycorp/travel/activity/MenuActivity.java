@@ -59,7 +59,7 @@ public class MenuActivity extends Activity implements View.OnClickListener {
     private Class findClass(final Integer identifier) {
         switch (identifier) {
             case R.id.alojamiento:
-                return TripAccommodationActivity.class;
+                return TripAccommodationListActivity.class;
             case R.id.transporte:
                 return TripTransportListActivity.class;
             case R.id.calendario:

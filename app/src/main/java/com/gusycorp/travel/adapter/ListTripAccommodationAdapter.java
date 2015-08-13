@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gusycorp.travel.R;
@@ -20,7 +19,7 @@ import java.util.TreeSet;
 /**
  * Created by agustin.huerta on 24/07/2015.
  */
-public class ListTripAccomodationAdapter extends ArrayAdapter<TripAccommodation> {
+public class ListTripAccommodationAdapter extends ArrayAdapter<TripAccommodation> {
 
     private static final String TAG = Constants.TAG_LISTRIPACCOMODATIONADAPTER;
 
@@ -33,7 +32,7 @@ public class ListTripAccomodationAdapter extends ArrayAdapter<TripAccommodation>
 
     private LayoutInflater mInflater;
 
-    public ListTripAccomodationAdapter(Context context, int resource, List<TripAccommodation> objects) {
+    public ListTripAccommodationAdapter(Context context, int resource, List<TripAccommodation> objects) {
         super(context, resource, objects);
         mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -79,11 +78,11 @@ public class ListTripAccomodationAdapter extends ArrayAdapter<TripAccommodation>
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ListTripAccomodationAdapter.ViewHolder holder = null;
+        ListTripAccommodationAdapter.ViewHolder holder = null;
         int rowType = getItemViewType(position);
 
         if (convertView == null) {
-            holder = new ListTripAccomodationAdapter.ViewHolder();
+            holder = new ListTripAccommodationAdapter.ViewHolder();
             switch (rowType) {
                 case TYPE_ITEM:
                     convertView = mInflater.inflate(R.layout.row_list_accommodation_trip, null);
@@ -94,7 +93,7 @@ public class ListTripAccomodationAdapter extends ArrayAdapter<TripAccommodation>
                     break;
                 case TYPE_SEPARATOR:
                     convertView = mInflater
-                            .inflate(R.layout.header_list_transport_trip, null);
+                            .inflate(R.layout.header_list_accommodation_trip, null);
                     holder.columnPlace = (TextView) convertView.findViewById(R.id.header_accommodation_place);
                     holder.columnCity = (TextView) convertView.findViewById(R.id.header_accommodation_city);
                     holder.columnDateFrom = (TextView) convertView.findViewById(R.id.header_accommodation_date_from);
@@ -103,7 +102,7 @@ public class ListTripAccomodationAdapter extends ArrayAdapter<TripAccommodation>
             }
             convertView.setTag(holder);
         } else {
-            holder = (ListTripAccomodationAdapter.ViewHolder) convertView.getTag();
+            holder = (ListTripAccommodationAdapter.ViewHolder) convertView.getTag();
         }
         if (mData.get(position) != null) {
             holder.columnPlace.setText(mData.get(position).getPlace());
@@ -111,10 +110,10 @@ public class ListTripAccomodationAdapter extends ArrayAdapter<TripAccommodation>
             holder.columnDateFrom.setText(mData.get(position).getDateFrom());
             holder.columnDateTo.setText(mData.get(position).getDateTo());
         } else {
-            holder.columnPlace.setText(mDataHeader.get(position).get(Constants.TRIPACCOMODATIONLIST_COLUMN_ONE));
-            holder.columnCity.setText(mDataHeader.get(position).get(Constants.TRIPACCOMODATIONLIST_COLUMN_TWO));
-            holder.columnDateFrom.setText(mDataHeader.get(position).get(Constants.TRIPACCOMODATIONLIST_COLUMN_THREE));
-            holder.columnDateFrom.setText(mDataHeader.get(position).get(Constants.TRIPACCOMODATIONLIST_COLUMN_THREE));
+            holder.columnPlace.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_ONE));
+            holder.columnCity.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_TWO));
+            holder.columnDateFrom.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_THREE));
+            holder.columnDateFrom.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_THREE));
         }
 
         return convertView;
