@@ -2,10 +2,12 @@ package com.gusycorp.travel.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,15 +26,16 @@ import com.parse.ParseException;
 import com.parse.ParseRelation;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class TripCalendarListActivity extends MenuActivity{
-    private CalendarView calendar;
 
     private Button addCalendarTrip;
     private TextView tripNameText;
+    private DatePicker datePicker;
     private ListView listView;
 
     private ListTripCalendarAdapter mAdapter;
@@ -46,7 +49,7 @@ public class TripCalendarListActivity extends MenuActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_calendar_trip);
+        setContentView(R.layout.activity_calendar_trip_list);
 
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();
@@ -54,54 +57,40 @@ public class TripCalendarListActivity extends MenuActivity{
 
         tripNameText = (TextView) findViewById(R.id.text_trip_name);
         addCalendarTrip = (Button) findViewById(R.id.add_calendar_trip);
+        datePicker = (DatePicker) findViewById(R.id.calendar_date_picker);
         addCalendarTrip.setOnClickListener(this);
 
-        Bundle extras = getIntent().getExtras();
-        tripName = extras.getString("tripName");
+        tripName = currentTrip.getTripName();
         tripNameText.setText(tripName);
 
         listView=(ListView)findViewById(R.id.calendar_list);
-
-        initializeCalendar();
-    }
-
-    public void initializeCalendar() {
-        calendar = (CalendarView) findViewById(R.id.calendar);
-
-        // sets whether to show the week number.
-        calendar.setShowWeekNumber(false);
-
-        // sets the first day of week according to Calendar.
-        // here we set Monday as the first day of the Calendar
-        calendar.setFirstDayOfWeek(2);
-
-        //The background color for the selected week.
-        calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.backgroundMenu));
-
-        //sets the color for the dates of an unfocused month.
-        calendar.setUnfocusedMonthDateColor(getResources().getColor(R.color.transparent));
-
-        //sets the color for the separator line between weeks.
-        calendar.setWeekSeparatorLineColor(getResources().getColor(R.color.transparent));
-
-        //sets the color for the vertical bar shown at the beginning and at the end of the selected date.
-        calendar.setSelectedDateVerticalBar(R.color.backgroundMenuSelected);
-
-        //sets the listener to be notified upon selected date change.
-        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            //show the selected date as a toast
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-                Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
-                getTripCalendars(currentTrip.getObjectId(), new Date(year, month, day));
-            }
-        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getTripCalendars(currentTrip.getObjectId(), new Date(calendar.getDate()));
+        Calendar calendar = Calendar.getInstance();
+        Bundle extras = getIntent().getExtras();
+        int year = extras.getInt("year");
+        int month = extras.getInt("month");
+        int day = extras.getInt("day");
+        Log.e("TAG", year + "");
+        Log.e("TAG", month + "");
+        Log.e("TAG", day + "");
+        if(year == 0 && month == 0 && day == 0){
+            Date dateIni = currentTrip.getDateIniDate();
+            calendar.setTime(dateIni);
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH);
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        }
+        Log.e("TAG", year + "");
+        Log.e("TAG", month + "");
+        Log.e("TAG", day + "");
+
+        datePicker.updateDate(year, month, day);
+
+        getTripCalendars(currentTrip.getObjectId(), year, month, day);
     }
 
     @Override
@@ -114,7 +103,7 @@ public class TripCalendarListActivity extends MenuActivity{
         }
     }
 
-    private void getTripCalendars(String tripObjectId, final Date date) {
+    private void getTripCalendars(String tripObjectId, final int year, final int month, final int day) {
 
         mAdapter = new ListTripCalendarAdapter(TripCalendarListActivity.this,
                 R.layout.row_list_calendar_trip, new ArrayList<TripCalendar>());
@@ -132,9 +121,9 @@ public class TripCalendarListActivity extends MenuActivity{
                     // There was an error
                 } else {
                     for (TripCalendar tripCalendar : tripCalendarList) {
-                        if(tripCalendar.getDateDate().getDay()==date.getDay()
-                                && tripCalendar.getDateDate().getMonth()==date.getMonth()
-                                && tripCalendar.getDateDate().getYear()==date.getYear()){
+                        if(tripCalendar.getDateDate().getDay()==day
+                                && tripCalendar.getDateDate().getMonth()==month
+                                && tripCalendar.getDateDate().getYear()==year){
                             mAdapter.addItem(tripCalendar);
                         }
                     }

@@ -58,7 +58,7 @@ public class MenuActivity extends Activity implements View.OnClickListener {
             case R.id.transporte:
                 return TripTransportListActivity.class;
             case R.id.calendario:
-                return TripCalendarActivity.class;
+                return TripCalendarListActivity.class;
             case R.id.mapa:
                 return TripMapActivity.class;
             case R.id.companeros:

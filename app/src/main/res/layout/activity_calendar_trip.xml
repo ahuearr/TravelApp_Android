@@ -14,34 +14,63 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
-
-        <RelativeLayout
+        <TextView
+            android:id="@+id/label_trip_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/text_trip_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="25sp"
-                android:layout_alignParentLeft="true"/>
-            <Button
-                android:id="@+id/add_calendar_trip"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@color/backgroundHeader"
-                android:text="+"
-                android:textColor="@color/blanco_texto"
-                android:layout_alignParentRight="true"/>
-        </RelativeLayout>
-
-        <CalendarView
-            android:id="@+id/calendar"
-            android:layout_margin="10dp"
+            android:text="@string/trip_name"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/text_trip_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/label_date_depart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/date_depart"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/text_date_depart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/label_date_arrival"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/date_arrival"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/text_date_arrival"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/label_destiny_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/destiny_name"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/text_destiny_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layout_menu"
         android:layout_width="match_parent"
