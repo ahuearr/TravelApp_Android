@@ -17,6 +17,7 @@ import com.gusycorp.travel.adapter.ListTripCalendarAdapter;
 import com.gusycorp.travel.adapter.ListTripTransportAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
@@ -43,6 +44,11 @@ public class TripCalendarListActivity extends MenuActivity{
     private TravelApplication app;
 
     private Trip currentTrip;
+
+    private List<TripTransport> tripTransports = new ArrayList<TripTransport>();
+    private List<TripAccommodation> tripAccommodations = new ArrayList<TripAccommodation>();
+    private List<TripCalendar> tripCalendars = new ArrayList<TripCalendar>();
+
 
 
     @Override
@@ -114,19 +120,90 @@ public class TripCalendarListActivity extends MenuActivity{
         mAdapter.addSectionHeaderItem(itemHeader);
 
         ParseRelation<TripCalendar> tripCalendar = currentTrip.getRelation(Constants.TRIP_TRIPCALENDAR);
+        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIP_TRIPTRANSPORT);
+        ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIP_TRIPACCOMMODATION);
 
+        findTransports(year, month, day, tripCalendar, tripTransport, tripAccommodation);
+    }
+
+    private void findTransports(final int year, final int month, final int day,
+                                final ParseRelation<TripCalendar> tripCalendar,
+                                ParseRelation<TripTransport> tripTransport,
+                                final ParseRelation<TripAccommodation> tripAccommodation) {
+        tripTransport.getQuery().findInBackground(new FindCallback<TripTransport>() {
+            public void done(List<TripTransport> tripTransportList, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    for (TripTransport tripTransport : tripTransportList) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(tripTransport.getDateFromDate());
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar.get(Calendar.MONTH) == month
+                                && calendar.get(Calendar.YEAR) == year) {
+                            tripTransports.add(tripTransport);
+                        }
+                        calendar.setTime(tripTransport.getDateToDate());
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar.get(Calendar.MONTH) == month
+                                && calendar.get(Calendar.YEAR) == year) {
+                            tripTransports.add(tripTransport);
+                        }
+                    }
+                }
+
+                findAccommodations(year, month, day, tripCalendar, tripAccommodation);
+            }
+        });
+    }
+
+    private void findAccommodations(final int year, final int month, final int day,
+                                final ParseRelation<TripCalendar> tripCalendar,
+                                ParseRelation<TripAccommodation> tripAccommodation) {
+        tripAccommodation.getQuery().findInBackground(new FindCallback<TripAccommodation>() {
+            public void done(List<TripAccommodation> tripAccommodationList, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    for (TripAccommodation tripAccommodation : tripAccommodationList) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(tripAccommodation.getDateFromDate());
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar.get(Calendar.MONTH) == month
+                                && calendar.get(Calendar.YEAR) == year) {
+                            tripAccommodations.add(tripAccommodation);
+                        }
+                        calendar.setTime(tripAccommodation.getDateToDate());
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar.get(Calendar.MONTH) == month
+                                && calendar.get(Calendar.YEAR) == year) {
+                            tripAccommodations.add(tripAccommodation);
+                        }
+                    }
+                }
+
+                findAndManageCalendarActivities(year, month, day, tripCalendar);
+            }
+        });
+    }
+
+    private void findAndManageCalendarActivities(final int year, final int month, final int day, ParseRelation<TripCalendar> tripCalendar) {
         tripCalendar.getQuery().findInBackground(new FindCallback<TripCalendar>() {
             public void done(List<TripCalendar> tripCalendarList, ParseException e) {
                 if (e != null) {
                     // There was an error
                 } else {
                     for (TripCalendar tripCalendar : tripCalendarList) {
-                        if(tripCalendar.getDateDate().getDay()==day
-                                && tripCalendar.getDateDate().getMonth()==month
-                                && tripCalendar.getDateDate().getYear()==year){
-                            mAdapter.addItem(tripCalendar);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(tripCalendar.getDateDate());
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar.get(Calendar.MONTH) == month
+                                && calendar.get(Calendar.YEAR) == year) {
+                            tripCalendars.add(tripCalendar);
                         }
                     }
+                    mAdapter.addItem(tripCalendar);
+
                     listView.setAdapter(mAdapter);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override

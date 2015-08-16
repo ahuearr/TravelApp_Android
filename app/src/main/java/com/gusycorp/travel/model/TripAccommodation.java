@@ -10,6 +10,7 @@ import com.parse.ParseQuery;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,14 @@ public class TripAccommodation extends ParseObject {
 			return null;
 		}
 		return df.format(getDate(Constants.TRIPTRANSPORT_DATETO));
+	}
+
+	public Date getDateFromDate() {
+		return getDate(Constants.TRIPTRANSPORT_DATEFROM);
+	}
+
+	public Date getDateToDate() {
+		return getDate(Constants.TRIPTRANSPORT_DATETO);
 	}
 
 	public String getPlace() {
