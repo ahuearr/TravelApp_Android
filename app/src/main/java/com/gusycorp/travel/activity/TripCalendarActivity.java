@@ -1,155 +1,133 @@
 package com.gusycorp.travel.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CalendarView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.adapter.ListTripCalendarAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
-import com.gusycorp.travel.model.TripAccommodation;
+import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.util.Constants;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseRelation;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+public class TripCalendarActivity extends MenuActivity{
+    private CalendarView calendar;
+
+    private Button addCalendarTrip;
+    private TextView tripNameText;
+
+    private TravelApplication app;
+
+    private Trip currentTrip;
 
 
-public class TripCalendarActivity extends MenuActivity implements OnClickListener{
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-	private EditText place;
-	private EditText city;
-	private EditText dateDepart;
-	private EditText dateArrival;
-	private EditText address;
-	private EditText numRooms;
-	private EditText prize;
-	private Button save;
+        setContentView(R.layout.activity_calendar_trip);
 
-	private TripAccommodation tripAccommodation = new TripAccommodation();
-	private String objectId;
+        app = (TravelApplication) getApplication();
+        currentTrip = app.getCurrentTrip();
+        app.setCurrentTripCalendar(new TripCalendar());
 
-	private Trip currentTrip;
+        tripNameText = (TextView) findViewById(R.id.text_trip_name);
+        addCalendarTrip = (Button) findViewById(R.id.add_calendar_trip);
+        addCalendarTrip.setOnClickListener(this);
 
-	TravelApplication app;
+        Bundle extras = getIntent().getExtras();
+        tripName = extras.getString("tripName");
+        tripNameText.setText(tripName);
 
-	private DateFormat df = new SimpleDateFormat(Constants.ONLY_DATE_MASK);
+        Date dateIni = currentTrip.getDateIniDate();
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_accommodation_trip);
+        initializeCalendar(dateIni);
+    }
 
-		app = (TravelApplication) getApplication();
-		currentTrip = app.getCurrentTrip();
+    public void initializeCalendar(Date date) {
+        calendar = (CalendarView) findViewById(R.id.calendar);
 
-		place = (EditText) findViewById(R.id.place);
-		city = (EditText) findViewById(R.id.city);
-		dateDepart = (EditText) findViewById(R.id.date_depart);
-		dateArrival = (EditText) findViewById(R.id.date_arrival);
-		address = (EditText) findViewById(R.id.address);
-		numRooms = (EditText) findViewById(R.id.numRooms);
-		prize = (EditText) findViewById(R.id.prize);
-		save = (Button) findViewById(R.id.save_button);
+        if(date!=null){
+            calendar.setDate(date.getTime());
+        }
+        // sets whether to show the week number.
+        calendar.setShowWeekNumber(false);
 
-		save.setOnClickListener(this);
+        // sets the first day of week according to Calendar.
+        // here we set Monday as the first day of the Calendar
+        calendar.setFirstDayOfWeek(2);
 
-		Bundle bundle = getIntent().getExtras();
+        //The background color for the selected week.
+        calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.backgroundMenu));
 
-		if(bundle!=null){
-			objectId = bundle.getString(Constants.OBJECTID);
-			if(objectId !=null){
-				tripAccommodation = app.getCurrentTripAccommodation();
-				place.setText(bundle.getString(Constants.TRIPACCOMMODATION_PLACE));
-				city.setText(bundle.getString(Constants.TRIPACCOMMODATION_CITY));
-				dateArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_DATEFROM));
-				dateDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_DATETO));
-				address.setText(bundle.getString(Constants.TRIPACCOMMODATION_ADDRESS));
-				numRooms.setText(Integer.toString(bundle.getInt(Constants.TRIPACCOMMODATION_NUMROOMS)));
-				prize.setText(Double.toString(bundle.getDouble(Constants.TRIPTRANSPORT_PRIZE)));
-			}
-		}
-	}
+        //sets the color for the dates of an unfocused month.
+        calendar.setUnfocusedMonthDateColor(getResources().getColor(R.color.transparent));
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()){
-			case R.id.save_button:
-				if(checkMandatory()){
-					try{
-						Date date = df.parse(dateArrival.getText().toString());
-						tripAccommodation.put(Constants.TRIPTRANSPORT_DATEFROM, date);
-						date = df.parse(dateDepart.getText().toString());
-						tripAccommodation.put(Constants.TRIPTRANSPORT_DATETO, date);
-						tripAccommodation.put(Constants.TRIPACCOMMODATION_PLACE, place.getText().toString());
-						tripAccommodation.put(Constants.TRIPACCOMMODATION_CITY, city.getText().toString());
-						tripAccommodation.put(Constants.TRIPACCOMMODATION_ADDRESS, address.getText().toString());
-						tripAccommodation.put(Constants.TRIPACCOMMODATION_NUMROOMS, Integer.parseInt(numRooms.getText().toString()));
-						tripAccommodation.put(Constants.TRIPTRANSPORT_PRIZE, Double.parseDouble(prize.getText().toString()));
+        //sets the color for the separator line between weeks.
+        calendar.setWeekSeparatorLineColor(getResources().getColor(R.color.transparent));
 
-						if(objectId!=null){
-							update();
-						} else {
-							save();
-						}
-					} catch (java.text.ParseException e){
-						e.printStackTrace();
-					}
-				} else{
-					Toast.makeText(this, getString(R.string.field_mandatory), Toast.LENGTH_LONG).show();
-				}
-				break;
-		}
-	}
+        //sets the color for the vertical bar shown at the beginning and at the end of the selected date.
+        calendar.setSelectedDateVerticalBar(R.color.backgroundMenuSelected);
 
-	private void save(){
-		try {
-			tripAccommodation.save();
-			ParseRelation<TripAccommodation> tripAccommodationRelation = currentTrip.getRelation(Constants.TRIP_TRIPACCOMMODATION);
-			tripAccommodationRelation.add(tripAccommodation);
-			currentTrip.save();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+        //sets the listener to be notified upon selected date change.
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            //show the selected date as a toast
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+                Intent intent = new Intent(TripCalendarActivity.this, TripCalendarListActivity.class);
+                intent.putExtra("year", year);
+                intent.putExtra("month", month);
+                intent.putExtra("dat", day);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
 
-		goOK();
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle extras = getIntent().getExtras();
+        int year = extras.getInt("year");
+        int month = extras.getInt("month");
+        int day = extras.getInt("day");
+        if(year!=0 && day!=0){
+            Date date = new Date(year, month, day);
+            initializeCalendar(date);
+        }
+    }
 
-	private void update() {
-		try {
-			tripAccommodation.save();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.add_calendar_trip:
+                Intent intent = new Intent(TripCalendarActivity.this, TripCalendarActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
 
-		goOK();
-	}
-	private boolean checkMandatory(){
-		if(viewIsEmpty(place) || viewIsEmpty(city)
-				||viewIsEmpty(dateDepart) || viewIsEmpty(dateArrival)
-				|| viewIsEmpty(address) || viewIsEmpty(numRooms)
-				|| viewIsEmpty(prize)){
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        menus.clear();
+    }
 
-	private boolean viewIsEmpty(final TextView view) {
-		boolean empty = false;
-		if (TextUtils.isEmpty(view.getText().toString())) {
-			empty = true;
-		}
-		return empty;
-	}
-
-	private void goOK(){
-		onBackPressed();
-	}
 }

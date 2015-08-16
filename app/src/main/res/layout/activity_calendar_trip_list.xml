@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gusycorp.travel.activity.TripActivity"
+    tools:context="com.gusycorp.travel.activity.TripCalendarActivity"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -14,21 +14,35 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/text_message_ok"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/message_ok"
-            android:textStyle="bold"
-            android:textSize="25sp" />
-        <Button
-            android:id="@+id/back_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/back"
-            />
-    </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/text_trip_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_alignParentLeft="true"/>
+            <Button
+                android:id="@+id/add_calendar_trip"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/backgroundHeader"
+                android:text="+"
+                android:textColor="@color/blanco_texto"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/calendar_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/layout_menu"
         android:layout_width="match_parent"
