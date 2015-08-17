@@ -32,7 +32,7 @@
     <string name="pdf">PDF</string>
 
     <!-- TripAccommodationActivity -->
-    <string name="place">Hotel/Apartamento</string>
+    <string name="placeAccommodation">Hotel/Apartamento</string>
     <string name="city">Ciudad</string>
     <string name="address">Direccion</string>
     <string name="numRooms">Num. Habitaciones</string>
@@ -42,6 +42,10 @@
     <string name="transportArrivalTo">Llegada a</string>
     <string name="accommodationArrivalTo">Llegada a</string>
     <string name="accommodationDepartureFrom">Salida de</string>
+    <string name="activity">Actividad</string>
+    <string name="place">Lugar</string>
+    <string name="date">Fecha</string>
+
 
     <!-- MenuTripActivity -->
     <string name="transporte">Transporte</string>

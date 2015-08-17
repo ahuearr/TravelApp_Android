@@ -2,6 +2,7 @@ package com.gusycorp.travel.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -12,7 +13,7 @@ import android.widget.Toast;
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
-import com.gusycorp.travel.model.TripAccommodation;
+import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.util.Constants;
 import com.parse.ParseException;
 import com.parse.ParseRelation;
@@ -24,38 +25,34 @@ import java.util.Date;
 
 public class TripCalendarActivity extends MenuActivity implements OnClickListener{
 
+	private EditText date;
+	private EditText activity;
 	private EditText place;
 	private EditText city;
-	private EditText dateDepart;
-	private EditText dateArrival;
-	private EditText address;
-	private EditText numRooms;
 	private EditText prize;
 	private Button save;
 
-	private TripAccommodation tripAccommodation = new TripAccommodation();
+	private TripCalendar tripCalendar = new TripCalendar();
 	private String objectId;
 
 	private Trip currentTrip;
 
 	TravelApplication app;
 
-	private DateFormat df = new SimpleDateFormat(Constants.ONLY_DATE_MASK);
+	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_accommodation_trip);
+		setContentView(R.layout.activity_calendar_trip);
 
 		app = (TravelApplication) getApplication();
 		currentTrip = app.getCurrentTrip();
 
+		date = (EditText) findViewById(R.id.date);
+		activity = (EditText) findViewById(R.id.text_activity);
 		place = (EditText) findViewById(R.id.place);
 		city = (EditText) findViewById(R.id.city);
-		dateDepart = (EditText) findViewById(R.id.date_depart);
-		dateArrival = (EditText) findViewById(R.id.date_arrival);
-		address = (EditText) findViewById(R.id.address);
-		numRooms = (EditText) findViewById(R.id.numRooms);
 		prize = (EditText) findViewById(R.id.prize);
 		save = (Button) findViewById(R.id.save_button);
 
@@ -64,16 +61,15 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 		Bundle bundle = getIntent().getExtras();
 
 		if(bundle!=null){
+			date.setText(bundle.getString(Constants.TRIPCALENDAR_DATE));
 			objectId = bundle.getString(Constants.OBJECTID);
-			if(objectId !=null){
-				tripAccommodation = app.getCurrentTripAccommodation();
-				place.setText(bundle.getString(Constants.TRIPACCOMMODATION_PLACE));
-				city.setText(bundle.getString(Constants.TRIPACCOMMODATION_CITY));
-				dateArrival.setText(bundle.getString(Constants.TRIPTRANSPORT_DATEFROM));
-				dateDepart.setText(bundle.getString(Constants.TRIPTRANSPORT_DATETO));
-				address.setText(bundle.getString(Constants.TRIPACCOMMODATION_ADDRESS));
-				numRooms.setText(Integer.toString(bundle.getInt(Constants.TRIPACCOMMODATION_NUMROOMS)));
-				prize.setText(Double.toString(bundle.getDouble(Constants.TRIPTRANSPORT_PRIZE)));
+			tripCalendar = app.getCurrentTripCalendar();
+			activity.setText(bundle.getString(Constants.TRIPCALENDAR_ACTIVITY));
+			place.setText(bundle.getString(Constants.TRIPACCOMMODATION_PLACE));
+			city.setText(bundle.getString(Constants.TRIPACCOMMODATION_CITY));
+			prize.setText(Double.toString(bundle.getDouble(Constants.TRIPTRANSPORT_PRIZE)));
+			if(!bundle.getBoolean(Constants.TRIPCALENDAR_ISACTIVITY)){
+				save.setEnabled(false);
 			}
 		}
 	}
@@ -84,15 +80,13 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						Date date = df.parse(dateArrival.getText().toString());
-						tripAccommodation.put(Constants.TRIPTRANSPORT_DATEFROM, date);
-						date = df.parse(dateDepart.getText().toString());
-						tripAccommodation.put(Constants.TRIPTRANSPORT_DATETO, date);
-						tripAccommodation.put(Constants.TRIPACCOMMODATION_PLACE, place.getText().toString());
-						tripAccommodation.put(Constants.TRIPACCOMMODATION_CITY, city.getText().toString());
-						tripAccommodation.put(Constants.TRIPACCOMMODATION_ADDRESS, address.getText().toString());
-						tripAccommodation.put(Constants.TRIPACCOMMODATION_NUMROOMS, Integer.parseInt(numRooms.getText().toString()));
-						tripAccommodation.put(Constants.TRIPTRANSPORT_PRIZE, Double.parseDouble(prize.getText().toString()));
+						Date dateActivity = df.parse(date.getText().toString());
+						tripCalendar.put(Constants.TRIPCALENDAR_DATE, dateActivity);
+						tripCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, activity.getText().toString());
+						tripCalendar.put(Constants.TRIPACCOMMODATION_PLACE, place.getText().toString());
+						tripCalendar.put(Constants.TRIPACCOMMODATION_CITY, city.getText().toString());
+						tripCalendar.put(Constants.TRIPTRANSPORT_PRIZE, Double.parseDouble(prize.getText().toString()));
+						tripCalendar.put(Constants.TRIPCALENDAR_ISACTIVITY, true);
 
 						if(objectId!=null){
 							update();
@@ -111,9 +105,9 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 
 	private void save(){
 		try {
-			tripAccommodation.save();
-			ParseRelation<TripAccommodation> tripAccommodationRelation = currentTrip.getRelation(Constants.TRIP_TRIPACCOMMODATION);
-			tripAccommodationRelation.add(tripAccommodation);
+			tripCalendar.save();
+			ParseRelation<TripCalendar> tripCalendarRelation = currentTrip.getRelation(Constants.TRIP_TRIPCALENDAR);
+			tripCalendarRelation.add(tripCalendar);
 			currentTrip.save();
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -124,7 +118,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 
 	private void update() {
 		try {
-			tripAccommodation.save();
+			tripCalendar.save();
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -133,8 +127,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 	}
 	private boolean checkMandatory(){
 		if(viewIsEmpty(place) || viewIsEmpty(city)
-				||viewIsEmpty(dateDepart) || viewIsEmpty(dateArrival)
-				|| viewIsEmpty(address) || viewIsEmpty(numRooms)
+				||viewIsEmpty(date) || viewIsEmpty(activity)
 				|| viewIsEmpty(prize)){
 			return false;
 		}

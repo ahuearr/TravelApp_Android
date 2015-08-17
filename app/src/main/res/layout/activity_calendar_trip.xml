@@ -15,53 +15,62 @@
         android:layout_weight="1"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/label_trip_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/trip_name"
+            android:text="@string/date"
             android:textStyle="bold"
             android:textSize="20sp" />
         <EditText
-            android:id="@+id/text_trip_name"
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/label_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/text_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20sp" />
         <TextView
-            android:id="@+id/label_date_depart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date_depart"
+            android:text="@string/place"
             android:textStyle="bold"
             android:textSize="20sp" />
         <EditText
-            android:id="@+id/text_date_depart"
+            android:id="@+id/place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
         <TextView
-            android:id="@+id/label_date_arrival"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date_arrival"
+            android:text="@string/city"
             android:textStyle="bold"
             android:textSize="20sp" />
         <EditText
-            android:id="@+id/text_date_arrival"
+            android:id="@+id/city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
         <TextView
-            android:id="@+id/label_destiny_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/destiny_name"
+            android:text="@string/prize"
             android:textStyle="bold"
             android:textSize="20sp" />
         <EditText
-            android:id="@+id/text_destiny_name"
+            android:id="@+id/prize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:textSize="20sp" />
         <Button
             android:id="@+id/save_button"

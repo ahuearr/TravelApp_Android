@@ -43,6 +43,8 @@ public class TripCalendar extends ParseObject implements Comparable<TripCalendar
 		return getString(Constants.TRIPACCOMMODATION_CITY);
 	}
 
+	public Double getPrize() { return getDouble(Constants.TRIPTRANSPORT_PRIZE);}
+
 	public Boolean isActivity() { return getBoolean(Constants.TRIPCALENDAR_ISACTIVITY); }
 
 	public static void findTripCalendarInBackground(String objectId,
