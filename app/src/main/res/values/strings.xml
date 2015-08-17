@@ -53,4 +53,5 @@
     <string name="calendario">Calendario</string>
     <string name="mapa">Mapa</string>
     <string name="companeros">Compañeros</string>
+    <string name="title_activity_trip_map">InmotorsTravel</string>
 </resources>
