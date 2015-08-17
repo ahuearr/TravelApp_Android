@@ -48,8 +48,7 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
         addTransportTrip = (Button) findViewById(R.id.add_transport_trip);
         addTransportTrip.setOnClickListener(this);
 
-        Bundle extras = getIntent().getExtras();
-        tripName = extras.getString("tripName");
+        tripName = currentTrip.getTripName();
         tripNameText.setText(tripName);
 
         listView=(ListView)findViewById(R.id.transport_list);
