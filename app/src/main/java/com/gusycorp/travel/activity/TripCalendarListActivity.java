@@ -80,9 +80,6 @@ public class TripCalendarListActivity extends MenuActivity{
         int year = extras.getInt("year");
         int month = extras.getInt("month");
         int day = extras.getInt("day");
-        Log.e("TAG", year + "");
-        Log.e("TAG", month + "");
-        Log.e("TAG", day + "");
         if(year == 0 && month == 0 && day == 0){
             Date dateIni = currentTrip.getDateIniDate();
             calendar.setTime(dateIni);
@@ -90,9 +87,6 @@ public class TripCalendarListActivity extends MenuActivity{
             month = calendar.get(Calendar.MONTH);
             day = calendar.get(Calendar.DAY_OF_MONTH);
         }
-        Log.e("TAG", year + "");
-        Log.e("TAG", month + "");
-        Log.e("TAG", day + "");
 
         datePicker.updateDate(year, month, day);
 
@@ -136,17 +130,17 @@ public class TripCalendarListActivity extends MenuActivity{
                     // There was an error
                 } else {
                     for (TripTransport tripTransport : tripTransportList) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(tripTransport.getDateFromDate());
-                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
-                                && calendar.get(Calendar.MONTH) == month
-                                && calendar.get(Calendar.YEAR) == year) {
-                            tripTransports.add(tripTransport);
-                        }
-                        calendar.setTime(tripTransport.getDateToDate());
-                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
-                                && calendar.get(Calendar.MONTH) == month
-                                && calendar.get(Calendar.YEAR) == year) {
+                        Calendar calendar1 = Calendar.getInstance();
+                        Calendar calendar2 = Calendar.getInstance();
+                        calendar1.setTime(tripTransport.getDateFromDate());
+                        calendar2.setTime(tripTransport.getDateToDate());
+                        if ((calendar1.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar1.get(Calendar.MONTH) == month
+                                && calendar1.get(Calendar.YEAR) == year)
+                            || (calendar2.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar2.get(Calendar.MONTH) == month
+                                && calendar2.get(Calendar.YEAR) == year))
+                        {
                             tripTransports.add(tripTransport);
                         }
                     }
@@ -166,18 +160,18 @@ public class TripCalendarListActivity extends MenuActivity{
                     // There was an error
                 } else {
                     for (TripAccommodation tripAccommodation : tripAccommodationList) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(tripAccommodation.getDateFromDate());
-                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
-                                && calendar.get(Calendar.MONTH) == month
-                                && calendar.get(Calendar.YEAR) == year) {
+                        Calendar calendar1 = Calendar.getInstance();
+                        Calendar calendar2 = Calendar.getInstance();
+                        calendar1.setTime(tripAccommodation.getDateFromDate());
+                        calendar2.setTime(tripAccommodation.getDateToDate());
+                        if ((calendar1.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar1.get(Calendar.MONTH) == month
+                                && calendar1.get(Calendar.YEAR) == year)
+                            || (calendar2.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar2.get(Calendar.MONTH) == month
+                                && calendar2.get(Calendar.YEAR) == year)) {
                             tripAccommodations.add(tripAccommodation);
-                        }
-                        calendar.setTime(tripAccommodation.getDateToDate());
-                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
-                                && calendar.get(Calendar.MONTH) == month
-                                && calendar.get(Calendar.YEAR) == year) {
-                            tripAccommodations.add(tripAccommodation);
+
                         }
                     }
                 }
@@ -200,11 +194,65 @@ public class TripCalendarListActivity extends MenuActivity{
                                 && calendar.get(Calendar.MONTH) == month
                                 && calendar.get(Calendar.YEAR) == year) {
                             tripCalendars.add(tripCalendar);
+                            mAdapter.addItem(tripCalendar);
                         }
                     }
-                    mAdapter.addItem(tripCalendar);
+
+                    for(TripTransport itemTransport: tripTransports) {
+                        TripCalendar itemCalendar = new TripCalendar();
+                        itemCalendar.put(Constants.OBJECTID, itemTransport.getObjectId());
+                        itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, false);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(itemTransport.getDateFromDate());
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar.get(Calendar.MONTH) == month
+                                && calendar.get(Calendar.YEAR) == year) {
+                            itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemTransport.getDateFromDate());
+                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.transportDepartureFrom) + " " + itemTransport.getFrom());
+                            mAdapter.addItem(itemCalendar);
+                            itemCalendar = new TripCalendar();
+                            itemCalendar.put(Constants.OBJECTID, itemTransport.getObjectId());
+                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, false);
+                        }
+                        calendar.setTime(itemTransport.getDateToDate());
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar.get(Calendar.MONTH) == month
+                                && calendar.get(Calendar.YEAR) == year) {
+                            itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemTransport.getDateToDate());
+                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.transportArrivalTo) + " " + itemTransport.getTo());
+                            mAdapter.addItem(itemCalendar);
+                        }
+                    }
+
+                    for(TripAccommodation itemAccommodation: tripAccommodations) {
+                        TripCalendar itemCalendar = new TripCalendar();
+                        itemCalendar.put(Constants.OBJECTID, itemAccommodation.getObjectId());
+                        itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, false);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(itemAccommodation.getDateFromDate());
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar.get(Calendar.MONTH) == month
+                                && calendar.get(Calendar.YEAR) == year) {
+                            itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemAccommodation.getDateFromDate());
+                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.accommodationArrivalTo) + " " + itemAccommodation.getPlace());
+                            mAdapter.addItem(itemCalendar);
+                            itemCalendar = new TripCalendar();
+                            itemCalendar.put(Constants.OBJECTID, itemAccommodation.getObjectId());
+                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, false);
+                        }
+                        calendar.setTime(itemAccommodation.getDateToDate());
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day
+                                && calendar.get(Calendar.MONTH) == month
+                                && calendar.get(Calendar.YEAR) == year) {
+                            itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemAccommodation.getDateToDate());
+                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.accommodationDepartureFrom) + " " + itemAccommodation.getPlace());
+                            mAdapter.addItem(itemCalendar);
+                        }
+                    }
+
 
                     listView.setAdapter(mAdapter);
+/*
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -221,6 +269,7 @@ public class TripCalendarListActivity extends MenuActivity{
                             }
                         }
                     });
+*/
                 }
             }
         });

@@ -74,6 +74,7 @@ public class Constants {
 	public final static String TAG_TRIPCALENDARMODEL = "TripCalendar";
 	public final static String TRIPCALENDAR_DATE = "date";
 	public final static String TRIPCALENDAR_ACTIVITY = "activity";
+	public final static String TRIPCALENDAR_ISACTIVITY = "isActivity";
 
 	//TripCalendarList
 	public static final String TRIPCALENDARLIST_COLUMN_ONE="Fecha";
