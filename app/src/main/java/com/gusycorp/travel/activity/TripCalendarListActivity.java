@@ -28,6 +28,7 @@ import com.parse.ParseRelation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -194,7 +195,6 @@ public class TripCalendarListActivity extends MenuActivity{
                                 && calendar.get(Calendar.MONTH) == month
                                 && calendar.get(Calendar.YEAR) == year) {
                             tripCalendars.add(tripCalendar);
-                            mAdapter.addItem(tripCalendar);
                         }
                     }
 
@@ -209,7 +209,7 @@ public class TripCalendarListActivity extends MenuActivity{
                                 && calendar.get(Calendar.YEAR) == year) {
                             itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemTransport.getDateFromDate());
                             itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.transportDepartureFrom) + " " + itemTransport.getFrom());
-                            mAdapter.addItem(itemCalendar);
+                            tripCalendars.add(itemCalendar);
                             itemCalendar = new TripCalendar();
                             itemCalendar.put(Constants.OBJECTID, itemTransport.getObjectId());
                             itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, false);
@@ -220,7 +220,7 @@ public class TripCalendarListActivity extends MenuActivity{
                                 && calendar.get(Calendar.YEAR) == year) {
                             itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemTransport.getDateToDate());
                             itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.transportArrivalTo) + " " + itemTransport.getTo());
-                            mAdapter.addItem(itemCalendar);
+                            tripCalendars.add(itemCalendar);
                         }
                     }
 
@@ -235,7 +235,7 @@ public class TripCalendarListActivity extends MenuActivity{
                                 && calendar.get(Calendar.YEAR) == year) {
                             itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemAccommodation.getDateFromDate());
                             itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.accommodationArrivalTo) + " " + itemAccommodation.getPlace());
-                            mAdapter.addItem(itemCalendar);
+                            tripCalendars.add(itemCalendar);
                             itemCalendar = new TripCalendar();
                             itemCalendar.put(Constants.OBJECTID, itemAccommodation.getObjectId());
                             itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, false);
@@ -246,11 +246,14 @@ public class TripCalendarListActivity extends MenuActivity{
                                 && calendar.get(Calendar.YEAR) == year) {
                             itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemAccommodation.getDateToDate());
                             itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.accommodationDepartureFrom) + " " + itemAccommodation.getPlace());
-                            mAdapter.addItem(itemCalendar);
+                            tripCalendars.add(itemCalendar);
                         }
                     }
 
-
+                    Collections.sort(tripCalendars);
+                    for(TripCalendar item : tripCalendars){
+                        mAdapter.addItem(item);
+                    }
                     listView.setAdapter(mAdapter);
 /*
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @ParseClassName("TripCalendar")
-public class TripCalendar extends ParseObject {
+public class TripCalendar extends ParseObject implements Comparable<TripCalendar> {
 
 	private static String TAG = Constants.TAG_TRIPCALENDARMODEL;
 	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
@@ -79,5 +79,10 @@ public class TripCalendar extends ParseObject {
 				}
 			}
 		});
+	}
+
+	@Override
+	public int compareTo(TripCalendar another) {
+		return this.getDateDate().compareTo(another.getDateDate());
 	}
 }
