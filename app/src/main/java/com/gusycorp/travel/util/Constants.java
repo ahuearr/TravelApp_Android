@@ -9,6 +9,7 @@ public class Constants {
 	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
 	public final static String TAG_LISTRIPTRANSPORTADAPTER = "ListTripTransportAdapter";
 	public final static String TAG_LISTRIPACCOMODATIONADAPTER = "ListTripAccommodationAdapter";
+	public final static String TAG_LISTRIPCALENDARADAPTER = "ListTripCalendarAdapter";
 
 	public final static String TAG_TRAVELAPPLICACION = "TravelApplication";
 
@@ -33,6 +34,7 @@ public class Constants {
 	public final static String TRIP_VALUE_STATUS_PAST = "Past";
 	public final static String TRIP_TRIPTRANSPORT = "tripTransport";
 	public final static String TRIP_TRIPACCOMMODATION = "tripAccommodation";
+	public final static String TRIP_TRIPCALENDAR = "tripCalendar";
 
 	// TripTransport
 	public final static String TAG_TRIPTRANSPORTMODEL = "TripTransport";
@@ -62,11 +64,21 @@ public class Constants {
 	public final static String TRIPACCOMMODATION_ADDRESS = "address";
 	public final static String TRIPACCOMMODATION_NUMROOMS = "numRooms";
 
-	//TripaccommodationList
+	//TripAccommodationList
 	public static final String TRIPACCOMMODATIONLIST_COLUMN_ONE="Hotel";
 	public static final String TRIPACCOMMODATIONLIST_COLUMN_TWO="Ciudad";
 	public static final String TRIPACCOMMODATIONLIST_COLUMN_THREE="Entrada";
 	public static final String TRIPACCOMMODATIONLIST_COLUMN_FOUR="Salida";
+
+	// TripCalendar
+	public final static String TAG_TRIPCALENDARMODEL = "TripCalendar";
+	public final static String TRIPCALENDAR_DATE = "date";
+	public final static String TRIPCALENDAR_ACTIVITY = "activity";
+	public final static String TRIPCALENDAR_ISACTIVITY = "isActivity";
+
+	//TripCalendarList
+	public static final String TRIPCALENDARLIST_COLUMN_ONE="Fecha";
+	public static final String TRIPCALENDARLIST_COLUMN_TWO="Actividad";
 
 	// Others
 	public final static String TAG_UTILS = "Utils";

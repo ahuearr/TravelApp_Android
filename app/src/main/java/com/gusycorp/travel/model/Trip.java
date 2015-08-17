@@ -2,6 +2,7 @@ package com.gusycorp.travel.model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,14 @@ public class Trip extends ParseObject {
 			return null;
 		}
 		return df.format(getDate(Constants.TRIP_DATEFIN));
+	}
+
+	public Date getDateIniDate() {
+		return getDate(Constants.TRIP_DATEINI);
+	}
+
+	public Date getDateFinDate() {
+		return getDate(Constants.TRIP_DATEFIN);
 	}
 
 	public List<String> getDestinyName() {

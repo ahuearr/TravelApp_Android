@@ -6,6 +6,7 @@
     <color name="backgroundMenuSelected">#f00000</color>
     <color name="azul_titulo">#386697</color>
     <color name="blanco_texto">#FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
     <color name="backgroundHeader">#900000</color>
 
 </resources>

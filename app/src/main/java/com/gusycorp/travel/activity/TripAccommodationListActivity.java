@@ -47,8 +47,7 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
         addAccommodationTrip = (Button) findViewById(R.id.add_accommodation_trip);
         addAccommodationTrip.setOnClickListener(this);
 
-        Bundle extras = getIntent().getExtras();
-        tripName = extras.getString("tripName");
+        tripName = currentTrip.getTripName();
         tripNameText.setText(tripName);
 
         listView=(ListView)findViewById(R.id.accommodation_list);
