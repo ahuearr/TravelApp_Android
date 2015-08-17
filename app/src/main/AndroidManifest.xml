@@ -59,6 +59,10 @@
             android:name=".activity.TripCalendarActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".activity.TripMapActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
