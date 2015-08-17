@@ -50,7 +50,7 @@ public class TripCalendarListActivity extends MenuActivity{
     private List<TripAccommodation> tripAccommodations = new ArrayList<TripAccommodation>();
     private List<TripCalendar> tripCalendars = new ArrayList<TripCalendar>();
 
-
+    boolean isRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +89,16 @@ public class TripCalendarListActivity extends MenuActivity{
             day = calendar.get(Calendar.DAY_OF_MONTH);
         }
 
-        datePicker.updateDate(year, month, day);
-
-        getTripCalendars(currentTrip.getObjectId(), year, month, day);
+        datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                if (!isRunning) {
+                    isRunning=true;
+                    getTripCalendars(year, monthOfYear, dayOfMonth);
+                }
+            }
+        });
+        getTripCalendars(year, month, day);
     }
 
     @Override
@@ -104,11 +111,14 @@ public class TripCalendarListActivity extends MenuActivity{
         }
     }
 
-    private void getTripCalendars(String tripObjectId, final int year, final int month, final int day) {
+    private void getTripCalendars(final int year, final int month, final int day) {
 
         mAdapter = new ListTripCalendarAdapter(TripCalendarListActivity.this,
                 R.layout.row_list_calendar_trip, new ArrayList<TripCalendar>());
 
+        tripTransports.clear();
+        tripAccommodations.clear();
+        tripCalendars.clear();
         HashMap<String,String> itemHeader=new HashMap<String, String>();
         itemHeader.put(Constants.TRIPCALENDARLIST_COLUMN_ONE, Constants.TRIPCALENDARLIST_COLUMN_ONE);
         itemHeader.put(Constants.TRIPCALENDARLIST_COLUMN_TWO, Constants.TRIPCALENDARLIST_COLUMN_TWO);
@@ -255,7 +265,8 @@ public class TripCalendarListActivity extends MenuActivity{
                         mAdapter.addItem(item);
                     }
                     listView.setAdapter(mAdapter);
-/*
+                    isRunning=false;
+
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -268,11 +279,12 @@ public class TripCalendarListActivity extends MenuActivity{
                                 intent.putExtra(Constants.TRIPCALENDAR_ACTIVITY, tripCalendar.getActivity());
                                 intent.putExtra(Constants.TRIPACCOMMODATION_PLACE, tripCalendar.getPlace());
                                 intent.putExtra(Constants.TRIPACCOMMODATION_CITY, tripCalendar.getCity());
+                                intent.putExtra(Constants.TRIPCALENDAR_ISACTIVITY, tripCalendar.isActivity());
                                 startActivity(intent);
                             }
                         }
                     });
-*/
+
                 }
             }
         });

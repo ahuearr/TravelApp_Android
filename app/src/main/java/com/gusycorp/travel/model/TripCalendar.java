@@ -43,7 +43,8 @@ public class TripCalendar extends ParseObject implements Comparable<TripCalendar
 		return getString(Constants.TRIPACCOMMODATION_CITY);
 	}
 
-	public Boolean getIsActivity() { return getBoolean(Constants.TRIPCALENDAR_ISACTIVITY); }
+	public Boolean isActivity() { return getBoolean(Constants.TRIPCALENDAR_ISACTIVITY); }
+
 	public static void findTripCalendarInBackground(String objectId,
 			final GetCallback<TripCalendar> callback) {
 		ParseQuery<TripCalendar> tripCalendar = ParseQuery.getQuery(TripCalendar.class);
