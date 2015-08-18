@@ -2,7 +2,6 @@ package com.gusycorp.travel.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -61,14 +60,14 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 		Bundle bundle = getIntent().getExtras();
 
 		if(bundle!=null){
-			date.setText(bundle.getString(Constants.TRIPCALENDAR_DATE));
+			date.setText(bundle.getString(Constants.DATE));
 			objectId = bundle.getString(Constants.OBJECTID);
 			tripCalendar = app.getCurrentTripCalendar();
-			activity.setText(bundle.getString(Constants.TRIPCALENDAR_ACTIVITY));
-			place.setText(bundle.getString(Constants.TRIPACCOMMODATION_PLACE));
-			city.setText(bundle.getString(Constants.TRIPACCOMMODATION_CITY));
-			prize.setText(Double.toString(bundle.getDouble(Constants.TRIPTRANSPORT_PRIZE)));
-			if(!bundle.getBoolean(Constants.TRIPCALENDAR_ISACTIVITY)){
+			activity.setText(bundle.getString(Constants.ACTIVITY));
+			place.setText(bundle.getString(Constants.PLACE));
+			city.setText(bundle.getString(Constants.CITY));
+			prize.setText(Double.toString(bundle.getDouble(Constants.PRIZE)));
+			if(!bundle.getBoolean(Constants.ISACTIVITY)){
 				save.setEnabled(false);
 			}
 		}
@@ -81,12 +80,12 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 				if(checkMandatory()){
 					try{
 						Date dateActivity = df.parse(date.getText().toString());
-						tripCalendar.put(Constants.TRIPCALENDAR_DATE, dateActivity);
-						tripCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, activity.getText().toString());
-						tripCalendar.put(Constants.TRIPACCOMMODATION_PLACE, place.getText().toString());
-						tripCalendar.put(Constants.TRIPACCOMMODATION_CITY, city.getText().toString());
-						tripCalendar.put(Constants.TRIPTRANSPORT_PRIZE, Double.parseDouble(prize.getText().toString()));
-						tripCalendar.put(Constants.TRIPCALENDAR_ISACTIVITY, true);
+						tripCalendar.put(Constants.DATE, dateActivity);
+						tripCalendar.put(Constants.ACTIVITY, activity.getText().toString());
+						tripCalendar.put(Constants.PLACE, place.getText().toString());
+						tripCalendar.put(Constants.CITY, city.getText().toString());
+						tripCalendar.put(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
+						tripCalendar.put(Constants.ISACTIVITY, true);
 
 						if(objectId!=null){
 							update();
@@ -106,7 +105,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 	private void save(){
 		try {
 			tripCalendar.save();
-			ParseRelation<TripCalendar> tripCalendarRelation = currentTrip.getRelation(Constants.TRIP_TRIPCALENDAR);
+			ParseRelation<TripCalendar> tripCalendarRelation = currentTrip.getRelation(Constants.TRIPCALENDAR);
 			tripCalendarRelation.add(tripCalendar);
 			currentTrip.save();
 		} catch (ParseException e) {

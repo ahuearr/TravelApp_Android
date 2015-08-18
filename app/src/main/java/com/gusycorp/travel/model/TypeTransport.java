@@ -8,8 +8,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +18,10 @@ public class TypeTransport extends ParseObject {
 	private static String TAG = Constants.TAG_TRIPMODEL;
 
 	public String getTransportName() {
-		return getString(Constants.TYPETRANSPORT_TRANSPORTNAME);
+		return getString(Constants.TRANSPORTNAME);
 	}
 	public String getTransportImageName() {
-		return getString(Constants.TYPETRANSPORT_TRANSPORTIMAGENAME);
+		return getString(Constants.TRANSPORTIMAGENAME);
 	}
 
 	public static void findTripInBackground(String objectId,

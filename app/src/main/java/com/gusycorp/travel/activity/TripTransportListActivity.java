@@ -83,7 +83,7 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
         itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_FOUR, Constants.TRIPTRANSPORTLIST_COLUMN_FOUR);
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIP_TRIPTRANSPORT);
+        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIPTRANSPORT);
 
         tripTransport.getQuery().findInBackground(new FindCallback<TripTransport>() {
             public void done(List<TripTransport> tripTransportList, ParseException e) {
@@ -102,14 +102,14 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
                                 app.setCurrentTripTransport(tripTransport);
                                 Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
                                 intent.putExtra(Constants.OBJECTID, tripTransport.getObjectId());
-                                intent.putExtra(Constants.TRIPTRANSPORT_DATEFROM, tripTransport.getDateFrom());
-                                intent.putExtra(Constants.TRIPTRANSPORT_DATETO, tripTransport.getDateTo());
-                                intent.putExtra(Constants.TRIPTRANSPORT_FROM, tripTransport.getFrom());
-                                intent.putExtra(Constants.TRIPTRANSPORT_TO, tripTransport.getTo());
-                                intent.putExtra(Constants.TRIPTRANSPORT_PRIZE, tripTransport.getPrize());
-                                intent.putExtra(Constants.TRIPTRANSPORT_LOCATOR, tripTransport.getLocator());
+                                intent.putExtra(Constants.DATEFROM, tripTransport.getDateFrom());
+                                intent.putExtra(Constants.DATETO, tripTransport.getDateTo());
+                                intent.putExtra(Constants.FROM, tripTransport.getFrom());
+                                intent.putExtra(Constants.TO, tripTransport.getTo());
+                                intent.putExtra(Constants.PRIZE, tripTransport.getPrize());
+                                intent.putExtra(Constants.LOCATOR, tripTransport.getLocator());
                                 TypeTransport typeTransport = tripTransport.getTypeTransport();
-                                intent.putExtra(Constants.TRIPTRANSPORT_TYPETRANSPORT, typeTransport.getTransportName());
+                                intent.putExtra(Constants.TYPETRANSPORT, typeTransport.getTransportName());
                                 startActivity(intent);
                             }
                         }

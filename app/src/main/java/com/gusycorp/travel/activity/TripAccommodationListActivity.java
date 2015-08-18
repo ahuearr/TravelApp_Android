@@ -82,7 +82,7 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
         itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR, Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR);
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIP_TRIPACCOMMODATION);
+        ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIPACCOMMODATION);
 
         tripAccommodation.getQuery().findInBackground(new FindCallback<TripAccommodation>() {
             public void done(List<TripAccommodation> tripAccommodationList, ParseException e) {
@@ -101,13 +101,13 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
                                 app.setCurrentTripAccommodation(tripAccommodation);
                                 Intent intent = new Intent(TripAccommodationListActivity.this, TripAccommodationActivity.class);
                                 intent.putExtra(Constants.OBJECTID, tripAccommodation.getObjectId());
-                                intent.putExtra(Constants.TRIPACCOMMODATION_PLACE, tripAccommodation.getPlace());
-                                intent.putExtra(Constants.TRIPACCOMMODATION_CITY, tripAccommodation.getCity());
-                                intent.putExtra(Constants.TRIPTRANSPORT_DATEFROM, tripAccommodation.getDateFrom());
-                                intent.putExtra(Constants.TRIPTRANSPORT_DATETO, tripAccommodation.getDateTo());
-                                intent.putExtra(Constants.TRIPACCOMMODATION_ADDRESS, tripAccommodation.getAddress());
-                                intent.putExtra(Constants.TRIPACCOMMODATION_NUMROOMS, tripAccommodation.getNumRooms());
-                                intent.putExtra(Constants.TRIPTRANSPORT_PRIZE, tripAccommodation.getPrize());
+                                intent.putExtra(Constants.PLACE, tripAccommodation.getPlace());
+                                intent.putExtra(Constants.CITY, tripAccommodation.getCity());
+                                intent.putExtra(Constants.DATEFROM, tripAccommodation.getDateFrom());
+                                intent.putExtra(Constants.DATETO, tripAccommodation.getDateTo());
+                                intent.putExtra(Constants.ADDRESS, tripAccommodation.getAddress());
+                                intent.putExtra(Constants.NUMROOMS, tripAccommodation.getNumRooms());
+                                intent.putExtra(Constants.PRIZE, tripAccommodation.getPrize());
                                 startActivity(intent);
                             }
                         }

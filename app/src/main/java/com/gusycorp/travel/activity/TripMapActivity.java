@@ -8,39 +8,50 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.gusycorp.travel.R;
+import com.gusycorp.travel.application.TravelApplication;
+import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripAccommodation;
+import com.gusycorp.travel.model.TripCalendar;
+import com.gusycorp.travel.model.TripTransport;
+import com.gusycorp.travel.util.Constants;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseRelation;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class TripMapActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+
+    private TravelApplication app;
+
+    private Trip currentTrip;
+
+    private List<TripTransport> tripTransports = new ArrayList<TripTransport>();
+    private List<TripAccommodation> tripAccommodations = new ArrayList<TripAccommodation>();
+    private List<TripCalendar> tripCalendars = new ArrayList<TripCalendar>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_map);
-        setUpMapIfNeeded();
+
+        app = (TravelApplication) getApplication();
+        currentTrip = app.getCurrentTrip();
+
+        initializeMap();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setUpMapIfNeeded();
+        initializeMap();
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
-    private void setUpMapIfNeeded() {
+    private void initializeMap() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
@@ -48,18 +59,95 @@ public class TripMapActivity extends FragmentActivity {
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
-                setUpMap();
+                getTripCalendars();
             }
         }
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
+    private void getTripCalendars() {
+
+        tripTransports.clear();
+        tripAccommodations.clear();
+        tripCalendars.clear();
+
+        ParseRelation<TripCalendar> tripCalendar = currentTrip.getRelation(Constants.TRIPCALENDAR);
+        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIPTRANSPORT);
+        ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIPACCOMMODATION);
+
+        findTransports(tripCalendar, tripTransport, tripAccommodation);
+    }
+
+    private void findTransports(final ParseRelation<TripCalendar> tripCalendar,
+                                ParseRelation<TripTransport> tripTransport,
+                                final ParseRelation<TripAccommodation> tripAccommodation) {
+        tripTransport.getQuery().findInBackground(new FindCallback<TripTransport>() {
+            public void done(List<TripTransport> tripTransportList, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    tripTransports.addAll(tripTransportList);
+                }
+
+                findAccommodations(tripCalendar, tripAccommodation);
+            }
+        });
+    }
+
+    private void findAccommodations(final ParseRelation<TripCalendar> tripCalendar,
+                                    ParseRelation<TripAccommodation> tripAccommodation) {
+        tripAccommodation.getQuery().findInBackground(new FindCallback<TripAccommodation>() {
+            public void done(List<TripAccommodation> tripAccommodationList, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    tripAccommodations.addAll(tripAccommodationList);
+                }
+
+                findCalendars(tripCalendar);
+            }
+        });
+    }
+
+    private void findCalendars(ParseRelation<TripCalendar> tripCalendar) {
+        tripCalendar.getQuery().findInBackground(new FindCallback<TripCalendar>() {
+            public void done(List<TripCalendar> tripCalendarList, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    tripCalendars.addAll(tripCalendarList);
+                    setUpMap();
+                }
+            }
+        });
+    }
+
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        for(TripTransport item : tripTransports){
+            Double latitudeFrom = item.getLatitudeFrom();
+            Double longitudeFrom = item.getLongtiudeFrom();
+            if(latitudeFrom!=null && latitudeFrom!=0.0 && longitudeFrom!=null && longitudeFrom!=0.0){
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitudeFrom, longitudeFrom)).title(getString(R.string.transportDepartureFrom) + " " + item.getFrom()));
+            } else {
+
+            }
+            Double latitudeTo = item.getLatitudeTo();
+            Double longitudeTo = item.getLongtiudeTo();
+            if(latitudeFrom!=null && latitudeFrom!=0.0 && latitudeTo!=null && longitudeTo!=0.0){
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitudeTo, longitudeTo)).title(getString(R.string.transportArrivalTo) + " " + item.getFrom()));
+            } else {
+
+            }
+        }
+
+        for(TripAccommodation item : tripAccommodations){
+            Double latitude = item.getLatitude();
+            Double longitude = item.getLongtiude();
+            if(latitude!=null && latitude!=0.0 && longitude!=null && longitude!=0.0){
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(getString(R.string.transportDepartureFrom) + " " + item.getFrom()));
+            } else {
+
+            }
+        }
+
     }
 }

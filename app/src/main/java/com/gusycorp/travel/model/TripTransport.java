@@ -22,44 +22,53 @@ public class TripTransport extends ParseObject {
 	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
 
 	public String getDateFrom() {
-		if(getDate(Constants.TRIPTRANSPORT_DATEFROM)==null){
+		if(getDate(Constants.DATEFROM)==null){
 			return null;
 		}
-		return df.format(getDate(Constants.TRIPTRANSPORT_DATEFROM));
+		return df.format(getDate(Constants.DATEFROM));
 	}
 
 	public String getDateTo() {
 
-		if(getDate(Constants.TRIPTRANSPORT_DATETO)==null){
+		if(getDate(Constants.DATETO)==null){
 			return null;
 		}
-		return df.format(getDate(Constants.TRIPTRANSPORT_DATETO));
+		return df.format(getDate(Constants.DATETO));
 	}
 
 	public Date getDateFromDate() {
-		return getDate(Constants.TRIPTRANSPORT_DATEFROM);
+		return getDate(Constants.DATEFROM);
 	}
 
 	public Date getDateToDate() {
 
-		return getDate(Constants.TRIPTRANSPORT_DATETO);
+		return getDate(Constants.DATETO);
 	}
 
 	public String getFrom() {
-		return getString(Constants.TRIPTRANSPORT_FROM);
+		return getString(Constants.FROM);
 	}
 
 	public String getTo() {
-		return getString(Constants.TRIPTRANSPORT_TO);
+		return getString(Constants.TO);
 	}
 
-	public Double getPrize() { return getDouble(Constants.TRIPTRANSPORT_PRIZE);}
+	public Double getPrize() { return getDouble(Constants.PRIZE);}
 
-	public String getLocator() { return getString(Constants.TRIPTRANSPORT_LOCATOR);}
+	public String getLocator() { return getString(Constants.LOCATOR);}
 
 	public TypeTransport getTypeTransport(){
-		return (TypeTransport) getParseObject(Constants.TRIPTRANSPORT_TYPETRANSPORT);
+		return (TypeTransport) getParseObject(Constants.TYPETRANSPORT);
 	}
+
+	public Double getLatitudeFrom() { return getDouble(Constants.LATITUDEFROM);}
+
+	public Double getLongtiudeFrom() { return getDouble(Constants.LONGITUDEFROM);}
+
+	public Double getLatitudeTo() { return getDouble(Constants.LATITUDETO);}
+
+	public Double getLongtiudeTo() { return getDouble(Constants.LONGITUDETO);}
+
 	public static void findTripTransportInBackground(String objectId,
 			final GetCallback<TripTransport> callback) {
 		ParseQuery<TripTransport> TripTransportQuery = ParseQuery.getQuery(TripTransport.class);

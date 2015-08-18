@@ -2,25 +2,20 @@ package com.gusycorp.travel.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.adapter.ListTripCalendarAdapter;
-import com.gusycorp.travel.adapter.ListTripTransportAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.model.TripTransport;
-import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -115,8 +110,8 @@ public class TripCalendarListActivity extends MenuActivity{
                 int month = datePicker.getMonth();
                 int day = datePicker.getDayOfMonth();
                 Calendar calendar = new GregorianCalendar(year, month, day);
-                intent.putExtra(Constants.TRIPCALENDAR_DATE, df.format(calendar.getTime()));
-                intent.putExtra(Constants.TRIPCALENDAR_ISACTIVITY, true);
+                intent.putExtra(Constants.DATE, df.format(calendar.getTime()));
+                intent.putExtra(Constants.ISACTIVITY, true);
                 startActivity(intent);
                 break;
         }
@@ -135,9 +130,9 @@ public class TripCalendarListActivity extends MenuActivity{
         itemHeader.put(Constants.TRIPCALENDARLIST_COLUMN_TWO, Constants.TRIPCALENDARLIST_COLUMN_TWO);
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        ParseRelation<TripCalendar> tripCalendar = currentTrip.getRelation(Constants.TRIP_TRIPCALENDAR);
-        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIP_TRIPTRANSPORT);
-        ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIP_TRIPACCOMMODATION);
+        ParseRelation<TripCalendar> tripCalendar = currentTrip.getRelation(Constants.TRIPCALENDAR);
+        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIPTRANSPORT);
+        ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIPACCOMMODATION);
 
         findTransports(year, month, day, tripCalendar, tripTransport, tripAccommodation);
     }
@@ -221,58 +216,58 @@ public class TripCalendarListActivity extends MenuActivity{
 
                     for(TripTransport itemTransport: tripTransports) {
                         TripCalendar itemCalendar = new TripCalendar();
-                        itemCalendar.put(Constants.TRIPCALENDAR_ISACTIVITY, false);
+                        itemCalendar.put(Constants.ISACTIVITY, false);
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(itemTransport.getDateFromDate());
                         if (calendar.get(Calendar.DAY_OF_MONTH) == day
                                 && calendar.get(Calendar.MONTH) == month
                                 && calendar.get(Calendar.YEAR) == year) {
-                            itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemTransport.getDateFromDate());
-                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.transportDepartureFrom) + " " + itemTransport.getFrom());
-                            itemCalendar.put(Constants.TRIPACCOMMODATION_PLACE, itemTransport.getFrom());
-                            itemCalendar.put(Constants.TRIPTRANSPORT_PRIZE, itemTransport.getPrize());
+                            itemCalendar.put(Constants.DATE, itemTransport.getDateFromDate());
+                            itemCalendar.put(Constants.ACTIVITY, getString(R.string.transportDepartureFrom) + " " + itemTransport.getFrom());
+                            itemCalendar.put(Constants.PLACE, itemTransport.getFrom());
+                            itemCalendar.put(Constants.PRIZE, itemTransport.getPrize());
                             tripCalendars.add(itemCalendar);
                             itemCalendar = new TripCalendar();
-                            itemCalendar.put(Constants.TRIPCALENDAR_ISACTIVITY, false);
+                            itemCalendar.put(Constants.ISACTIVITY, false);
                         }
                         calendar.setTime(itemTransport.getDateToDate());
                         if (calendar.get(Calendar.DAY_OF_MONTH) == day
                                 && calendar.get(Calendar.MONTH) == month
                                 && calendar.get(Calendar.YEAR) == year) {
-                            itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemTransport.getDateToDate());
-                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.transportArrivalTo) + " " + itemTransport.getTo());
-                            itemCalendar.put(Constants.TRIPACCOMMODATION_PLACE, itemTransport.getTo());
-                            itemCalendar.put(Constants.TRIPTRANSPORT_PRIZE, itemTransport.getPrize());
+                            itemCalendar.put(Constants.DATE, itemTransport.getDateToDate());
+                            itemCalendar.put(Constants.ACTIVITY, getString(R.string.transportArrivalTo) + " " + itemTransport.getTo());
+                            itemCalendar.put(Constants.PLACE, itemTransport.getTo());
+                            itemCalendar.put(Constants.PRIZE, itemTransport.getPrize());
                             tripCalendars.add(itemCalendar);
                         }
                     }
 
                     for(TripAccommodation itemAccommodation: tripAccommodations) {
                         TripCalendar itemCalendar = new TripCalendar();
-                        itemCalendar.put(Constants.TRIPCALENDAR_ISACTIVITY, false);
+                        itemCalendar.put(Constants.ISACTIVITY, false);
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(itemAccommodation.getDateFromDate());
                         if (calendar.get(Calendar.DAY_OF_MONTH) == day
                                 && calendar.get(Calendar.MONTH) == month
                                 && calendar.get(Calendar.YEAR) == year) {
-                            itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemAccommodation.getDateFromDate());
-                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.accommodationArrivalTo) + " " + itemAccommodation.getPlace());
-                            itemCalendar.put(Constants.TRIPACCOMMODATION_PLACE, itemAccommodation.getPlace());
-                            itemCalendar.put(Constants.TRIPACCOMMODATION_CITY, itemAccommodation.getCity());
-                            itemCalendar.put(Constants.TRIPTRANSPORT_PRIZE, itemAccommodation.getPrize());
+                            itemCalendar.put(Constants.DATE, itemAccommodation.getDateFromDate());
+                            itemCalendar.put(Constants.ACTIVITY, getString(R.string.accommodationArrivalTo) + " " + itemAccommodation.getPlace());
+                            itemCalendar.put(Constants.PLACE, itemAccommodation.getPlace());
+                            itemCalendar.put(Constants.CITY, itemAccommodation.getCity());
+                            itemCalendar.put(Constants.PRIZE, itemAccommodation.getPrize());
                             tripCalendars.add(itemCalendar);
                             itemCalendar = new TripCalendar();
-                            itemCalendar.put(Constants.TRIPCALENDAR_ISACTIVITY, false);
+                            itemCalendar.put(Constants.ISACTIVITY, false);
                         }
                         calendar.setTime(itemAccommodation.getDateToDate());
                         if (calendar.get(Calendar.DAY_OF_MONTH) == day
                                 && calendar.get(Calendar.MONTH) == month
                                 && calendar.get(Calendar.YEAR) == year) {
-                            itemCalendar.put(Constants.TRIPCALENDAR_DATE, itemAccommodation.getDateToDate());
-                            itemCalendar.put(Constants.TRIPCALENDAR_ACTIVITY, getString(R.string.accommodationDepartureFrom) + " " + itemAccommodation.getPlace());
-                            itemCalendar.put(Constants.TRIPACCOMMODATION_PLACE, itemAccommodation.getPlace());
-                            itemCalendar.put(Constants.TRIPACCOMMODATION_CITY, itemAccommodation.getCity());
-                            itemCalendar.put(Constants.TRIPTRANSPORT_PRIZE, itemAccommodation.getPrize());
+                            itemCalendar.put(Constants.DATE, itemAccommodation.getDateToDate());
+                            itemCalendar.put(Constants.ACTIVITY, getString(R.string.accommodationDepartureFrom) + " " + itemAccommodation.getPlace());
+                            itemCalendar.put(Constants.PLACE, itemAccommodation.getPlace());
+                            itemCalendar.put(Constants.CITY, itemAccommodation.getCity());
+                            itemCalendar.put(Constants.PRIZE, itemAccommodation.getPrize());
                             tripCalendars.add(itemCalendar);
                         }
                     }
@@ -292,11 +287,11 @@ public class TripCalendarListActivity extends MenuActivity{
                                 app.setCurrentTripCalendar(tripCalendar);
                                 Intent intent = new Intent(TripCalendarListActivity.this, TripCalendarActivity.class);
                                 intent.putExtra(Constants.OBJECTID, tripCalendar.getObjectId());
-                                intent.putExtra(Constants.TRIPCALENDAR_DATE, tripCalendar.getDate());
-                                intent.putExtra(Constants.TRIPCALENDAR_ACTIVITY, tripCalendar.getActivity());
-                                intent.putExtra(Constants.TRIPACCOMMODATION_PLACE, tripCalendar.getPlace());
-                                intent.putExtra(Constants.TRIPACCOMMODATION_CITY, tripCalendar.getCity());
-                                intent.putExtra(Constants.TRIPCALENDAR_ISACTIVITY, tripCalendar.isActivity());
+                                intent.putExtra(Constants.DATE, tripCalendar.getDate());
+                                intent.putExtra(Constants.ACTIVITY, tripCalendar.getActivity());
+                                intent.putExtra(Constants.PLACE, tripCalendar.getPlace());
+                                intent.putExtra(Constants.CITY, tripCalendar.getCity());
+                                intent.putExtra(Constants.ISACTIVITY, tripCalendar.isActivity());
                                 startActivity(intent);
                             }
                         }

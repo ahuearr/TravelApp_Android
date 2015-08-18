@@ -24,32 +24,36 @@ public class Constants {
 
 	// Trip
 	public final static String TAG_TRIPMODEL = "Trip";
-	public final static String TRIP_TRIPNAME = "tripName";
-	public final static String TRIP_DATEINI = "dateIni";
-	public final static String TRIP_DATEFIN = "dateFin";
-	public final static String TRIP_DESTINYNAME = "destinyName";
-	public final static String TRIP_STATUS = "status";
-	public final static String TRIP_ORGANIZERID = "organizerId";
-	public final static String TRIP_VALUE_STATUS_FUTURE = "Future";
-	public final static String TRIP_VALUE_STATUS_PAST = "Past";
-	public final static String TRIP_TRIPTRANSPORT = "tripTransport";
-	public final static String TRIP_TRIPACCOMMODATION = "tripAccommodation";
-	public final static String TRIP_TRIPCALENDAR = "tripCalendar";
+	public final static String TRIPNAME = "tripName";
+	public final static String DATEINI = "dateIni";
+	public final static String DATEFIN = "dateFin";
+	public final static String DESTINYNAME = "destinyName";
+	public final static String STATUS = "status";
+	public final static String ORGANIZERID = "organizerId";
+	public final static String VALUE_STATUS_FUTURE = "Future";
+	public final static String VALUE_STATUS_PAST = "Past";
+	public final static String TRIPTRANSPORT = "tripTransport";
+	public final static String TRIPACCOMMODATION = "tripAccommodation";
+	public final static String TRIPCALENDAR = "tripCalendar";
 
 	// TripTransport
 	public final static String TAG_TRIPTRANSPORTMODEL = "TripTransport";
-	public final static String TRIPTRANSPORT_DATEFROM = "dateFrom";
-	public final static String TRIPTRANSPORT_DATETO = "dateTo";
-	public final static String TRIPTRANSPORT_FROM = "from";
-	public final static String TRIPTRANSPORT_TO = "to";
-	public final static String TRIPTRANSPORT_PRIZE = "prize";
-	public final static String TRIPTRANSPORT_LOCATOR = "locator";
-	public final static String TRIPTRANSPORT_TYPETRANSPORT = "typeTransport";
+	public final static String DATEFROM = "dateFrom";
+	public final static String DATETO = "dateTo";
+	public final static String FROM = "from";
+	public final static String TO = "to";
+	public final static String PRIZE = "prize";
+	public final static String LOCATOR = "locator";
+	public final static String TYPETRANSPORT = "typeTransport";
+	public final static String LATITUDEFROM = "latitudeFrom";
+	public final static String LATITUDETO = "latitudeTo";
+	public final static String LONGITUDEFROM = "longitude";
+	public final static String LONGITUDETO = "longitude";
 
 	// TypeTransport
 	public final static String TAG_TYPETRANSPORTMODEL = "TypeTransport";
-	public final static String TYPETRANSPORT_TRANSPORTNAME = "transportName";
-	public final static String TYPETRANSPORT_TRANSPORTIMAGENAME = "transportImageName";
+	public final static String TRANSPORTNAME = "transportName";
+	public final static String TRANSPORTIMAGENAME = "transportImageName";
 
 	//TripTransportList
 	public static final String TRIPTRANSPORTLIST_COLUMN_ONE="Fecha";
@@ -59,10 +63,12 @@ public class Constants {
 
 	// TripAccommodation
 	public final static String TAG_TRIPACCOMMODATIONMODEL = "TripAccommodation";
-	public final static String TRIPACCOMMODATION_PLACE = "place";
-	public final static String TRIPACCOMMODATION_CITY = "city";
-	public final static String TRIPACCOMMODATION_ADDRESS = "address";
-	public final static String TRIPACCOMMODATION_NUMROOMS = "numRooms";
+	public final static String PLACE = "place";
+	public final static String CITY = "city";
+	public final static String ADDRESS = "address";
+	public final static String NUMROOMS = "numRooms";
+	public final static String LATITUDE = "latitude";
+	public final static String LONGITUDE = "longitude";
 
 	//TripAccommodationList
 	public static final String TRIPACCOMMODATIONLIST_COLUMN_ONE="Hotel";
@@ -72,9 +78,9 @@ public class Constants {
 
 	// TripCalendar
 	public final static String TAG_TRIPCALENDARMODEL = "TripCalendar";
-	public final static String TRIPCALENDAR_DATE = "date";
-	public final static String TRIPCALENDAR_ACTIVITY = "activity";
-	public final static String TRIPCALENDAR_ISACTIVITY = "isActivity";
+	public final static String DATE = "date";
+	public final static String ACTIVITY = "activity";
+	public final static String ISACTIVITY = "isActivity";
 
 	//TripCalendarList
 	public static final String TRIPCALENDARLIST_COLUMN_ONE="Fecha";

@@ -22,45 +22,49 @@ public class TripAccommodation extends ParseObject {
 	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
 
 	public String getDateFrom() {
-		if(getDate(Constants.TRIPTRANSPORT_DATEFROM)==null){
+		if(getDate(Constants.DATEFROM)==null){
 			return null;
 		}
-		return df.format(getDate(Constants.TRIPTRANSPORT_DATEFROM));
+		return df.format(getDate(Constants.DATEFROM));
 	}
 
 	public String getDateTo() {
 
-		if(getDate(Constants.TRIPTRANSPORT_DATETO)==null){
+		if(getDate(Constants.DATETO)==null){
 			return null;
 		}
-		return df.format(getDate(Constants.TRIPTRANSPORT_DATETO));
+		return df.format(getDate(Constants.DATETO));
 	}
 
 	public Date getDateFromDate() {
-		return getDate(Constants.TRIPTRANSPORT_DATEFROM);
+		return getDate(Constants.DATEFROM);
 	}
 
 	public Date getDateToDate() {
-		return getDate(Constants.TRIPTRANSPORT_DATETO);
+		return getDate(Constants.DATETO);
 	}
 
 	public String getPlace() {
-		return getString(Constants.TRIPACCOMMODATION_PLACE);
+		return getString(Constants.PLACE);
 	}
 
 	public String getCity() {
-		return getString(Constants.TRIPACCOMMODATION_CITY);
+		return getString(Constants.CITY);
 	}
 
 	public String getAddress() {
-		return getString(Constants.TRIPACCOMMODATION_ADDRESS);
+		return getString(Constants.ADDRESS);
 	}
 
 	public Integer getNumRooms() {
-		return getInt(Constants.TRIPACCOMMODATION_NUMROOMS);
+		return getInt(Constants.NUMROOMS);
 	}
 
-	public Double getPrize() { return getDouble(Constants.TRIPTRANSPORT_PRIZE);}
+	public Double getPrize() { return getDouble(Constants.PRIZE);}
+
+	public Double getLatitude() { return getDouble(Constants.LATITUDE);}
+
+	public Double getLongtiude() { return getDouble(Constants.LONGITUDE);}
 
 	public static void findTripAccommodationInBackground(String objectId,
 			final GetCallback<TripAccommodation> callback) {
