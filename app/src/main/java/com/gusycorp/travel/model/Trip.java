@@ -22,42 +22,42 @@ public class Trip extends ParseObject {
 	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
 
 	public String getTripName() {
-		return getString(Constants.TRIP_TRIPNAME);
+		return getString(Constants.TRIPNAME);
 	}
 
 	public String getDateIni() {
-		if(getDate(Constants.TRIP_DATEINI)==null){
+		if(getDate(Constants.DATEINI)==null){
 			return null;
 		}
-		return df.format(getDate(Constants.TRIP_DATEINI));
+		return df.format(getDate(Constants.DATEINI));
 	}
 
 	public String getDateFin() {
 
-		if(getDate(Constants.TRIP_DATEFIN)==null){
+		if(getDate(Constants.DATEFIN)==null){
 			return null;
 		}
-		return df.format(getDate(Constants.TRIP_DATEFIN));
+		return df.format(getDate(Constants.DATEFIN));
 	}
 
 	public Date getDateIniDate() {
-		return getDate(Constants.TRIP_DATEINI);
+		return getDate(Constants.DATEINI);
 	}
 
 	public Date getDateFinDate() {
-		return getDate(Constants.TRIP_DATEFIN);
+		return getDate(Constants.DATEFIN);
 	}
 
 	public List<String> getDestinyName() {
-		return getList(Constants.TRIP_DESTINYNAME);
+		return getList(Constants.DESTINYNAME);
 	}
 
 	public String getStatus() {
-		return getString(Constants.TRIP_STATUS);
+		return getString(Constants.STATUS);
 	}
 
 	public String getOrganizerId() {
-		return getString(Constants.TRIP_ORGANIZERID);
+		return getString(Constants.ORGANIZERID);
 	}
 
 	public static void findTripInBackground(String objectId,

@@ -14,7 +14,6 @@ import com.gusycorp.travel.R;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.util.Constants;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 
 import java.text.DateFormat;
@@ -98,19 +97,19 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 			case R.id.save_button:
 				if(checkMandatory()) {
 					try {
-						trip.put(Constants.TRIP_TRIPNAME, tripNameText.getText().toString());
+						trip.put(Constants.TRIPNAME, tripNameText.getText().toString());
 						Date date = df.parse(dateIniText.getText().toString());
-						trip.put(Constants.TRIP_DATEINI,date);
+						trip.put(Constants.DATEINI,date);
 						date = df.parse(dateFinText.getText().toString());
-						trip.put(Constants.TRIP_DATEFIN, date);
+						trip.put(Constants.DATEFIN, date);
 						List<String> destinyList = Arrays.asList(destinyNameText.getText().toString().split(","));
 						List<String> destinyListTrimmed = new ArrayList<>();
 						for(String destiny : destinyList){
 							destinyListTrimmed.add(destiny.trim());
 						}
-						trip.addAllUnique(Constants.TRIP_DESTINYNAME, destinyListTrimmed);
-						trip.put(Constants.TRIP_STATUS, Constants.TRIP_VALUE_STATUS_FUTURE);
-						trip.put(Constants.TRIP_ORGANIZERID, "1");
+						trip.addAllUnique(Constants.DESTINYNAME, destinyListTrimmed);
+						trip.put(Constants.STATUS, Constants.VALUE_STATUS_FUTURE);
+						trip.put(Constants.ORGANIZERID, "1");
 						try {
 							trip.save();
 							app.setCurrentTrip(trip);

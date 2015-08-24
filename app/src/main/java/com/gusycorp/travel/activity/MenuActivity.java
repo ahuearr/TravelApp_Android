@@ -86,8 +86,10 @@ public class MenuActivity extends Activity implements View.OnClickListener {
                     R.color.backgroundMenu));
         }
 
-        menus.add(id);
-        app.setMenus(menus);
+        if(!TripMapActivity.class.equals(destination)){
+            menus.add(id);
+            app.setMenus(menus);
+        }
 
         final Intent intent = new Intent(context, destination);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

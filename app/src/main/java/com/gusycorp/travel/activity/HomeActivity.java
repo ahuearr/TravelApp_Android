@@ -57,18 +57,18 @@ public class HomeActivity extends ListActivity {
 				R.layout.row_list_trip, new ArrayList<Trip>());
 		mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
 		HashMap<String, Object> filter = new HashMap();
-		filter.put(Constants.TRIP_ORGANIZERID, "1");
+		filter.put(Constants.ORGANIZERID, "1");
 		Trip.findTripListByFieldsInBackground(filter, new FindCallback<Trip>() {
 			public void done(List<Trip> tripList, ParseException e) {
 				for (Trip trip : tripList) {
-					if (Constants.TRIP_VALUE_STATUS_FUTURE.equals(trip
+					if (Constants.VALUE_STATUS_FUTURE.equals(trip
 							.getStatus())) {
 						mAdapter.addItem(trip);
 					}
 				}
 				mAdapter.addSectionHeaderItem(getString(R.string.past_trips));
 				for (Trip trip : tripList) {
-					if (Constants.TRIP_VALUE_STATUS_PAST.equals(trip
+					if (Constants.VALUE_STATUS_PAST.equals(trip
 							.getStatus())) {
 						mAdapter.addItem(trip);
 					}

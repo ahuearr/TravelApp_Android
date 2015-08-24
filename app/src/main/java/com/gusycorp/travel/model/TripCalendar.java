@@ -22,30 +22,34 @@ public class TripCalendar extends ParseObject implements Comparable<TripCalendar
 	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
 
 	public String getDate() {
-		if(getDate(Constants.TRIPCALENDAR_DATE)==null){
+		if(getDate(Constants.DATE)==null){
 			return null;
 		}
-		return df.format(getDate(Constants.TRIPCALENDAR_DATE));
+		return df.format(getDate(Constants.DATE));
 	}
 
 	public Date getDateDate(){
-		return getDate(Constants.TRIPCALENDAR_DATE);
+		return getDate(Constants.DATE);
 	}
 	public String getActivity() {
-		return getString(Constants.TRIPCALENDAR_ACTIVITY);
+		return getString(Constants.ACTIVITY);
 	}
 
 	public String getPlace() {
-		return getString(Constants.TRIPACCOMMODATION_PLACE);
+		return getString(Constants.PLACE);
 	}
 
 	public String getCity() {
-		return getString(Constants.TRIPACCOMMODATION_CITY);
+		return getString(Constants.CITY);
 	}
 
-	public Double getPrize() { return getDouble(Constants.TRIPTRANSPORT_PRIZE);}
+	public Double getPrize() { return getDouble(Constants.PRIZE);}
 
-	public Boolean isActivity() { return getBoolean(Constants.TRIPCALENDAR_ISACTIVITY); }
+	public Boolean isActivity() { return getBoolean(Constants.ISACTIVITY); }
+
+	public Double getLatitude() { return getDouble(Constants.LATITUDE);}
+
+	public Double getLongtiude() { return getDouble(Constants.LONGITUDE);}
 
 	public static void findTripCalendarInBackground(String objectId,
 			final GetCallback<TripCalendar> callback) {
