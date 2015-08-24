@@ -9,15 +9,15 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     -->
 
     <!-- Ordenador de casa -->
-<!--
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
         AIzaSyBAKl8RgGtaQAXElggM0miE0AnFdOVmMm8
     </string>
--->
 
     <!-- Ordenador de Luce -->
+<!--
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
         AIzaSyBSXDll_jMefhQvsr-eispWjBNaxqXbjOE
     </string>
+-->
 
 </resources>

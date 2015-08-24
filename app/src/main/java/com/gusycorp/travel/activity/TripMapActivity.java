@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -76,6 +77,14 @@ public class TripMapActivity extends FragmentActivity {
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
+                String place = currentTrip.getTripName();
+                Address address = getAddressFromString(place);
+                if (address != null) {
+                    LatLng placePosition = new LatLng(address.getLatitude(),
+                            address.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placePosition, 3));
+                } else {
+                }
                 getTripCalendars();
             }
         }
@@ -145,14 +154,34 @@ public class TripMapActivity extends FragmentActivity {
             if(latitudeFrom!=null && latitudeFrom!=0.0 && longitudeFrom!=null && longitudeFrom!=0.0){
                 mMap.addMarker(new MarkerOptions().position(new LatLng(latitudeFrom, longitudeFrom)).title(getString(R.string.transportDepartureFrom) + " " + item.getFrom()));
             } else {
-
+                if(!"".equals(item.getFrom())){
+                    String place = item.getFrom();
+                    Address address = getAddressFromString(place);
+                    if (address != null) {
+                        LatLng placePosition = new LatLng(address.getLatitude(),
+                                address.getLongitude());
+                        mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
+                    } else {
+                        new GetLocationTask(place).execute();
+                    }
+                }
             }
             Double latitudeTo = item.getLatitudeTo();
             Double longitudeTo = item.getLongtiudeTo();
             if(latitudeFrom!=null && latitudeFrom!=0.0 && latitudeTo!=null && longitudeTo!=0.0){
                 mMap.addMarker(new MarkerOptions().position(new LatLng(latitudeTo, longitudeTo)).title(getString(R.string.transportArrivalTo) + " " + item.getFrom()));
             } else {
-
+                if(!"".equals(item.getTo())){
+                    String place = item.getTo();
+                    Address address = getAddressFromString(place);
+                    if (address != null) {
+                        LatLng placePosition = new LatLng(address.getLatitude(),
+                                address.getLongitude());
+                        mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
+                    } else {
+                        new GetLocationTask(place).execute();
+                    }
+                }
             }
         }
 
@@ -176,6 +205,25 @@ public class TripMapActivity extends FragmentActivity {
             }
         }
 
+        for(TripCalendar item : tripCalendars){
+            Double latitude = item.getLatitude();
+            Double longitude = item.getLongtiude();
+            if(latitude!=null && latitude!=0.0 && longitude!=null && longitude!=0.0){
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getActivity()+" "+item.getPlace()+" "+item.getCity()));
+            } else {
+                if(!"".equals(item.getPlace()) || !"".equals(item.getCity())){
+                    String place = item.getActivity()+" "+item.getPlace()+" "+item.getCity();
+                    Address address = getAddressFromString(place);
+                    if (address != null) {
+                        LatLng placePosition = new LatLng(address.getLatitude(),
+                                address.getLongitude());
+                        mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
+                    } else {
+                        new GetLocationTask(place).execute();
+                    }
+                }
+            }
+        }
     }
 
     private Address getAddressFromString(final String location) {
