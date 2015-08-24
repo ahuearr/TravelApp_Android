@@ -161,8 +161,15 @@ public class TripMapActivity extends FragmentActivity {
                         LatLng placePosition = new LatLng(address.getLatitude(),
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
+                        item.put(Constants.LATITUDEFROM, address.getLatitude());
+                        item.put(Constants.LONGITUDEFROM, address.getLongitude());
+                        try {
+                            item.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     } else {
-                        new GetLocationTask(place).execute();
+                        new GetLocationTask(place, item, Constants.TAG_TRIPTRANSPORTMODEL, Constants.FROM).execute();
                     }
                 }
             }
@@ -178,8 +185,15 @@ public class TripMapActivity extends FragmentActivity {
                         LatLng placePosition = new LatLng(address.getLatitude(),
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
+                        item.put(Constants.LATITUDETO, address.getLatitude());
+                        item.put(Constants.LONGITUDETO, address.getLongitude());
+                        try {
+                            item.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     } else {
-                        new GetLocationTask(place).execute();
+                        new GetLocationTask(place, item, Constants.TAG_TRIPTRANSPORTMODEL, Constants.TO).execute();
                     }
                 }
             }
@@ -198,8 +212,15 @@ public class TripMapActivity extends FragmentActivity {
                         LatLng placePosition = new LatLng(address.getLatitude(),
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
+                        item.put(Constants.LATITUDE, address.getLatitude());
+                        item.put(Constants.LONGITUDE, address.getLongitude());
+                        try {
+                            item.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     } else {
-                        new GetLocationTask(place).execute();
+                        new GetLocationTask(place, item, Constants.TAG_TRIPACCOMMODATIONMODEL, "").execute();
                     }
                 }
             }
@@ -218,8 +239,15 @@ public class TripMapActivity extends FragmentActivity {
                         LatLng placePosition = new LatLng(address.getLatitude(),
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
+                        item.put(Constants.LATITUDE, address.getLatitude());
+                        item.put(Constants.LONGITUDE, address.getLongitude());
+                        try {
+                            item.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     } else {
-                        new GetLocationTask(place).execute();
+                        new GetLocationTask(place, item, Constants.TAG_TRIPCALENDARMODEL, "").execute();
                     }
                 }
             }
@@ -247,9 +275,15 @@ public class TripMapActivity extends FragmentActivity {
     private class GetLocationTask extends AsyncTask<Void, Void, Address> {
         JSONObject jsonObject;
         String addressString;
+        Object item;
+        String table;
+        String fromOrTo;
 
-        public GetLocationTask(String locationName) {
+        public GetLocationTask(String locationName, Object item, String table, String fromOrTo) {
             this.addressString = locationName;
+            this.item=item;
+            this.table=table;
+            this.fromOrTo=fromOrTo;
         }
 
         @Override
@@ -451,6 +485,48 @@ public class TripMapActivity extends FragmentActivity {
                 LatLng placePosition = new LatLng(
                         address.getLatitude(), address.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(placePosition).title(addressString));
+                switch (table){
+                    case Constants.TAG_TRIPTRANSPORTMODEL:
+                        TripTransport itemTransport = (TripTransport) item;
+                        if(Constants.FROM.equals(fromOrTo)){
+                            itemTransport.put(Constants.LATITUDEFROM, address.getLatitude());
+                            itemTransport.put(Constants.LONGITUDEFROM, address.getLongitude());
+                            try {
+                                itemTransport.save();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            itemTransport.put(Constants.LATITUDETO, address.getLatitude());
+                            itemTransport.put(Constants.LONGITUDETO, address.getLongitude());
+                            try {
+                                itemTransport.save();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        break;
+                    case Constants.TAG_TRIPACCOMMODATIONMODEL:
+                        TripAccommodation itemAccommodation = (TripAccommodation) item;
+                        itemAccommodation.put(Constants.LATITUDE, address.getLatitude());
+                        itemAccommodation.put(Constants.LONGITUDE, address.getLongitude());
+                        try {
+                            itemAccommodation.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case Constants.TAG_TRIPCALENDARMODEL:
+                        TripCalendar itemCalendar = (TripCalendar) item;
+                        itemCalendar.put(Constants.LATITUDE, address.getLatitude());
+                        itemCalendar.put(Constants.LONGITUDE, address.getLongitude());
+                        try {
+                            itemCalendar.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
 
             } else {
                 Toast.makeText(TripMapActivity.this,

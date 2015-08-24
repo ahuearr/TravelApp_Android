@@ -47,8 +47,8 @@ public class Constants {
 	public final static String TYPETRANSPORT = "typeTransport";
 	public final static String LATITUDEFROM = "latitudeFrom";
 	public final static String LATITUDETO = "latitudeTo";
-	public final static String LONGITUDEFROM = "longitude";
-	public final static String LONGITUDETO = "longitude";
+	public final static String LONGITUDEFROM = "longitudeFrom";
+	public final static String LONGITUDETO = "longitudeTo";
 
 	// TypeTransport
 	public final static String TAG_TYPETRANSPORTMODEL = "TypeTransport";
