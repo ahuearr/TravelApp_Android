@@ -176,7 +176,7 @@ public class TripMapActivity extends FragmentActivity {
             Double latitudeTo = item.getLatitudeTo();
             Double longitudeTo = item.getLongtiudeTo();
             if(latitudeFrom!=null && latitudeFrom!=0.0 && latitudeTo!=null && longitudeTo!=0.0){
-                mMap.addMarker(new MarkerOptions().position(new LatLng(latitudeTo, longitudeTo)).title(getString(R.string.transportArrivalTo) + " " + item.getFrom()));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitudeTo, longitudeTo)).title(getString(R.string.transportArrivalTo) + " " + item.getTo()));
             } else {
                 if(!"".equals(item.getTo())){
                     String place = item.getTo();
