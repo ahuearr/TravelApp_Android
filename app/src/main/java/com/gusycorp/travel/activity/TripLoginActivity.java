@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.util.ConnectionDetector;
+import com.gusycorp.travel.util.Utils;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
@@ -42,14 +43,11 @@ public class TripLoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         //Initializing Parse SDK
         onCreateParse();
-        //Calling ParseAnalytics to see Analytics of our app
-        ParseAnalytics.trackAppOpened(getIntent());
 
         // creating connection detector class instance
         cd = new ConnectionDetector(getApplicationContext());
@@ -65,7 +63,6 @@ public class TripLoginActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
 
                 // get Internet status
                 isInternetPresent = cd.isConnectingToInternet();
@@ -77,8 +74,8 @@ public class TripLoginActivity extends Activity {
                 } else {
                     // Internet connection is not present
                     // Ask user to connect to Internet
-                    showAlertDialog(TripLoginActivity.this, "No Internet Connection",
-                            "You don't have internet connection.", false);
+                    showAlertDialog(TripLoginActivity.this, getString(R.string.no_connection_1),
+                            getString(R.string.no_connection_2), false);
                 }
 
             }
@@ -88,9 +85,9 @@ public class TripLoginActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent in =  new Intent(TripLoginActivity.this,TripLoginSignUpActivity.class);
                 startActivity(in);
+                finish();
             }
         });
 
@@ -98,9 +95,9 @@ public class TripLoginActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent in =  new Intent(TripLoginActivity.this,TripLoginForgetParsePasswordActivity.class);
                 startActivity(in);
+                finish();
             }
         });
 
@@ -109,7 +106,7 @@ public class TripLoginActivity extends Activity {
     }
 
     public void onCreateParse() {
-        Parse.initialize(this, "Your App ID", "Your Client ID");
+        Parse.initialize(this, Utils.APPLICATION_ID, Utils.PARSE_KEY);
     }
 
 
@@ -180,11 +177,9 @@ public class TripLoginActivity extends Activity {
     }
 
     private void login(String lowerCase, String password) {
-        // TODO Auto-generated method stub
         ParseUser.logInInBackground(lowerCase, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                // TODO Auto-generated method stub
                 if (e == null)
                     loginSuccessful();
                 else
@@ -195,14 +190,14 @@ public class TripLoginActivity extends Activity {
     }
 
     protected void loginSuccessful() {
-        // TODO Auto-generated method stub
         Intent in =  new Intent(TripLoginActivity.this,HomeActivity.class);
         startActivity(in);
+        finish();
     }
     protected void loginUnSuccessful() {
         // TODO Auto-generated method stub
         Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
-        showAlertDialog(TripLoginActivity.this,"Login", "Username or Password is invalid.", false);
+        showAlertDialog(TripLoginActivity.this,getString(R.string.login), getString(R.string.login_password_incorrect), false);
     }
 
     private void clearErrors(){
@@ -224,7 +219,7 @@ public class TripLoginActivity extends Activity {
         alertDialog.setIcon(R.drawable.fail);
 
         // Setting OK Button
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             }
         });

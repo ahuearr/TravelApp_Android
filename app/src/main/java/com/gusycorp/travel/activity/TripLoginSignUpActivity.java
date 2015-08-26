@@ -160,6 +160,7 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
                     Intent in = new Intent(getApplicationContext(),HomeActivity.class);
                     startActivity(in);
                 } else {
+                    e.printStackTrace();
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
                     signUpMsg("Account already taken.");

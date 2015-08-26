@@ -8,6 +8,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
@@ -34,6 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
+        android:background="@color/backgroundHeader"
+        android:textColor="@color/blanco_texto"
         android:text="@string/action_sign_in_short" />
 
 
@@ -43,6 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/orText"
+        android:textStyle="bold"
+        android:textSize="20sp"
         android:layout_marginTop="16dp"
         />
 
@@ -52,12 +63,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
+        android:background="@color/backgroundHeader"
+        android:textColor="@color/blanco_texto"
         android:text="@string/action_register" />
 
     <Button
         android:id="@+id/btn_ForgetPass"
-        android:layout_width="287dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Forget Password" />
+        android:background="@color/backgroundHeader"
+        android:textColor="@color/blanco_texto"
+        android:layout_marginTop="16dp"
+        android:text="@string/forgetPassword" />
 
 </LinearLayout>

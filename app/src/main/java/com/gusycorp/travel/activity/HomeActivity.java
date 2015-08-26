@@ -108,4 +108,9 @@ public class HomeActivity extends ListActivity {
 			startActivity(intent);
 		}
 	}
+
+	@Override
+	public void onBackPressed()
+	{
+	}
 }
