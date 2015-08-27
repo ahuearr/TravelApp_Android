@@ -72,6 +72,10 @@
             android:label="@string/title_activity_trip_map" >
         </activity>
         <activity
+            android:name=".activity.TripMatesActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name=".activity.TripLoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
