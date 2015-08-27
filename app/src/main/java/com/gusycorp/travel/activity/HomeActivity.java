@@ -25,6 +25,8 @@ public class HomeActivity extends ListActivity {
 
 	private ListTripAdapter mAdapter;
 
+	private String userObjectId;
+
 	private Button add;
 
 	@Override
@@ -43,6 +45,11 @@ public class HomeActivity extends ListActivity {
 		TravelApplication app = (TravelApplication) getApplication();
 		app.setCurrentTrip(new Trip());
 
+		Bundle bundle = getIntent().getExtras();
+
+		if(bundle!=null){
+			userObjectId=bundle.getString(Constants.USER);
+		}
 		super.onCreate(savedInstanceState);
 	}
 
@@ -57,7 +64,7 @@ public class HomeActivity extends ListActivity {
 				R.layout.row_list_trip, new ArrayList<Trip>());
 		mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
 		HashMap<String, Object> filter = new HashMap();
-		filter.put(Constants.ORGANIZERID, "1");
+		filter.put(Constants.ORGANIZERID, userObjectId);
 		Trip.findTripListByFieldsInBackground(filter, new FindCallback<Trip>() {
 			public void done(List<Trip> tripList, ParseException e) {
 				for (Trip trip : tripList) {
@@ -107,5 +114,13 @@ public class HomeActivity extends ListActivity {
 			intent.putExtra("tripObjectId", trip.getObjectId());
 			startActivity(intent);
 		}
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
+		startActivity(in);
+		finish();
 	}
 }

@@ -9,6 +9,7 @@
     <string name="message_ok">Grabación realizada correctamente</string>
     <string name="field_mandatory">Faltan datos obligatorios</string>
     <string name="back">Volver</string>
+    <string name="ok">OK</string>
 
     <!-- HomeActivity -->
     <string name="past_trips">Viajes pasados</string>
@@ -54,4 +55,42 @@
     <string name="mapa">Mapa</string>
     <string name="companeros">Compañeros</string>
     <string name="title_activity_trip_map">InmotorsTravel</string>
+
+    <!-- Login/Account creation screen -->
+    <string name="welcome">Bienvenido a tu aplicacion de gestion de viajes en grupo</string>
+    <string name="signIn">Acceder</string>
+    <string name="signUp">Creando cuenta</string>
+    <string name="submit">Enviar</string>
+    <string name="orText">O</string>
+    <string name="createAccount">Crear cuenta</string>
+    <string name="forgetPassword">Recuperar contraseña</string>
+    <string name="emailHint">Email</string>
+    <string name="usernameHint">Usuario</string>
+    <string name="passwordHint">Password</string>
+    <string name="confirmPasswordHint">Confirmar Password</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_register"><b>Acceder</b> o Registro</string>
+    <string name="action_sign_in_short">Acceder</string>
+    <string name="action_register">Crear cuenta</string>
+    <string name="menu_forgot_password">Recuperar contrasñea</string>
+    <string name="login_progress_signing_in">Accediendo&#8230;</string>
+    <string name="login_progress_password_email">Enviando Email&#8230;</string>
+    <string name="error_invalid_email">El Email es incorrecto</string>
+    <string name="error_duplicate_email">El Email pertence a otro usuario</string>
+    <string name="error_duplicate_username">Usuario ya utilizado</string>
+    <string name="error_incorrect_password">Contraseña incorrecta</string>
+    <string name="error_invalid_password">Contraseña demasiado corta</string>
+    <string name="error_invalid_confirm_password">Las contraseñas no coinciden</string>
+    <string name="error_field_required">Campo obligatorio</string>
+    <string name="enter_email_address">Enter Your Email Address</string>
+
+    <string name="no_connection_1">No Internet Connection</string>
+    <string name="no_connection_2">You do not have internet connection.</string>
+    <string name="login">Login</string>
+    <string name="login_password_incorrect">Username or Password is invalid.</string>
+    <string name="link_password_ok">Successfully sent link to your email for reset Password</string>
+    <string name="link_password_ko">Failed to sent link to your email for reset Password</string>
+    <string name="cuenta_creada">Account Created Successfully</string>
+    <string name="cuenta_existente">Account already taken.</string>
 </resources>
