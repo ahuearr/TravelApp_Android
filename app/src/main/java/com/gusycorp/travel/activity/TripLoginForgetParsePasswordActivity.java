@@ -1,6 +1,7 @@
 package com.gusycorp.travel.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -24,7 +25,6 @@ public class TripLoginForgetParsePasswordActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_forget_password);
 
@@ -35,19 +35,14 @@ public class TripLoginForgetParsePasswordActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-
                 password = et_forgetpassword.getText().toString();
                 checkEmailID();
-
-
             }
         });
 
     }
 
     protected void checkEmailID() {
-        // TODO Auto-generated method stub
         if (TextUtils.isEmpty(password)) {
             et_forgetpassword.setError(getString(R.string.error_field_required));
         } else if (!password.contains("@")) {
@@ -58,7 +53,6 @@ public class TripLoginForgetParsePasswordActivity extends Activity {
     }
 
     public void forgotPassword(String email) {
-        //postEvent(new UserForgotPasswordStartEvent());
         ParseUser.requestPasswordResetInBackground(email, new UserForgotPasswordCallback());
     }
 
@@ -70,12 +64,19 @@ public class TripLoginForgetParsePasswordActivity extends Activity {
         @Override
         public void done(ParseException e) {
             if (e == null) {
-                Toast.makeText(getApplicationContext(), "Successfully sent link to your email for reset Password", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.link_password_ok), Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getApplicationContext(), "Failed to sent link to your email for reset Password", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(getApplicationContext(), getString(R.string.link_password_ko), Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent in =  new Intent(TripLoginForgetParsePasswordActivity.this,TripLoginActivity.class);
+        startActivity(in);
+        finish();
     }
 
 }

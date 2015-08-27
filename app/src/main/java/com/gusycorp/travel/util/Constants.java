@@ -16,6 +16,10 @@ public class Constants {
 	// Model
 	public final static String OBJECTID = "objectId";
 
+	//User
+	public final static String USER = "User";
+
+	//Type_Transport
 	public final static String TYPETRANSPORT_PLANE = "Avion";
 	public final static String TYPETRANSPORT_TRAIN = "Tren";
 	public final static String TYPETRANSPORT_BUS = "Bus";

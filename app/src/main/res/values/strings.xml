@@ -59,6 +59,7 @@
     <!-- Login/Account creation screen -->
     <string name="welcome">Bienvenido a tu aplicacion de gestion de viajes en grupo</string>
     <string name="signIn">Acceder</string>
+    <string name="signUp">Creando cuenta</string>
     <string name="submit">Enviar</string>
     <string name="orText">O</string>
     <string name="createAccount">Crear cuenta</string>
@@ -85,7 +86,11 @@
     <string name="enter_email_address">Enter Your Email Address</string>
 
     <string name="no_connection_1">No Internet Connection</string>
-    <string name="no_connection_2">You don't have internet connection.</string>
+    <string name="no_connection_2">You do not have internet connection.</string>
     <string name="login">Login</string>
     <string name="login_password_incorrect">Username or Password is invalid.</string>
+    <string name="link_password_ok">Successfully sent link to your email for reset Password</string>
+    <string name="link_password_ko">Failed to sent link to your email for reset Password</string>
+    <string name="cuenta_creada">Account Created Successfully</string>
+    <string name="cuenta_existente">Account already taken.</string>
 </resources>

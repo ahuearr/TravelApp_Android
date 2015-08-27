@@ -42,7 +42,6 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_signup);
 
@@ -62,7 +61,6 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         switch (v.getId()) {
             case R.id.btnCreateAccount:
                 // get Internet status
@@ -75,8 +73,8 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
                 } else {
                     // Internet connection is not present
                     // Ask user to connect to Internet
-                    showAlertDialog(getApplicationContext(), "No Internet Connection",
-                            "You don't have internet connection.", false);
+                    showAlertDialog(getApplicationContext(), getString(R.string.no_connection_1),
+                            getString(R.string.no_connection_2), false);
                 }
 
 
@@ -138,7 +136,7 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            Toast.makeText(getApplicationContext(), "signUp", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),getString(R.string.signUp), Toast.LENGTH_SHORT).show();
             signUp(mUsername.toLowerCase(Locale.getDefault()), mEmail, mPassword);
 
         }
@@ -146,7 +144,6 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
     }
 
     private void signUp(final String mUsername, String mEmail, String mPassword) {
-        // TODO Auto-generated method stub
         Toast.makeText(getApplicationContext(), mUsername + " - " + mEmail, Toast.LENGTH_SHORT).show();
         ParseUser user = new ParseUser();
         user.setUsername(mUsername);
@@ -156,21 +153,20 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {
-                    signUpMsg("Account Created Successfully");
+                    signUpMsg(getString(R.string.cuenta_creada));
                     Intent in = new Intent(getApplicationContext(),HomeActivity.class);
                     startActivity(in);
                 } else {
                     e.printStackTrace();
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
-                    signUpMsg("Account already taken.");
+                    signUpMsg(getString(R.string.cuenta_existente));
                 }
             }
         });
     }
 
     protected void signUpMsg(String msg) {
-        // TODO Auto-generated method stub
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
@@ -195,7 +191,7 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
         alertDialog.setIcon(R.drawable.fail);
 
         // Setting OK Button
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             }
         });
@@ -204,5 +200,12 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
         alertDialog.show();
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        Intent in =  new Intent(TripLoginSignUpActivity.this,TripLoginActivity.class);
+        startActivity(in);
+        finish();
+    }
 
 }

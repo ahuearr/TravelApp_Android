@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.util.ConnectionDetector;
+import com.gusycorp.travel.util.Constants;
 import com.gusycorp.travel.util.Utils;
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -181,7 +182,7 @@ public class TripLoginActivity extends Activity {
             @Override
             public void done(ParseUser user, ParseException e) {
                 if (e == null)
-                    loginSuccessful();
+                    loginSuccessful(user);
                 else
                     loginUnSuccessful();
             }
@@ -189,8 +190,9 @@ public class TripLoginActivity extends Activity {
 
     }
 
-    protected void loginSuccessful() {
+    protected void loginSuccessful(ParseUser user) {
         Intent in =  new Intent(TripLoginActivity.this,HomeActivity.class);
+        in.putExtra(Constants.USER,user.getObjectId());
         startActivity(in);
         finish();
     }
