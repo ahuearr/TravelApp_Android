@@ -20,8 +20,11 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.util.Constants;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 public class HomeActivity extends ListActivity {
+
+	ParseUser currentUser;
 
 	private ListTripAdapter mAdapter;
 
@@ -34,6 +37,9 @@ public class HomeActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 
+		currentUser = ParseUser.getCurrentUser();
+		userObjectId = currentUser.getObjectId();
+
 		add = (Button) findViewById(R.id.add_transport_trip);
 		add.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -45,11 +51,6 @@ public class HomeActivity extends ListActivity {
 		TravelApplication app = (TravelApplication) getApplication();
 		app.setCurrentTrip(new Trip());
 
-		Bundle bundle = getIntent().getExtras();
-
-		if(bundle!=null){
-			userObjectId=bundle.getString(Constants.USER);
-		}
 		super.onCreate(savedInstanceState);
 	}
 
@@ -119,8 +120,11 @@ public class HomeActivity extends ListActivity {
 	@Override
 	public void onBackPressed()
 	{
-		Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
-		startActivity(in);
-		finish();
+		if (currentUser != null) {
+			currentUser.logOut();
+			Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
+			startActivity(in);
+			finish();
+		}
 	}
 }

@@ -192,7 +192,6 @@ public class TripLoginActivity extends Activity {
 
     protected void loginSuccessful(ParseUser user) {
         Intent in =  new Intent(TripLoginActivity.this,HomeActivity.class);
-        in.putExtra(Constants.USER,user.getObjectId());
         startActivity(in);
         finish();
     }
