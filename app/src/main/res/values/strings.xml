@@ -56,6 +56,14 @@
     <string name="companeros">Compañeros</string>
     <string name="title_activity_trip_map">InmotorsTravel</string>
 
+    <!-- TripMateActivity -->
+    <string name="organizer">Organizador</string>
+    <string name="mate">Acompañante</string>
+    <string name="username">Usuario</string>
+    <string name="rol">Rol</string>
+    <string name="user_not_exists">El usuario no existe</string>
+    <string name="user_appened_yet">El usuario ya esta agregado al viaje</string>
+
     <!-- Login/Account creation screen -->
     <string name="welcome">Bienvenido a tu aplicacion de gestion de viajes en grupo</string>
     <string name="signIn">Acceder</string>
@@ -85,12 +93,12 @@
     <string name="error_field_required">Campo obligatorio</string>
     <string name="enter_email_address">Enter Your Email Address</string>
 
-    <string name="no_connection_1">No Internet Connection</string>
-    <string name="no_connection_2">You do not have internet connection.</string>
+    <string name="no_connection_1">No hay conexion a Internet</string>
+    <string name="no_connection_2">No tienes conexion a Internet</string>
     <string name="login">Login</string>
-    <string name="login_password_incorrect">Username or Password is invalid.</string>
-    <string name="link_password_ok">Successfully sent link to your email for reset Password</string>
-    <string name="link_password_ko">Failed to sent link to your email for reset Password</string>
-    <string name="cuenta_creada">Account Created Successfully</string>
-    <string name="cuenta_existente">Account already taken.</string>
+    <string name="login_password_incorrect">Usuario o contraseña incorrecta</string>
+    <string name="link_password_ok">Enviado link para resetear contraseña</string>
+    <string name="link_password_ko">Fallo al enviar link para resetear contraseña</string>
+    <string name="cuenta_creada">Cuenta creada correctamente</string>
+    <string name="cuenta_existente">La cuenta ya existe</string>
 </resources>

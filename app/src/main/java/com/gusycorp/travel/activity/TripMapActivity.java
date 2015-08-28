@@ -228,7 +228,7 @@ public class TripMapActivity extends FragmentActivity {
 
         for(TripCalendar item : tripCalendars){
             Double latitude = item.getLatitude();
-            Double longitude = item.getLongtiude();
+            Double longitude = item.getLongitude();
             if(latitude!=null && latitude!=0.0 && longitude!=null && longitude!=0.0){
                 mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getActivity()+" "+item.getPlace()+" "+item.getCity()));
             } else {
