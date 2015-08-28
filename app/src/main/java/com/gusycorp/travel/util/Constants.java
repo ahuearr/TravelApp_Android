@@ -39,6 +39,7 @@ public class Constants {
 	public final static String TRIPTRANSPORT = "tripTransport";
 	public final static String TRIPACCOMMODATION = "tripAccommodation";
 	public final static String TRIPCALENDAR = "tripCalendar";
+	public final static String TRIPMATE = "tripMate";
 
 	// TripTransport
 	public final static String TAG_TRIPTRANSPORTMODEL = "TripTransport";
@@ -89,6 +90,14 @@ public class Constants {
 	//TripCalendarList
 	public static final String TRIPCALENDARLIST_COLUMN_ONE="Fecha";
 	public static final String TRIPCALENDARLIST_COLUMN_TWO="Actividad";
+
+	// TripMate
+	public final static String TAG_TRIPMATEMODEL = "TripModel";
+	public final static String USERID = "userId";
+	public final static String ORGANIZER = "organizer";
+
+	//User
+	public final static String USERNAME = "username";
 
 	// Others
 	public final static String TAG_UTILS = "Utils";

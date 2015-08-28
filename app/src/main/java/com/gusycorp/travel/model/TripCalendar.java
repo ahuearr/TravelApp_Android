@@ -49,7 +49,7 @@ public class TripCalendar extends ParseObject implements Comparable<TripCalendar
 
 	public Double getLatitude() { return getDouble(Constants.LATITUDE);}
 
-	public Double getLongtiude() { return getDouble(Constants.LONGITUDE);}
+	public Double getLongitude() { return getDouble(Constants.LONGITUDE);}
 
 	public static void findTripCalendarInBackground(String objectId,
 			final GetCallback<TripCalendar> callback) {
