@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundHeader">
+
+    <TextView
+        android:id="@+id/header_calendar_date"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textColor="@color/blanco_texto" />
+
+    <TextView
+        android:id="@+id/header_calendar_activity"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:textColor="@color/blanco_texto"
+        android:layout_weight="2" />
+
+</LinearLayout><!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/layout/header_list_calendar_trip.xml -->

@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="4a135d56554069e5d0ff80e3220e887e57146ee5">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-fc67a4bb625044c1ab1be20e068926b755113602.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-7759be6565c200c4a56f675fcc386902804583ec.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="c5cafb324568d954780abb858c25db7ce675ab3c">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-ed2159de52272eb9198e8315a607b6933228b6d1.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-cast\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="130b32ed466fa0f63efd4c7d6250ccd2ed506790">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-cac34f0ceca8e2ec6f7c997474d1f03262ae30bb.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-vision\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="b99f0b78bbcb76b915bc6529a83b65d4d46990dd">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-1fb2d24a922791b79210f3d8c24d2ad82a9179c6.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-db29d3fdddbe55e9968a6947f5430dea699b09e4.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-gcm\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="c756d14e99d39471e99013a1e8fd2f3813ed42bf">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-b83158c34e1ddacad0cbb0ca9b0972316f82bc3b.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="c0c912d58c9468b1f9d9769c8975afdf2c85d681">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-1065d1d84281b6284975ccf5c41dbaf252195fa9.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-games\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="2e24e5f1b11170163028277de63f709e42525db4">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-bc958b9a3f13d24043717b7bc40719041f46d188.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\Parse-1.9.2.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="fe739334780fe321141e62720822c2d456061899">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\Parse-1.9.2-e23122cc2ef25702fca6cf6cf66ec5e3fbc8eb82.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-nearby\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="adebe28e0c0c05d34a3bfd76f3275bf4d8ff87b6">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-cbbe2e8dee8d82207add6d9e4c21a6ca85ca86e8.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-drive\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="42a1ee578b62fd1bd28b3307a679dc9ba0791587">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-1422b02bd00aab8ec97447674c0cb6e684f6f061.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="cb6fab7a71fa9ec1f483d44c5fca65ab469d8aca">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-c3b0b6106eb7a9dd83b960c603f0885bb4d884f3.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="c0c912d58c9468b1f9d9769c8975afdf2c85d681">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-1065d1d84281b6284975ccf5c41dbaf252195fa9.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appstate\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="edea92852b40eee716e910af8dad9eeaa58fb0e1">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-f22bba1368c64ebdb1ddb9c6ef7780829d74a761.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-fitness\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="77a9dcb5f8b1dba36aacaa9c150eb0942dbea158">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-9891d527af45e188a71eff4980d73bef806e4851.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-plus\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="2491ae1b2a848af1f4f0c795f3117c1bd6a1989f">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-49e8e528ea698e92edf305e2383ce13ae98415f4.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-cast\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="130b32ed466fa0f63efd4c7d6250ccd2ed506790">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-cac34f0ceca8e2ec6f7c997474d1f03262ae30bb.jar" />
+    </item>
+    <item
+        jar="D:\SDK_Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-54dae9c504f3a69cb32212d0097be6deb4b190f7.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-identity\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="d11330ea68c0d964d30d5caed1f27e6b1488b189">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-e491e8030ecd17c13f69ef8cdb04c98bb685e0cf.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="c5cafb324568d954780abb858c25db7ce675ab3c">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-ed2159de52272eb9198e8315a607b6933228b6d1.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-drive\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="42a1ee578b62fd1bd28b3307a679dc9ba0791587">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-1422b02bd00aab8ec97447674c0cb6e684f6f061.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-gcm\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="c756d14e99d39471e99013a1e8fd2f3813ed42bf">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-b83158c34e1ddacad0cbb0ca9b0972316f82bc3b.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\ParseCrashReporting-1.9.2.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="83f3b1e397f1cc3f05cb9db078d9e364b5f5e218">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\ParseCrashReporting-1.9.2-1ac2923f2989b88668514ea9c58136cd3f38d880.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-vision\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="b99f0b78bbcb76b915bc6529a83b65d4d46990dd">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-1fb2d24a922791b79210f3d8c24d2ad82a9179c6.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\bolts-android-1.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="6ee2953ccf51ce72b6d548c30c4633b99eb4f9dd">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\bolts-android-1.2.0-f6cf3be66eb831ac69911ace6aee88b8947b32bd.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\dagger-1.2.2.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="e8f912ee19ad84958510883ea191135276b091f8">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\dagger-1.2.2-fc2f0db5db21318a1a3938a3757b92ac46532dd5.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-plus\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="2491ae1b2a848af1f4f0c795f3117c1bd6a1989f">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-49e8e528ea698e92edf305e2383ce13ae98415f4.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-3dad15b5e2a60bd0d126e9ab3d86e676ad422a83.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="1ff30fa49c07a08c3035d7218a3efebf5680d522">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-66bc1d072c00f8d136013b1b845495f809afc99d.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\ParseFacebookUtilsV3-1.9.2.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="4d373d11ba1e692e0e051478afb6e34dc3bb39a6">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\ParseFacebookUtilsV3-1.9.2-063aca822e861607a429fc36df951acfe8224d83.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-7759be6565c200c4a56f675fcc386902804583ec.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-3dad15b5e2a60bd0d126e9ab3d86e676ad422a83.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="e23ea11124bb700eeddd4ab7aa848c615f493850">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-e2d268028a43e5ed1b62a992528290ed5fde9c4c.jar" />
+    </item>
+    <item
+        jar="D:\SDK_Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-54dae9c504f3a69cb32212d0097be6deb4b190f7.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="0124ce31248c0e8acfa2b28283c6d1a4d76e73d2">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-1b1c8dc6ac1b8dcc414fe73caa8e44e977858b98.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-1119c426aa75dab582b1d53a3d8e1d0eeba20ea8.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-34ecda59e731dd07208b33ac251d711ee0d7c6d5.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appstate\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="edea92852b40eee716e910af8dad9eeaa58fb0e1">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-f22bba1368c64ebdb1ddb9c6ef7780829d74a761.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\ParseFacebookUtilsV3-1.9.2.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="4d373d11ba1e692e0e051478afb6e34dc3bb39a6">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\ParseFacebookUtilsV3-1.9.2-063aca822e861607a429fc36df951acfe8224d83.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\ParseCrashReporting-1.9.2.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="83f3b1e397f1cc3f05cb9db078d9e364b5f5e218">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\ParseCrashReporting-1.9.2-1ac2923f2989b88668514ea9c58136cd3f38d880.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-34ecda59e731dd07208b33ac251d711ee0d7c6d5.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="c2ac04c5b232f6f0658ee4f1c13be09cd76406e2">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-f1c33bce5c18b1780c14ce64907fc562c20dd755.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-panorama\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="6e85edfc9b5346d216e50ccef1f8e825504144a3">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-90956d6392e28a98661c829f9538d46c996c471c.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-fitness\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="77a9dcb5f8b1dba36aacaa9c150eb0942dbea158">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-9891d527af45e188a71eff4980d73bef806e4851.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-safetynet\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="166e458ee3b5fb5fcff0f936df3f3a788e6c54f3">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-0749581781a3102964bfb81b29b001dcc18bd8a2.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="4a135d56554069e5d0ff80e3220e887e57146ee5">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-fc67a4bb625044c1ab1be20e068926b755113602.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-db29d3fdddbe55e9968a6947f5430dea699b09e4.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="c2ac04c5b232f6f0658ee4f1c13be09cd76406e2">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-f1c33bce5c18b1780c14ce64907fc562c20dd755.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appinvite\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="98137c4d12c50923f5809852b1ef4d1c4e162081">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-f1868779d6e662d29a472c2ef25bf58c4028c253.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appinvite\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="98137c4d12c50923f5809852b1ef4d1c4e162081">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-f1868779d6e662d29a472c2ef25bf58c4028c253.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="cb6fab7a71fa9ec1f483d44c5fca65ab469d8aca">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-c3b0b6106eb7a9dd83b960c603f0885bb4d884f3.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\bolts-android-1.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="6ee2953ccf51ce72b6d548c30c4633b99eb4f9dd">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\bolts-android-1.2.0-f6cf3be66eb831ac69911ace6aee88b8947b32bd.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-identity\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="d11330ea68c0d964d30d5caed1f27e6b1488b189">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-e491e8030ecd17c13f69ef8cdb04c98bb685e0cf.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-games\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="2e24e5f1b11170163028277de63f709e42525db4">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-bc958b9a3f13d24043717b7bc40719041f46d188.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\Parse-1.9.2.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="fe739334780fe321141e62720822c2d456061899">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\Parse-1.9.2-e23122cc2ef25702fca6cf6cf66ec5e3fbc8eb82.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="e23ea11124bb700eeddd4ab7aa848c615f493850">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-e2d268028a43e5ed1b62a992528290ed5fde9c4c.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="1ff30fa49c07a08c3035d7218a3efebf5680d522">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-66bc1d072c00f8d136013b1b845495f809afc99d.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-nearby\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="adebe28e0c0c05d34a3bfd76f3275bf4d8ff87b6">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-cbbe2e8dee8d82207add6d9e4c21a6ca85ca86e8.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-1119c426aa75dab582b1d53a3d8e1d0eeba20ea8.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-safetynet\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="166e458ee3b5fb5fcff0f936df3f3a788e6c54f3">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-0749581781a3102964bfb81b29b001dcc18bd8a2.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="0124ce31248c0e8acfa2b28283c6d1a4d76e73d2">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-1b1c8dc6ac1b8dcc414fe73caa8e44e977858b98.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-panorama\7.8.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="6e85edfc9b5346d216e50ccef1f8e825504144a3">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\classes-90956d6392e28a98661c829f9538d46c996c471c.jar" />
+    </item>
+    <item
+        jar="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\libs\dagger-1.2.2.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="e8f912ee19ad84958510883ea191135276b091f8">
+        <dex dex="D:\A_Nuevo_Workspace\TravelApp\TravelApp_Android\app\build\intermediates\pre-dexed\debug\dagger-1.2.2-fc2f0db5db21318a1a3938a3757b92ac46532dd5.jar" />
+    </item>
+
+</items>
