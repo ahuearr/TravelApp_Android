@@ -17,14 +17,18 @@ import com.gusycorp.travel.R;
 import com.gusycorp.travel.adapter.ListTripAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.util.Constants;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class HomeActivity extends ListActivity {
 
 	ParseUser currentUser;
+	TripMate currentTripMate;
 
 	private ListTripAdapter mAdapter;
 
@@ -63,11 +67,18 @@ public class HomeActivity extends ListActivity {
 	private void getTrips() {
 		mAdapter = new ListTripAdapter(HomeActivity.this,
 				R.layout.row_list_trip, new ArrayList<Trip>());
-		mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
-		HashMap<String, Object> filter = new HashMap();
-		filter.put(Constants.ORGANIZERID, userObjectId);
-		Trip.findTripListByFieldsInBackground(filter, new FindCallback<Trip>() {
+		List<ParseQuery<Trip>> parseQueryList = new ArrayList<>();
+		ParseQuery<Trip> queryTripMates = ParseQuery.getQuery(Constants.TAG_TRIPMODEL);
+		queryTripMates.whereEqualTo(Constants.USER, currentUser);
+		parseQueryList.add(queryTripMates);
+		ParseQuery<Trip> queryTripOrganizer = ParseQuery.getQuery(Constants.TAG_TRIPMODEL);
+		queryTripOrganizer.whereEqualTo(Constants.ORGANIZERID, userObjectId);
+		parseQueryList.add(queryTripOrganizer);
+
+		ParseQuery<Trip> mainQuery = ParseQuery.or(parseQueryList);
+		mainQuery.findInBackground( new FindCallback<Trip>() {
 			public void done(List<Trip> tripList, ParseException e) {
+				mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
 				for (Trip trip : tripList) {
 					if (Constants.VALUE_STATUS_FUTURE.equals(trip
 							.getStatus())) {

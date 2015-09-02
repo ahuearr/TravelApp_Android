@@ -16,9 +16,6 @@ public class Constants {
 	// Model
 	public final static String OBJECTID = "objectId";
 
-	//User
-	public final static String USER = "User";
-
 	//Type_Transport
 	public final static String TYPETRANSPORT_PLANE = "Avion";
 	public final static String TYPETRANSPORT_TRAIN = "Tren";
@@ -40,6 +37,7 @@ public class Constants {
 	public final static String TRIPACCOMMODATION = "tripAccommodation";
 	public final static String TRIPCALENDAR = "tripCalendar";
 	public final static String TRIPMATE = "tripMate";
+	public final static String USER = "user";
 
 	// TripTransport
 	public final static String TAG_TRIPTRANSPORTMODEL = "TripTransport";

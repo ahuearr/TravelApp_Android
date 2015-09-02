@@ -136,6 +136,8 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
                             tripMate.save();
                             ParseRelation<TripMate> tripMateRelation = currentTrip.getRelation(Constants.TRIPMATE);
                             tripMateRelation.add(tripMate);
+                            ParseRelation<ParseUser> tripUserRelation = currentTrip.getRelation(Constants.USER);
+                            tripUserRelation.add(userList.get(0));
                             currentTrip.save();
                             tripMates.add(tripMate);
                             mAdapter.addItem(tripMate);
