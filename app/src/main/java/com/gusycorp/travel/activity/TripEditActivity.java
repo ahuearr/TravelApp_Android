@@ -15,6 +15,7 @@ import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.util.Constants;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -109,7 +110,7 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 						}
 						trip.addAllUnique(Constants.DESTINYNAME, destinyListTrimmed);
 						trip.put(Constants.STATUS, Constants.VALUE_STATUS_FUTURE);
-						trip.put(Constants.ORGANIZERID, "1");
+						trip.put(Constants.ORGANIZERID, ParseUser.getCurrentUser().getObjectId());
 						try {
 							trip.save();
 							app.setCurrentTrip(trip);
