@@ -24,8 +24,8 @@ public class TypeTransport extends ParseObject {
 		return getString(Constants.TRANSPORTIMAGENAME);
 	}
 
-	public static void findTripInBackground(String objectId,
-			final GetCallback<TypeTransport> callback) {
+	public static void findTypeTransportInBackground(String objectId,
+													 final GetCallback<TypeTransport> callback) {
 		ParseQuery<TypeTransport> TypeTransportQuery = ParseQuery.getQuery(TypeTransport.class);
 		TypeTransportQuery.whereEqualTo(Constants.OBJECTID, objectId);
 		TypeTransportQuery.getFirstInBackground(new GetCallback<TypeTransport>() {
@@ -40,7 +40,7 @@ public class TypeTransport extends ParseObject {
 		});
 	}
 
-	public static void findTripListByFieldsInBackground(
+	public static void findTypeTransportListByFieldsInBackground(
 			Map<String, Object> filter, final FindCallback<TypeTransport> callback) {
 		ParseQuery<TypeTransport> TypeTransportQuery = ParseQuery.getQuery(TypeTransport.class);
 		Iterator it = filter.entrySet().iterator();

@@ -2,7 +2,6 @@ package com.gusycorp.travel.application;
 
 import android.app.Application;
 
-import com.gusycorp.travel.R;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
@@ -17,7 +16,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -90,7 +88,7 @@ public class TravelApplication extends Application {
 
 	void getListsSpinners(){
 		HashMap<String, Object> filter = new HashMap();
-		TypeTransport.findTripListByFieldsInBackground(filter,new FindCallback<TypeTransport>() {
+		TypeTransport.findTypeTransportListByFieldsInBackground(filter, new FindCallback<TypeTransport>() {
 
 			@Override
 			public void done(List<TypeTransport> list, ParseException e) {
