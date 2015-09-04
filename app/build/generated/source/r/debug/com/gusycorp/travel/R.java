@@ -2010,22 +2010,24 @@ containing a value of this type.
         public static final int ic_setting_dark=0x7f02007c;
         public static final int ic_setting_light=0x7f02007d;
         public static final int mapa=0x7f02007e;
-        public static final int mr_ic_audio_vol=0x7f02007f;
-        public static final int mr_ic_media_route_connecting_mono_dark=0x7f020080;
-        public static final int mr_ic_media_route_connecting_mono_light=0x7f020081;
-        public static final int mr_ic_media_route_mono_dark=0x7f020082;
-        public static final int mr_ic_media_route_mono_light=0x7f020083;
-        public static final int mr_ic_pause_dark=0x7f020084;
-        public static final int mr_ic_pause_light=0x7f020085;
-        public static final int mr_ic_play_dark=0x7f020086;
-        public static final int mr_ic_play_light=0x7f020087;
-        public static final int mr_ic_settings_dark=0x7f020088;
-        public static final int mr_ic_settings_light=0x7f020089;
-        public static final int notification_template_icon_bg=0x7f02008e;
-        public static final int powered_by_google_dark=0x7f02008a;
-        public static final int powered_by_google_light=0x7f02008b;
-        public static final int transporte=0x7f02008c;
-        public static final int tren=0x7f02008d;
+        public static final int mates=0x7f02007f;
+        public static final int mr_ic_audio_vol=0x7f020080;
+        public static final int mr_ic_media_route_connecting_mono_dark=0x7f020081;
+        public static final int mr_ic_media_route_connecting_mono_light=0x7f020082;
+        public static final int mr_ic_media_route_mono_dark=0x7f020083;
+        public static final int mr_ic_media_route_mono_light=0x7f020084;
+        public static final int mr_ic_pause_dark=0x7f020085;
+        public static final int mr_ic_pause_light=0x7f020086;
+        public static final int mr_ic_play_dark=0x7f020087;
+        public static final int mr_ic_play_light=0x7f020088;
+        public static final int mr_ic_settings_dark=0x7f020089;
+        public static final int mr_ic_settings_light=0x7f02008a;
+        public static final int notification_template_icon_bg=0x7f020090;
+        public static final int organizer=0x7f02008b;
+        public static final int powered_by_google_dark=0x7f02008c;
+        public static final int powered_by_google_light=0x7f02008d;
+        public static final int transporte=0x7f02008e;
+        public static final int tren=0x7f02008f;
     }
     public static final class id {
         public static final int accommodation_city=0x7f0c00cf;
@@ -2048,7 +2050,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0c005a;
         public static final int action_mode_bar_stub=0x7f0c0059;
         public static final int action_mode_close_button=0x7f0c0042;
-        public static final int action_settings=0x7f0c00db;
+        public static final int action_settings=0x7f0c00dc;
         public static final int activity_chooser_view_content=0x7f0c0043;
         public static final int add_accommodation_trip=0x7f0c0076;
         public static final int add_calendar_trip=0x7f0c007b;
@@ -2166,7 +2168,7 @@ containing a value of this type.
         public static final int media_route_list=0x7f0c00b2;
         public static final int media_route_volume_layout=0x7f0c00bc;
         public static final int media_route_volume_slider=0x7f0c00bd;
-        public static final int menu_forgot_password=0x7f0c00da;
+        public static final int menu_forgot_password=0x7f0c00db;
         public static final int middle=0x7f0c0017;
         public static final int monochrome=0x7f0c003f;
         public static final int multiply=0x7f0c0025;
@@ -2242,6 +2244,7 @@ containing a value of this type.
         public static final int transport_to=0x7f0c00d8;
         public static final int transport_transport=0x7f0c00d9;
         public static final int transporte=0x7f0c00ad;
+        public static final int trip_role=0x7f0c00da;
         public static final int type_transport=0x7f0c0091;
         public static final int up=0x7f0c0009;
         public static final int useLogo=0x7f0c0013;

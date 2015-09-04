@@ -65,6 +65,9 @@ public class TripCalendarListActivity extends MenuActivity{
         tripNameText = (TextView) findViewById(R.id.text_trip_name);
         addCalendarTrip = (Button) findViewById(R.id.add_calendar_trip);
         datePicker = (DatePicker) findViewById(R.id.calendar_date_picker);
+        if(!app.isOrganizer()){
+            addCalendarTrip.setVisibility(View.GONE);
+        }
         addCalendarTrip.setOnClickListener(this);
 
         tripName = currentTrip.getTripName();

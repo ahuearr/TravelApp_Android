@@ -67,6 +67,24 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		locator = (EditText) findViewById(R.id.locator);
 		save = (Button) findViewById(R.id.save_button);
 
+		if(!app.isOrganizer()){
+			typeTransport.setEnabled(false);
+			dateDepart.setEnabled(false);
+			dateArrival.setEnabled(false);
+			cityDepart.setEnabled(false);
+			cityArrival.setEnabled(false);
+			prize.setEnabled(false);
+			locator.setEnabled(false);
+			typeTransport.setFocusable(false);
+			dateDepart.setFocusable(false);
+			dateArrival.setFocusable(false);
+			cityDepart.setFocusable(false);
+			cityArrival.setFocusable(false);
+			prize.setFocusable(false);
+			locator.setFocusable(false);
+			save.setVisibility(View.GONE);
+		}
+
 		save.setOnClickListener(this);
 
 		final ArrayAdapter<TypeTransport> typeTransportAdapter = new ArrayAdapter<TypeTransport>(getBaseContext(),android.R.layout.simple_spinner_item,typeTransportList);

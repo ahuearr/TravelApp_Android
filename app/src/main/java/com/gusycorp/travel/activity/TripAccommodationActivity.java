@@ -58,6 +58,23 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 		numRooms = (EditText) findViewById(R.id.numRooms);
 		prize = (EditText) findViewById(R.id.prize);
 		save = (Button) findViewById(R.id.save_button);
+		if(!app.isOrganizer()){
+			place.setEnabled(false);
+			city.setEnabled(false);
+			dateDepart.setEnabled(false);
+			dateArrival.setEnabled(false);
+			address.setEnabled(false);
+			numRooms.setEnabled(false);
+			prize.setEnabled(false);
+			place.setFocusable(false);
+			city.setFocusable(false);
+			dateDepart.setFocusable(false);
+			dateArrival.setFocusable(false);
+			address.setFocusable(false);
+			numRooms.setFocusable(false);
+			prize.setFocusable(false);
+			save.setVisibility(View.GONE);
+		}
 
 		save.setOnClickListener(this);
 

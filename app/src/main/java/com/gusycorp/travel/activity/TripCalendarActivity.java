@@ -54,6 +54,19 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 		city = (EditText) findViewById(R.id.city);
 		prize = (EditText) findViewById(R.id.prize);
 		save = (Button) findViewById(R.id.save_button);
+		if(!app.isOrganizer()){
+			date.setEnabled(false);
+			activity.setEnabled(false);
+			place.setEnabled(false);
+			city.setEnabled(false);
+			prize.setEnabled(false);
+			date.setFocusable(false);
+			activity.setFocusable(false);
+			place.setFocusable(false);
+			city.setFocusable(false);
+			prize.setFocusable(false);
+			save.setVisibility(View.GONE);
+		}
 
 		save.setOnClickListener(this);
 

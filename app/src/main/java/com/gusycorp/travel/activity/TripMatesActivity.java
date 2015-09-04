@@ -53,6 +53,12 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
         tripNameText = (TextView) findViewById(R.id.text_trip_name);
         mateText = (EditText) findViewById(R.id.find_username);
         addMateTrip = (Button) findViewById(R.id.add_mate_trip);
+
+        if(!app.isOrganizer()){
+            mateText.setVisibility(View.GONE);
+            addMateTrip.setVisibility(View.GONE);
+        }
+
         addMateTrip.setOnClickListener(this);
 
         tripName = currentTrip.getTripName();

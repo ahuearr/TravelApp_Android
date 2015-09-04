@@ -31,7 +31,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
-                android:background="@color/backgroundHeader"/>
+                android:background="@color/backgroundHeader"
+                android:visibility="gone"/>
         </RelativeLayout>
         <TextView
             android:id="@+id/label_date_depart"

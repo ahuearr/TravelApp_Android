@@ -46,6 +46,10 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
 
         tripNameText = (TextView) findViewById(R.id.text_trip_name);
         addTransportTrip = (Button) findViewById(R.id.add_transport_trip);
+        if(!app.isOrganizer()){
+            addTransportTrip.setVisibility(View.GONE);
+        }
+
         addTransportTrip.setOnClickListener(this);
 
         tripName = currentTrip.getTripName();
