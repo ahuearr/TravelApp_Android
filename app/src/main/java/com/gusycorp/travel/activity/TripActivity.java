@@ -17,6 +17,7 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.util.Constants;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 
 public class TripActivity extends MenuActivity {
@@ -71,6 +72,12 @@ public class TripActivity extends MenuActivity {
 			@Override
 			public void done(Trip tripFind, ParseException e) {
 				app.setCurrentTrip(tripFind);
+				if(ParseUser.getCurrentUser().getObjectId().equals(tripFind.getOrganizerId())){
+					app.setIsOrganizer(true);
+					edit.setVisibility(View.VISIBLE);
+				}else{
+					app.setIsOrganizer(false);
+				}
 				tripNameText.setText(tripFind.getTripName());
 				tripName = tripFind.getTripName();
 				if (tripFind.getDateIni() != null) {

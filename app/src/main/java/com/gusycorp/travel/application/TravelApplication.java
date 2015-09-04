@@ -29,6 +29,8 @@ public class TravelApplication extends Application {
 	private TripAccommodation currentTripAccommodation;
 	private TripCalendar currentTripCalendar;
 
+	private boolean isOrganizer;
+
 	public void onCreate() {
 		ParseObject.registerSubclass(Trip.class);
 		ParseObject.registerSubclass(TripTransport.class);
@@ -84,6 +86,14 @@ public class TravelApplication extends Application {
 
 	public void setCurrentTripCalendar(TripCalendar currentTripCalendar){
 		this.currentTripCalendar=currentTripCalendar;
+	}
+
+	public boolean isOrganizer() {
+		return isOrganizer;
+	}
+
+	public void setIsOrganizer(boolean isOrganizer) {
+		this.isOrganizer = isOrganizer;
 	}
 
 	void getListsSpinners(){
