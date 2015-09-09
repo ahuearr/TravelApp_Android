@@ -301,7 +301,10 @@
     <eat-comment/>
     <string name="back">Volver</string>
     <string name="bidi">Bidi</string>
+    <string name="boat">Barco</string>
+    <string name="bus">Bus</string>
     <string name="calendario">Calendario</string>
+    <string name="car">Coche</string>
     <!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.8.0/res/values/cast_strings.xml -->
     <eat-comment/>
     <string name="cast_notification_connected_message">Connected to <ns1:g id="name">%1$s</ns1:g></string>
@@ -309,6 +312,8 @@
     <string name="cast_notification_disconnect">Disconnect</string>
     <!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="checkin">Entrada</string>
+    <string name="checkout">Salida</string>
     <string name="city">Ciudad</string>
     <string name="city_arrival">Ciudad de destino</string>
     <string name="city_depart">Ciudad de salida</string>
@@ -381,6 +386,7 @@
     <string name="error_invalid_password">Contraseña demasiado corta</string>
     <string name="field_mandatory">Faltan datos obligatorios</string>
     <string name="forgetPassword">Recuperar contraseña</string>
+    <string name="from">De</string>
     <string name="future_trips">Viajes futuros</string>
     <!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/debug/res/values/google_maps_api.xml -->
     <eat-comment/>
@@ -390,6 +396,7 @@
     <!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="hello_world">Hello world!</string>
+    <string name="hotel">Hotel</string>
     <string name="link_password_ko">Fallo al enviar link para resetear contraseña</string>
     <string name="link_password_ok">Enviado link para resetear contraseña</string>
     <string name="locator">Localizador</string>
@@ -399,7 +406,7 @@
     <string name="login_progress_signing_in">Accediendo…</string>
     <string name="mapa">Mapa</string>
     <string name="mate">Acompañante</string>
-    <string name="mean_of_transport">Tipo de medio de transporte</string>
+    <string name="mean_of_transport">Medio de transporte</string>
     <string name="menu_forgot_password">Recuperar contrasñea</string>
     <string name="message_ok">Grabación realizada correctamente</string>
     <!-- From: file:/D:/A_Nuevo_Workspace/TravelApp/TravelApp_Android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/res/values/values.xml -->
@@ -427,6 +434,7 @@
     <string name="pdf">PDF</string>
     <string name="place">Lugar</string>
     <string name="placeAccommodation">Hotel/Apartamento</string>
+    <string name="plane">Avion</string>
     <string name="prize">Precio</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -446,6 +454,8 @@
     <string name="submit">Enviar</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_trip_map">InmotorsTravel</string>
+    <string name="to">A</string>
+    <string name="train">Tren</string>
     <string name="transportArrivalTo">Llegada a</string>
     <string name="transportDepartureFrom">Salida desde</string>
     <string name="transporte">Transporte</string>

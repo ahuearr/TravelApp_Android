@@ -81,10 +81,10 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
                 R.layout.row_list_transport_trip, new ArrayList<TripTransport>());
 
         HashMap<String,String> itemHeader=new HashMap<String, String>();
-        itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_ONE, Constants.TRIPTRANSPORTLIST_COLUMN_ONE);
-        itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_TWO, Constants.TRIPTRANSPORTLIST_COLUMN_TWO);
-        itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_THREE, Constants.TRIPTRANSPORTLIST_COLUMN_THREE);
-        itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_FOUR, Constants.TRIPTRANSPORTLIST_COLUMN_FOUR);
+        itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_ONE, getString(R.string.date));
+        itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_TWO, getString(R.string.from));
+        itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_THREE, getString(R.string.to));
+        itemHeader.put(Constants.TRIPTRANSPORTLIST_COLUMN_FOUR, getString(R.string.mean_of_transport));
         mAdapter.addSectionHeaderItem(itemHeader);
 
         ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIPTRANSPORT);

@@ -35,11 +35,13 @@ public class ListTripTransportAdapter extends ArrayAdapter<TripTransport> {
     private TreeSet<Integer> sectionHeader = new TreeSet<Integer>();
 
     private LayoutInflater mInflater;
+    private Context mContext;
 
     public ListTripTransportAdapter(Context context, int resource, List<TripTransport> objects) {
         super(context, resource, objects);
         mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mContext = context;
     }
 
     public void addItem(final TripTransport item) {
@@ -111,22 +113,16 @@ public class ListTripTransportAdapter extends ArrayAdapter<TripTransport> {
             holder.columnDate.setText(mData.get(position).getDateFrom());
             holder.columnOrigin.setText(mData.get(position).getFrom());
             holder.columnDestination.setText(mData.get(position).getTo());
-            switch(mData.get(position).getTypeTransport().getTransportName()){
-                case Constants.TYPETRANSPORT_BUS:
-                    holder.columnTransport.setImageResource(R.drawable.bus);
-                    break;
-                case Constants.TYPETRANSPORT_CAR:
-                    holder.columnTransport.setImageResource(R.drawable.coche);
-                    break;
-                case Constants.TYPETRANSPORT_PLANE:
-                    holder.columnTransport.setImageResource(R.drawable.avion);
-                    break;
-                case Constants.TYPETRANSPORT_SHIP:
-                    holder.columnTransport.setImageResource(R.drawable.barco);
-                    break;
-                case Constants.TYPETRANSPORT_TRAIN:
-                    holder.columnTransport.setImageResource(R.drawable.tren);
-                    break;
+            if(mContext.getString(R.string.bus).equals(mData.get(position).getTypeTransport().getTransportName())){
+                holder.columnTransport.setImageResource(R.drawable.bus);
+            } else if(mContext.getString(R.string.plane).equals(mData.get(position).getTypeTransport().getTransportName())){
+                holder.columnTransport.setImageResource(R.drawable.plane);
+            } else if(mContext.getString(R.string.train).equals(mData.get(position).getTypeTransport().getTransportName())){
+                holder.columnTransport.setImageResource(R.drawable.train);
+            } else if(mContext.getString(R.string.boat).equals(mData.get(position).getTypeTransport().getTransportName())){
+                holder.columnTransport.setImageResource(R.drawable.boat);
+            } else if(mContext.getString(R.string.car).equals(mData.get(position).getTypeTransport().getTransportName())) {
+                holder.columnTransport.setImageResource(R.drawable.car);
             }
         } else {
             holder.columnDate.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_ONE));

@@ -80,10 +80,10 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
                 R.layout.row_list_accommodation_trip, new ArrayList<TripAccommodation>());
 
         HashMap<String,String> itemHeader=new HashMap<String, String>();
-        itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_ONE, Constants.TRIPACCOMMODATIONLIST_COLUMN_ONE);
-        itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_TWO, Constants.TRIPACCOMMODATIONLIST_COLUMN_TWO);
-        itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_THREE, Constants.TRIPACCOMMODATIONLIST_COLUMN_THREE);
-        itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR, Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR);
+        itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_ONE, getString(R.string.hotel));
+        itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_TWO, getString(R.string.city));
+        itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_THREE, getString(R.string.checkin));
+        itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR, getString(R.string.checkout));
         mAdapter.addSectionHeaderItem(itemHeader);
 
         ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIPACCOMMODATION);

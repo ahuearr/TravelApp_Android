@@ -24,19 +24,31 @@
     <string name="trip_name">Nombre del viaje</string>
 
     <!-- TripTransportActivity -->
-    <string name="mean_of_transport">Tipo de medio de transporte</string>
+    <string name="mean_of_transport">Medio de transporte</string>
     <string name="city_depart">Ciudad de salida</string>
     <string name="city_arrival">Ciudad de destino</string>
     <string name="prize">Precio</string>
     <string name="locator">Localizador</string>
     <string name="bidi">Bidi</string>
     <string name="pdf">PDF</string>
+    <string name="from">De</string>
+    <string name="to">A</string>
+
+    <!-- TypeTransport -->
+    <string name="plane">Avion</string>
+    <string name="train">Tren</string>
+    <string name="bus">Bus</string>
+    <string name="boat">Barco</string>
+    <string name="car">Coche</string>
 
     <!-- TripAccommodationActivity -->
     <string name="placeAccommodation">Hotel/Apartamento</string>
     <string name="city">Ciudad</string>
     <string name="address">Direccion</string>
     <string name="numRooms">Num. Habitaciones</string>
+    <string name="hotel">Hotel</string>
+    <string name="checkin">Entrada</string>
+    <string name="checkout">Salida</string>
 
     <!-- TripCalendarActivity-->
     <string name="transportDepartureFrom">Salida desde</string>

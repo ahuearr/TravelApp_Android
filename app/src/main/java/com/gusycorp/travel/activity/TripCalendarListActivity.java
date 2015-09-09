@@ -129,8 +129,8 @@ public class TripCalendarListActivity extends MenuActivity{
         tripAccommodations.clear();
         tripCalendars.clear();
         HashMap<String,String> itemHeader=new HashMap<String, String>();
-        itemHeader.put(Constants.TRIPCALENDARLIST_COLUMN_ONE, Constants.TRIPCALENDARLIST_COLUMN_ONE);
-        itemHeader.put(Constants.TRIPCALENDARLIST_COLUMN_TWO, Constants.TRIPCALENDARLIST_COLUMN_TWO);
+        itemHeader.put(Constants.TRIPCALENDARLIST_COLUMN_ONE, getString(R.string.date));
+        itemHeader.put(Constants.TRIPCALENDARLIST_COLUMN_TWO, getString(R.string.activity));
         mAdapter.addSectionHeaderItem(itemHeader);
 
         ParseRelation<TripCalendar> tripCalendar = currentTrip.getRelation(Constants.TRIPCALENDAR);

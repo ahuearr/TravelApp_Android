@@ -21,7 +21,7 @@
                 style="@style/iconoMenu"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/transporte"
+                android:drawableTop="@drawable/transport"
                 android:text="@string/transporte"
                 android:textSize="10sp" />
 
@@ -30,7 +30,7 @@
                 style="@style/iconoMenu"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/alojamiento"
+                android:drawableTop="@drawable/accommodation"
                 android:text="@string/alojamiento"
                 android:textSize="10sp" />
 
@@ -39,7 +39,7 @@
                 style="@style/iconoMenu"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/calendario"
+                android:drawableTop="@drawable/calendar"
                 android:text="@string/calendario"
                 android:textSize="10sp" />
 
@@ -48,7 +48,7 @@
                 style="@style/iconoMenu"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/mapa"
+                android:drawableTop="@drawable/map"
                 android:text="@string/mapa"
                 android:textSize="10sp" />
 
@@ -57,7 +57,7 @@
                 style="@style/iconoMenu"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/companeros"
+                android:drawableTop="@drawable/tripmates"
                 android:text="@string/companeros"
                 android:textSize="10sp" />
 
