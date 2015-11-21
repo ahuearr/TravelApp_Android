@@ -1,12 +1,14 @@
 package com.gusycorp.travel.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.model.TripMate;
@@ -82,6 +84,7 @@ public class ListTripTransportMateAdapter extends ArrayAdapter<TripMate> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ListTripTransportMateAdapter.ViewHolder holder = null;
+        final int currentPosition = position;
         int rowType = getItemViewType(position);
 
         if (convertView == null) {
@@ -99,6 +102,19 @@ public class ListTripTransportMateAdapter extends ArrayAdapter<TripMate> {
                     break;
             }
             convertView.setTag(holder);
+            if(rowType==TYPE_ITEM){
+                holder.mateSelected.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CheckBox cb = (CheckBox) view;
+                        if(mData.get(currentPosition).isSelected()){
+                            mData.get(currentPosition).setIsSelected(false);
+                        }else{
+                            mData.get(currentPosition).setIsSelected(true);
+                        }
+                    }
+                });
+            }
         } else {
             holder = (ListTripTransportMateAdapter.ViewHolder) convertView.getTag();
         }
@@ -114,4 +130,9 @@ public class ListTripTransportMateAdapter extends ArrayAdapter<TripMate> {
         TextView mateUser;
         CheckBox mateSelected;
     }
+
+    public ArrayList<TripMate> getTripMateList() {
+        return mData;
+    }
+
 }

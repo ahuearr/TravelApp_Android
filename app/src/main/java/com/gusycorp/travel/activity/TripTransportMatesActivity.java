@@ -1,6 +1,7 @@
 package com.gusycorp.travel.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -72,7 +73,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.save_button:
-                //saveTransportMates();
+                saveTransportMates();
                 break;
         }
     }
@@ -118,7 +119,28 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         });
     }
 
-    private void addMateToTrip(String mate) {
+    private void saveTransportMates() {
+        //There are four cases
+        //1-The mate was added and he is added already (Do nothing)
+        //2-The mate was added and now he is removed
+        //3-The mate was not added and now he is added
+        //4-The mate was not added and he is not added yet (Do nothing)
+        final ParseRelation<TripMate> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATE);
+        for(TripMate tripMate : mAdapter.getTripMateList()){
+            if(tripMate!=null){
+                if(tripMate.isSelected()){
+                    tripTransportMate.add(tripMate);
+                } else {
+                    tripTransportMate.remove(tripMate);
+                }
+            }
+        }
+        try {
+            currentTripTransport.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+/*
         boolean existsMate = false;
         for(TripMate tripMate : tripMates){
             if(mate.equals(tripMate.getUsername())){
@@ -156,6 +178,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         } else {
             Toast.makeText(this, getString(R.string.user_appened_yet), Toast.LENGTH_LONG).show();
         }
+*/
     }
 
     @Override

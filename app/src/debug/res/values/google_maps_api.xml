@@ -8,10 +8,19 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
 
     -->
 
-    <!-- Ordenador de casa -->
+    <!-- Ordenador de Valladolid -->
+    <!--
+        <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+            AIzaSyBAKl8RgGtaQAXElggM0miE0AnFdOVmMm8
+        </string>
+    -->
+
+    <!-- Ordenador de Salamanca -->
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
-        AIzaSyBAKl8RgGtaQAXElggM0miE0AnFdOVmMm8
+        AIzaSyCYrJSaKXwf3YuFEBf1NoLrdu66Eok4I3c
     </string>
+
+
 
     <!-- Ordenador de Luce -->
 <!--
