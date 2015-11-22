@@ -16,6 +16,7 @@ import com.gusycorp.travel.adapter.ListTripTransportMateAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripMate;
+import com.gusycorp.travel.model.TripMatePrize;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.util.Constants;
 import com.parse.FindCallback;
@@ -24,6 +25,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,35 +83,39 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     private void getTripMates(String tripObjectId) {
 
         mAdapter = new ListTripTransportMateAdapter(TripTransportMatesActivity.this,
-                R.layout.row_list_transport_mate_trip, new ArrayList<TripMate>());
+                R.layout.row_list_transport_mate_trip, new ArrayList<TripMatePrize>());
 
         HashMap<String,String> itemHeader=new HashMap<String, String>();
 
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        ParseRelation<TripMate> tripMate = currentTrip.getRelation(Constants.TRIPMATE);
+        ParseRelation<TripMate> tripMateRelation = currentTrip.getRelation(Constants.TRIPMATE);
 
-        tripMate.getQuery().findInBackground(new FindCallback<TripMate>() {
+        tripMateRelation.getQuery().findInBackground(new FindCallback<TripMate>() {
             @Override
             public void done(final List<TripMate> tripMateList, ParseException e) {
                 if (e != null) {
                     // There was an error
                 } else {
                     tripMates.addAll(tripMateList);
-                    final ParseRelation<TripMate> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATE);
-                    tripTransportMate.getQuery().findInBackground(new FindCallback<TripMate>() {
+                    final ParseRelation<TripMatePrize> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATEPRIZE);
+                    tripTransportMate.getQuery().findInBackground(new FindCallback<TripMatePrize>() {
                         @Override
-                        public void done(List<TripMate> tripTransportMateList, ParseException e) {
-                            for (int i = 0; i < tripTransportMateList.size(); i++) {
-                                for (int j = 0; j < tripMateList.size(); j++) {
-                                    if(tripTransportMateList.get(i).getObjectId().equals(tripMateList.get(j).getObjectId())){
-                                        tripMateList.get(j).setIsSelected(true);
-                                        break;
-                                    }
-                                }
+                        public void done(List<TripMatePrize> tripTransportMateList, ParseException e) {
+
+                            List<TripMate> tripMatefromTripMatePrize = new ArrayList<TripMate>();
+                            for(TripMatePrize tripMatePrize : tripTransportMateList){
+                                mAdapter.add(tripMatePrize);
+                                tripMatefromTripMatePrize.add(tripMatePrize.getTripMate());
                             }
-                            for (TripMate tripMate : tripMateList) {
-                                mAdapter.addItem(tripMate);
+
+                            for(TripMate tripMate : tripMateList){
+                                if(!tripMatefromTripMatePrize.contains(tripMate)){
+                                    TripMatePrize tripMatePrize = new TripMatePrize();
+                                    tripMatePrize.put(Constants.TRIPMATE, tripMate);
+                                    tripMatePrize.put(Constants.PRIZE, BigDecimal.ZERO);
+                                    mAdapter.add(tripMatePrize);
+                                }
                             }
                             listView.setAdapter(mAdapter);
                         }
@@ -120,63 +126,18 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     }
 
     private void saveTransportMates() {
-        //There are four cases
-        //1-The mate was added and he is added already (Do nothing)
-        //2-The mate was added and now he is removed
-        //3-The mate was not added and now he is added
-        //4-The mate was not added and he is not added yet (Do nothing)
-        final ParseRelation<TripMate> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATE);
-        for(TripMate tripMate : mAdapter.getTripMateList()){
-            if(tripMate!=null){
-                if(tripMate.isSelected()){
-                    tripTransportMate.add(tripMate);
-                } else {
-                    tripTransportMate.remove(tripMate);
-                }
+        //TODO Save new tripmateprizes y update the prize of the existing
+/*
+        final ParseRelation<TripMatePrize> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATEPRIZE);
+        for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
+            if(tripMatePrize!=null){
+                    tripTransportMate.add(tripMatePrize);
             }
         }
         try {
             currentTripTransport.save();
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-/*
-        boolean existsMate = false;
-        for(TripMate tripMate : tripMates){
-            if(mate.equals(tripMate.getUsername())){
-                existsMate = true;
-            }
-        }
-        if(!existsMate){
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
-            query.whereEqualTo(Constants.USERNAME, mate);
-            query.findInBackground(new FindCallback<ParseUser>() {
-                public void done(List<ParseUser> userList, ParseException e) {
-                    if (e == null) {
-                        TripMate tripMate = new TripMate();
-                        tripMate.put(Constants.USERID,userList.get(0).getObjectId());
-                        tripMate.put(Constants.USERNAME,userList.get(0).get(Constants.USERNAME));
-                        tripMate.put(Constants.ORGANIZER, false);
-                        try {
-                            tripMate.save();
-                            ParseRelation<TripMate> tripMateRelation = currentTrip.getRelation(Constants.TRIPMATE);
-                            tripMateRelation.add(tripMate);
-                            ParseRelation<ParseUser> tripUserRelation = currentTrip.getRelation(Constants.USER);
-                            tripUserRelation.add(userList.get(0));
-                            currentTrip.save();
-                            tripMates.add(tripMate);
-                            mAdapter.addItem(tripMate);
-                            mAdapter.notifyDataSetChanged();
-                        } catch (ParseException e1) {
-                            e1.printStackTrace();
-                        }
-                    } else {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } else {
-            Toast.makeText(this, getString(R.string.user_appened_yet), Toast.LENGTH_LONG).show();
         }
 */
     }
