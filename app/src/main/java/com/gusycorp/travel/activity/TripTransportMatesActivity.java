@@ -43,6 +43,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     private Trip currentTrip;
     private TripTransport currentTripTransport = new TripTransport();
     private List<TripMate> tripMates;
+    List<TripMate> tripMatefromTripMatePrize = new ArrayList<TripMate>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,9 +104,8 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
                         @Override
                         public void done(List<TripMatePrize> tripTransportMateList, ParseException e) {
 
-                            List<TripMate> tripMatefromTripMatePrize = new ArrayList<TripMate>();
                             for(TripMatePrize tripMatePrize : tripTransportMateList){
-                                mAdapter.add(tripMatePrize);
+                                mAdapter.addItem(tripMatePrize);
                                 tripMatefromTripMatePrize.add(tripMatePrize.getTripMate());
                             }
 
@@ -114,7 +114,14 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
                                     TripMatePrize tripMatePrize = new TripMatePrize();
                                     tripMatePrize.put(Constants.TRIPMATE, tripMate);
                                     tripMatePrize.put(Constants.PRIZE, BigDecimal.ZERO);
-                                    mAdapter.add(tripMatePrize);
+                                    try {
+                                        tripMatePrize.save();
+                                        tripTransportMate.add(tripMatePrize);
+                                        currentTripTransport.save();
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                    mAdapter.addItem(tripMatePrize);
                                 }
                             }
                             listView.setAdapter(mAdapter);
@@ -126,9 +133,19 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     }
 
     private void saveTransportMates() {
-        //TODO Save new tripmateprizes y update the prize of the existing
+        try {
+            final ParseRelation<TripMatePrize> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATEPRIZE);
+            for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
+                if(tripMatePrize!=null){
+                    tripTransportMate.add(tripMatePrize);
+                }
+            }
+            currentTripTransport.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 /*
-        final ParseRelation<TripMatePrize> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATEPRIZE);
         for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
             if(tripMatePrize!=null){
                     tripTransportMate.add(tripMatePrize);
