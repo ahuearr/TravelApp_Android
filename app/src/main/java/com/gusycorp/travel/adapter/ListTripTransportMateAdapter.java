@@ -124,6 +124,7 @@ public class ListTripTransportMateAdapter extends ArrayAdapter<TripMatePrize> {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
+                    Log.e("TAG", "Cambiado:"+editable.toString());
                     mData.get(position).put(Constants.PRIZE, editable.toString());
                 }
             });

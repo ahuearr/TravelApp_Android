@@ -137,6 +137,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
             final ParseRelation<TripMatePrize> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATEPRIZE);
             for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
                 if(tripMatePrize!=null){
+                    tripMatePrize.save();
                     tripTransportMate.add(tripMatePrize);
                 }
             }
