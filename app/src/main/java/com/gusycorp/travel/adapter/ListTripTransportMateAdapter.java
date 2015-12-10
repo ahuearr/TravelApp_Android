@@ -111,21 +111,15 @@ public class ListTripTransportMateAdapter extends ArrayAdapter<TripMatePrize> {
         if (mData.get(position) != null) {
             holder.mateUser.setText(mData.get(position).getTripMate().getUsername());
             holder.matePrize.setText(mData.get(position).getPrize());
-            holder.matePrize.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    //Nothing to do
-                }
+            holder.matePrize.setId(position);
 
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    //Nothing to do
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    Log.e("TAG", "Cambiado:"+editable.toString());
-                    mData.get(position).put(Constants.PRIZE, editable.toString());
+            holder.matePrize.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        final int position = v.getId();
+                        final EditText matePrize = (EditText) v;
+                        mData.get(position).put(Constants.PRIZE, matePrize.getText().toString());
+                    }
                 }
             });
         }
