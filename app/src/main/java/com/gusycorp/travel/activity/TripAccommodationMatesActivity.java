@@ -11,9 +11,9 @@ import com.gusycorp.travel.R;
 import com.gusycorp.travel.adapter.ListTripActivitiesMateAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.model.TripMatePrize;
-import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.util.Constants;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TripTransportMatesActivity extends MenuActivity implements View.OnClickListener{
+public class TripAccommodationMatesActivity extends MenuActivity implements View.OnClickListener{
 
     private Button save;
     private Button share;
-    private TextView transportNameText;
+    private TextView activityNameText;
     private TextView sharePrize;
     private ListView listView;
 
@@ -37,7 +37,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     private TravelApplication app;
 
     private Trip currentTrip;
-    private TripTransport currentTripTransport = new TripTransport();
+    private TripAccommodation currentTripAcommodation = new TripAccommodation();
     private List<TripMate> tripMates;
     List<TripMate> tripMatefromTripMatePrize = new ArrayList<TripMate>();
 
@@ -50,9 +50,9 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
 
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();
-        currentTripTransport = app.getCurrentTripTransport();
+        currentTripAcommodation = app.getCurrentTripAccommodation();
 
-        transportNameText = (TextView) findViewById(R.id.text_name);
+        activityNameText = (TextView) findViewById(R.id.text_name);
         sharePrize = (TextView) findViewById(R.id.text_prize);
         save = (Button) findViewById(R.id.save_button);
         share = (Button) findViewById(R.id.share_button);
@@ -65,9 +65,9 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         save.setOnClickListener(this);
         share.setOnClickListener(this);
 
-        String tripTransportName = currentTripTransport.getFrom() + " - " + currentTripTransport.getTo();
-        transportNameText.setText(tripTransportName);
-        prize = currentTripTransport.getPrize()==null ? 0 : currentTripTransport.getPrize();
+        String tripAccommodationName = currentTripAcommodation.getPlace() + " - " + currentTripAcommodation.getCity();
+        activityNameText.setText(tripAccommodationName);
+        prize = currentTripAcommodation.getPrize()==null ? 0 : currentTripAcommodation.getPrize();
         sharePrize.setText(Double.toString(prize));
         tripMates = new ArrayList<TripMate>();
         listView=(ListView)findViewById(R.id.mates_list);
@@ -84,7 +84,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.save_button:
-                saveTransportMates();
+                saveAccommodationMates();
                 break;
             case R.id.share_button:
                 sharePrize();
@@ -94,7 +94,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
 
     private void getTripMates(String tripObjectId) {
 
-        mAdapter = new ListTripActivitiesMateAdapter(TripTransportMatesActivity.this,
+        mAdapter = new ListTripActivitiesMateAdapter(TripAccommodationMatesActivity.this,
                 R.layout.row_list_activities_mate_trip, new ArrayList<TripMatePrize>(), app.isOrganizer());
 
         HashMap<String,String> itemHeader=new HashMap<String, String>();
@@ -110,12 +110,12 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
                     // There was an error
                 } else {
                     tripMates.addAll(tripMateList);
-                    final ParseRelation<TripMatePrize> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATEPRIZE);
-                    tripTransportMate.getQuery().findInBackground(new FindCallback<TripMatePrize>() {
+                    final ParseRelation<TripMatePrize> tripAccommodationMate = currentTripAcommodation.getRelation(Constants.TRIPMATEPRIZE);
+                    tripAccommodationMate.getQuery().findInBackground(new FindCallback<TripMatePrize>() {
                         @Override
-                        public void done(List<TripMatePrize> tripTransportMateList, ParseException e) {
+                        public void done(List<TripMatePrize> tripAccommodationMateList, ParseException e) {
 
-                            for(TripMatePrize tripMatePrize : tripTransportMateList){
+                            for(TripMatePrize tripMatePrize : tripAccommodationMateList){
                                 mAdapter.addItem(tripMatePrize);
                                 tripMatefromTripMatePrize.add(tripMatePrize.getTripMate());
                             }
@@ -127,8 +127,8 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
                                     tripMatePrize.put(Constants.PRIZE, BigDecimal.ZERO);
                                     try {
                                         tripMatePrize.save();
-                                        tripTransportMate.add(tripMatePrize);
-                                        currentTripTransport.save();
+                                        tripAccommodationMate.add(tripMatePrize);
+                                        currentTripAcommodation.save();
                                     } catch (ParseException e1) {
                                         e1.printStackTrace();
                                     }
@@ -143,16 +143,16 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         });
     }
 
-    private void saveTransportMates() {
+    private void saveAccommodationMates() {
         try {
-            final ParseRelation<TripMatePrize> tripTransportMate = currentTripTransport.getRelation(Constants.TRIPMATEPRIZE);
+            final ParseRelation<TripMatePrize> tripAccommodationMate = currentTripAcommodation.getRelation(Constants.TRIPMATEPRIZE);
             for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
                 if(tripMatePrize!=null){
                     tripMatePrize.save();
-                    tripTransportMate.add(tripMatePrize);
+                    tripAccommodationMate.add(tripMatePrize);
                 }
             }
-            currentTripTransport.save();
+            currentTripAcommodation.save();
         } catch (ParseException e) {
             e.printStackTrace();
         }

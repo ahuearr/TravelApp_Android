@@ -157,6 +157,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 			case R.id.transport_trip_mates:
 				Intent intent = new Intent(TripTransportActivity.this, TripTransportMatesActivity.class);
 				startActivity(intent);
+				break;
 		}
 	}
 

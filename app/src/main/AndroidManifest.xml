@@ -64,6 +64,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name=".activity.TripAccommodationMatesActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name=".activity.TripCalendarListActivity"
             android:label="@string/app_name" >
         </activity>

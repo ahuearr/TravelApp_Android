@@ -1,11 +1,13 @@
 package com.gusycorp.travel.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 	private EditText numRooms;
 	private EditText prize;
 	private Button save;
+	private ImageButton tripMates;
 
 	private TripAccommodation tripAccommodation = new TripAccommodation();
 	private String objectId;
@@ -58,6 +61,8 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 		numRooms = (EditText) findViewById(R.id.numRooms);
 		prize = (EditText) findViewById(R.id.prize);
 		save = (Button) findViewById(R.id.save_button);
+		tripMates = (ImageButton) findViewById(R.id.accommodation_trip_mates);
+
 		if(!app.isOrganizer()){
 			place.setEnabled(false);
 			city.setEnabled(false);
@@ -77,6 +82,7 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 		}
 
 		save.setOnClickListener(this);
+		tripMates.setOnClickListener(this);
 
 		Bundle bundle = getIntent().getExtras();
 
@@ -122,6 +128,10 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 				} else{
 					Toast.makeText(this, getString(R.string.field_mandatory), Toast.LENGTH_LONG).show();
 				}
+				break;
+			case R.id.accommodation_trip_mates:
+				Intent intent = new Intent(TripAccommodationActivity.this, TripAccommodationMatesActivity.class);
+				startActivity(intent);
 				break;
 		}
 	}

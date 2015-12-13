@@ -7,7 +7,8 @@ public class Constants {
 
 	// Adapters
 	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
-	public final static String TAG_LISTRIPTRANSPORTADAPTER = "ListTripTransportAdapter";
+	public final static String TAG_LISTRIPMATEADAPTER = "ListTripMateAdapter";
+	public final static String TAG_LISTRIPACTIVITIESADAPTER = "ListTripActivitiesAdapter";
 	public final static String TAG_LISTRIPACCOMODATIONADAPTER = "ListTripAccommodationAdapter";
 	public final static String TAG_LISTRIPCALENDARADAPTER = "ListTripCalendarAdapter";
 

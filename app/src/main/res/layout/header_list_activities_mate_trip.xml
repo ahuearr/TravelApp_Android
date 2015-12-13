@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:textColor="@color/blanco_texto"
+        android:text="@string/prize"
         android:layout_weight="2" />
 
 </LinearLayout>
