@@ -120,7 +120,7 @@ public class ListTripTransportMateAdapter extends ArrayAdapter<TripMatePrize> {
                     if (!hasFocus) {
                         final int position = v.getId();
                         final EditText matePrize = (EditText) v;
-                        int prize = StringUtils.isNotBlank(matePrize.getText().toString()) ? Integer.parseInt(matePrize.getText().toString()) : 0;
+                        double prize = StringUtils.isNotBlank(matePrize.getText().toString()) ? Double.parseDouble(matePrize.getText().toString()) : 0.0;
                         mData.get(position).put(Constants.PRIZE, prize);
                     }
                 }

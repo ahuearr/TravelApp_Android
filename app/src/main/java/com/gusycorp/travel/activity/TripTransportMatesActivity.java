@@ -25,6 +25,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +35,9 @@ import java.util.List;
 public class TripTransportMatesActivity extends MenuActivity implements View.OnClickListener{
 
     private Button save;
+    private Button share;
     private TextView transportNameText;
+    private TextView sharePrize;
     private ListView listView;
 
     private ListTripTransportMateAdapter mAdapter;
@@ -45,6 +49,8 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     private List<TripMate> tripMates;
     List<TripMate> tripMatefromTripMatePrize = new ArrayList<TripMate>();
 
+    private Double prize = 0.0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +61,17 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         currentTripTransport = app.getCurrentTripTransport();
 
         transportNameText = (TextView) findViewById(R.id.text_transport_name);
+        sharePrize = (TextView) findViewById(R.id.text_prize);
         save = (Button) findViewById(R.id.save_button);
+        share = (Button) findViewById(R.id.share_button);
 
         save.setOnClickListener(this);
+        share.setOnClickListener(this);
 
         String tripTransportName = currentTripTransport.getFrom() + " - " + currentTripTransport.getTo();
         transportNameText.setText(tripTransportName);
+        prize = currentTripTransport.getPrize()==null ? 0 : currentTripTransport.getPrize();
+        sharePrize.setText(Double.toString(prize));
         tripMates = new ArrayList<TripMate>();
         listView=(ListView)findViewById(R.id.mates_list);
 
@@ -77,6 +88,9 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         switch (v.getId()){
             case R.id.save_button:
                 saveTransportMates();
+                break;
+            case R.id.share_button:
+                sharePrize();
                 break;
         }
     }
@@ -149,6 +163,19 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
 
     }
 
+    private void sharePrize() {
+        int matesNumber = mAdapter.getTripMateList().size()-1;
+        Double sharedPrize = Math.floor(prize * 100) / 100;
+        if(matesNumber>0){
+            sharedPrize = Math.floor((prize/matesNumber)*100)/100;
+        }
+        for(int i=0;i<mAdapter.getTripMateList().size();i++){
+            if (mAdapter.getTripMateList().get(i) != null) {
+                mAdapter.getTripMateList().get(i).put(Constants.PRIZE, sharedPrize);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
     @Override
     public void onBackPressed()
     {
