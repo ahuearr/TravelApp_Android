@@ -7,7 +7,8 @@ public class Constants {
 
 	// Adapters
 	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
-	public final static String TAG_LISTRIPTRANSPORTADAPTER = "ListTripTransportAdapter";
+	public final static String TAG_LISTRIPMATEADAPTER = "ListTripMateAdapter";
+	public final static String TAG_LISTRIPACTIVITIESADAPTER = "ListTripActivitiesAdapter";
 	public final static String TAG_LISTRIPACCOMODATIONADAPTER = "ListTripAccommodationAdapter";
 	public final static String TAG_LISTRIPCALENDARADAPTER = "ListTripCalendarAdapter";
 
@@ -45,6 +46,7 @@ public class Constants {
 	public final static String LATITUDETO = "latitudeTo";
 	public final static String LONGITUDEFROM = "longitudeFrom";
 	public final static String LONGITUDETO = "longitudeTo";
+	public final static String TRIPMATEPRIZE = "tripMatePrize";
 
 	// TypeTransport
 	public final static String TAG_TYPETRANSPORTMODEL = "TypeTransport";
@@ -86,6 +88,9 @@ public class Constants {
 	public final static String TAG_TRIPMATEMODEL = "TripModel";
 	public final static String USERID = "userId";
 	public final static String ORGANIZER = "organizer";
+
+	// TripMatePrize
+	public final static String TAG_TRIPMATEPRIZEMODEL = "TripModelPrize";
 
 	//User
 	public final static String USERNAME = "username";

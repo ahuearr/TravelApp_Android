@@ -75,6 +75,8 @@
     <string name="rol">Rol</string>
     <string name="user_not_exists">El usuario no existe</string>
     <string name="user_appened_yet">El usuario ya esta agregado al viaje</string>
+    <string name="share_prize">Dividir</string>
+    <string name="prize2">Precio:</string>
 
     <!-- Login/Account creation screen -->
     <string name="welcome">Bienvenido a tu aplicacion de gestion de viajes en grupo</string>

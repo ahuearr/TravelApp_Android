@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +39,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 	private EditText prize;
 	private EditText locator;
 	private Button save;
+	private ImageButton tripMates;
 
 	private TripTransport tripTransport = new TripTransport();
 	private String objectId;
@@ -66,6 +70,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		prize = (EditText) findViewById(R.id.prize);
 		locator = (EditText) findViewById(R.id.locator);
 		save = (Button) findViewById(R.id.save_button);
+		tripMates = (ImageButton) findViewById(R.id.transport_trip_mates);
 
 		if(!app.isOrganizer()){
 			typeTransport.setEnabled(false);
@@ -86,6 +91,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		}
 
 		save.setOnClickListener(this);
+		tripMates.setOnClickListener(this);
 
 		final ArrayAdapter<TypeTransport> typeTransportAdapter = new ArrayAdapter<TypeTransport>(getBaseContext(),android.R.layout.simple_spinner_item,typeTransportList);
 		typeTransportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -147,6 +153,10 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 				} else{
 					Toast.makeText(this, getString(R.string.field_mandatory), Toast.LENGTH_LONG).show();
 				}
+				break;
+			case R.id.transport_trip_mates:
+				Intent intent = new Intent(TripTransportActivity.this, TripTransportMatesActivity.class);
+				startActivity(intent);
 				break;
 		}
 	}

@@ -1,11 +1,13 @@
 package com.gusycorp.travel.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 	private EditText city;
 	private EditText prize;
 	private Button save;
+	private ImageButton tripMates;
 
 	private TripCalendar tripCalendar = new TripCalendar();
 	private String objectId;
@@ -54,6 +57,8 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 		city = (EditText) findViewById(R.id.city);
 		prize = (EditText) findViewById(R.id.prize);
 		save = (Button) findViewById(R.id.save_button);
+		tripMates = (ImageButton) findViewById(R.id.calendar_trip_mates);
+
 		if(!app.isOrganizer()){
 			date.setEnabled(false);
 			activity.setEnabled(false);
@@ -69,6 +74,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 		}
 
 		save.setOnClickListener(this);
+		tripMates.setOnClickListener(this);
 
 		Bundle bundle = getIntent().getExtras();
 
@@ -111,6 +117,10 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 				} else{
 					Toast.makeText(this, getString(R.string.field_mandatory), Toast.LENGTH_LONG).show();
 				}
+				break;
+			case R.id.calendar_trip_mates:
+				Intent intent = new Intent(TripCalendarActivity.this, TripCalendarMatesActivity.class);
+				startActivity(intent);
 				break;
 		}
 	}

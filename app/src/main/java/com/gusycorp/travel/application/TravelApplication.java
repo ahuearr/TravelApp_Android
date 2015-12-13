@@ -6,6 +6,7 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.model.TripMate;
+import com.gusycorp.travel.model.TripMatePrize;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
@@ -38,6 +39,7 @@ public class TravelApplication extends Application {
 		ParseObject.registerSubclass(TripAccommodation.class);
 		ParseObject.registerSubclass(TripCalendar.class);
 		ParseObject.registerSubclass(TripMate.class);
+		ParseObject.registerSubclass(TripMatePrize.class);
 		Parse.enableLocalDatastore(this);
 		Parse.initialize(this, Utils.APPLICATION_ID, Utils.PARSE_KEY);
 

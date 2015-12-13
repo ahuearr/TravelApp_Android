@@ -25,7 +25,7 @@ import java.util.TreeSet;
  */
 public class ListTripTransportAdapter extends ArrayAdapter<TripTransport> {
 
-    private static final String TAG = Constants.TAG_LISTRIPTRANSPORTADAPTER;
+    private static final String TAG = Constants.TAG_LISTRIPACTIVITIESADAPTER;
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_SEPARATOR = 1;

@@ -5,12 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gusycorp.travel.R;
-import com.gusycorp.travel.model.TripMate;
-import com.gusycorp.travel.model.TripTransport;
+import com.gusycorp.travel.model.TripMatePrize;
 import com.gusycorp.travel.util.Constants;
 
 import java.util.ArrayList;
@@ -18,31 +17,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by agustin.huerta on 24/07/2015.
  */
-public class ListTripMateAdapter extends ArrayAdapter<TripMate> {
+public class ListTripActivitiesMateAdapter extends ArrayAdapter<TripMatePrize> {
 
-    private static final String TAG = Constants.TAG_LISTRIPMATEADAPTER;
+    private static final String TAG = Constants.TAG_LISTRIPACTIVITIESADAPTER;
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_SEPARATOR = 1;
 
-    private ArrayList<TripMate> mData = new ArrayList<TripMate>();
+    private ArrayList<TripMatePrize> mData = new ArrayList<TripMatePrize>();
     private ArrayList<HashMap<String, String>> mDataHeader = new ArrayList<HashMap<String, String>>();
     private TreeSet<Integer> sectionHeader = new TreeSet<Integer>();
 
     private LayoutInflater mInflater;
     private Context context;
+    private boolean isOrganizer;
 
-    public ListTripMateAdapter(Context context, int resource, List<TripMate> objects) {
+    public ListTripActivitiesMateAdapter(Context context, int resource, List<TripMatePrize> objects, boolean isOrganizer) {
         super(context, resource, objects);
         this.context=context;
+        this.isOrganizer=isOrganizer;
         mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void addItem(final TripMate item) {
+    public void addItem(final TripMatePrize item) {
         mData.add(item);
         mDataHeader.add(null);
         notifyDataSetChanged();
@@ -71,7 +74,7 @@ public class ListTripMateAdapter extends ArrayAdapter<TripMate> {
     }
 
     @Override
-    public TripMate getItem(int position) {
+    public TripMatePrize getItem(int position) {
         return mData.get(position);
     }
 
@@ -81,35 +84,47 @@ public class ListTripMateAdapter extends ArrayAdapter<TripMate> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ListTripMateAdapter.ViewHolder holder = null;
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        ListTripActivitiesMateAdapter.ViewHolder holder = null;
         int rowType = getItemViewType(position);
 
         if (convertView == null) {
-            holder = new ListTripMateAdapter.ViewHolder();
+            holder = new ListTripActivitiesMateAdapter.ViewHolder();
             switch (rowType) {
                 case TYPE_ITEM:
-                    convertView = mInflater.inflate(R.layout.row_list_mate_trip, null);
+                    convertView = mInflater.inflate(R.layout.row_list_activities_mate_trip, null);
                     holder.mateUser = (TextView) convertView.findViewById(R.id.mate_user);
-                    holder.mateRol = (TextView) convertView.findViewById(R.id.mate_rol);
+                    holder.matePrize = (EditText) convertView.findViewById(R.id.mate_prize);
+                    if(!isOrganizer){
+                        holder.mateUser.setEnabled(false);
+                        holder.matePrize.setEnabled(false);
+                    }
                     break;
                 case TYPE_SEPARATOR:
                     convertView = mInflater
-                            .inflate(R.layout.header_list_mate_trip, null);
+                            .inflate(R.layout.header_list_activities_mate_trip, null);
                     holder.mateUser = (TextView) convertView.findViewById(R.id.header_mate_user);
-                    holder.mateRol = (TextView) convertView.findViewById(R.id.header_mate_rol);
                     break;
             }
             convertView.setTag(holder);
         } else {
-            holder = (ListTripMateAdapter.ViewHolder) convertView.getTag();
+            holder = (ListTripActivitiesMateAdapter.ViewHolder) convertView.getTag();
         }
         if (mData.get(position) != null) {
-            holder.mateUser.setText(mData.get(position).getUsername());
-            holder.mateRol.setText(mData.get(position).getOrganizer() ? context.getString(R.string.organizer) : context.getString(R.string.mate));
-        } else {
-            holder.mateUser.setText(mDataHeader.get(position).get(context.getString(R.string.username)));
-            holder.mateRol.setText(mDataHeader.get(position).get(context.getString(R.string.rol)));
+            holder.mateUser.setText(mData.get(position).getTripMate().getUsername());
+            holder.matePrize.setText(Double.toString(mData.get(position).getPrize()));
+            holder.matePrize.setId(position);
+
+            holder.matePrize.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        final int position = v.getId();
+                        final EditText matePrize = (EditText) v;
+                        double prize = StringUtils.isNotBlank(matePrize.getText().toString()) ? Double.parseDouble(matePrize.getText().toString()) : 0.0;
+                        mData.get(position).put(Constants.PRIZE, prize);
+                    }
+                }
+            });
         }
 
         return convertView;
@@ -117,6 +132,11 @@ public class ListTripMateAdapter extends ArrayAdapter<TripMate> {
 
     public static class ViewHolder {
         TextView mateUser;
-        TextView mateRol;
+        EditText matePrize;
     }
+
+    public ArrayList<TripMatePrize> getTripMateList() {
+        return mData;
+    }
+
 }
