@@ -105,6 +105,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
                         public void done(List<TripMatePrize> tripTransportMateList, ParseException e) {
 
                             for(TripMatePrize tripMatePrize : tripTransportMateList){
+                                Log.e("TAG", tripMatePrize.getTripMate().getUsername()+" "+tripMatePrize.getPrize());
                                 mAdapter.addItem(tripMatePrize);
                                 tripMatefromTripMatePrize.add(tripMatePrize.getTripMate());
                             }
@@ -146,18 +147,6 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
             e.printStackTrace();
         }
 
-/*
-        for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
-            if(tripMatePrize!=null){
-                    tripTransportMate.add(tripMatePrize);
-            }
-        }
-        try {
-            currentTripTransport.save();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-*/
     }
 
     @Override

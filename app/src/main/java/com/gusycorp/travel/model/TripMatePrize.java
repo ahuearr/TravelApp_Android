@@ -20,23 +20,11 @@ public class TripMatePrize extends ParseObject {
 
     private static String TAG = Constants.TAG_TRIPMATEPRIZEMODEL;
 
-    private boolean isSelected = false;
-
     public TripMate getTripMate() {
         return (TripMate) getParseObject(Constants.TRIPMATE);
     }
 
-    public String getPrize() {
-        return getString(Constants.PRIZE);
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
-    }
+    public Double getPrize() { return getDouble(Constants.PRIZE);}
 
     public static void findTripMatePrizeInBackground(String objectId,
                                                          final GetCallback<TripMatePrize> callback) {

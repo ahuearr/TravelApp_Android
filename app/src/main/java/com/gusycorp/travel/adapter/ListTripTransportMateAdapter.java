@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by agustin.huerta on 24/07/2015.
  */
@@ -110,7 +112,7 @@ public class ListTripTransportMateAdapter extends ArrayAdapter<TripMatePrize> {
         }
         if (mData.get(position) != null) {
             holder.mateUser.setText(mData.get(position).getTripMate().getUsername());
-            holder.matePrize.setText(mData.get(position).getPrize());
+            holder.matePrize.setText(Double.toString(mData.get(position).getPrize()));
             holder.matePrize.setId(position);
 
             holder.matePrize.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -118,7 +120,8 @@ public class ListTripTransportMateAdapter extends ArrayAdapter<TripMatePrize> {
                     if (!hasFocus) {
                         final int position = v.getId();
                         final EditText matePrize = (EditText) v;
-                        mData.get(position).put(Constants.PRIZE, matePrize.getText().toString());
+                        int prize = StringUtils.isNotBlank(matePrize.getText().toString()) ? Integer.parseInt(matePrize.getText().toString()) : 0;
+                        mData.get(position).put(Constants.PRIZE, prize);
                     }
                 }
             });

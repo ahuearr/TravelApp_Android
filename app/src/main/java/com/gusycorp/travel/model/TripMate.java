@@ -23,8 +23,6 @@ public class TripMate extends ParseObject {
 
     private static String TAG = Constants.TAG_TRIPMATEMODEL;
 
-    private boolean isSelected = false;
-
     public String getUserId() {
         return getString(Constants.USERID);
     }
@@ -35,14 +33,6 @@ public class TripMate extends ParseObject {
 
     public Boolean getOrganizer() {
         return getBoolean(Constants.ORGANIZER);
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
     }
 
     public static void findTripMateInBackground(String objectId,
