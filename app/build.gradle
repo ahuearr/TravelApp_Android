@@ -39,9 +39,7 @@ repositories { jcenter() }
 dependencies {
     compile files('libs/bolts-android-1.2.0.jar')
     compile files('libs/dagger-1.2.2.jar')
-    compile files('libs/Parse-1.9.2.jar')
-    compile files('libs/ParseCrashReporting-1.9.2.jar')
-    compile files('libs/ParseFacebookUtilsV3-1.9.2.jar')
+    compile group: 'io.cloudboost', name: 'JavaSDK', version: '1.0.7'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
     androidTestCompile 'com.android.support.test:runner:0.3'
     testCompile 'junit:junit:4.12'

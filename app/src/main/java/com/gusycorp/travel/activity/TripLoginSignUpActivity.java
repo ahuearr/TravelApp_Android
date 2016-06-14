@@ -14,11 +14,11 @@ import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.util.ConnectionDetector;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
-
-import com.parse.ParseException;
 import java.util.Locale;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudUser;
+import io.cloudboost.CloudUserCallback;
 
 /**
  * Created by agustin.huerta on 25/08/2015.
@@ -145,25 +145,28 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
 
     private void signUp(final String mUsername, String mEmail, String mPassword) {
         Toast.makeText(getApplicationContext(), mUsername + " - " + mEmail, Toast.LENGTH_SHORT).show();
-        ParseUser user = new ParseUser();
-        user.setUsername(mUsername);
+        CloudUser user = new CloudUser();
+        user.setUserName(mUsername);
         user.setPassword(mPassword);
         user.setEmail(mEmail);
 
-        user.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    signUpMsg(getString(R.string.cuenta_creada));
-                    Intent in = new Intent(getApplicationContext(),HomeActivity.class);
-                    startActivity(in);
-                } else {
-                    e.printStackTrace();
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
-                    signUpMsg(getString(R.string.cuenta_existente));
+        try {
+            user.signUp(new CloudUserCallback() {
+                @Override
+                public void done(CloudUser user, CloudException e) throws CloudException {
+                    if (user != null) {
+                        signUpMsg(getString(R.string.cuenta_creada));
+                        Intent in = new Intent(getApplicationContext(),HomeActivity.class);
+                        startActivity(in);
+                    }
                 }
-            }
-        });
+            });
+        } catch (CloudException e) {
+            e.printStackTrace();
+            // Sign up didn't succeed. Look at the ParseException
+            // to figure out what went wrong
+            signUpMsg(getString(R.string.cuenta_existente));
+        }
     }
 
     protected void signUpMsg(String msg) {

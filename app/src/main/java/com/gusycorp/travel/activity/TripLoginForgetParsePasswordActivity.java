@@ -10,9 +10,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudStringCallback;
+import io.cloudboost.CloudUser;
 
 /**
  * Created by agustin.huerta on 25/08/2015.
@@ -53,21 +54,18 @@ public class TripLoginForgetParsePasswordActivity extends Activity {
     }
 
     public void forgotPassword(String email) {
-        ParseUser.requestPasswordResetInBackground(email, new UserForgotPasswordCallback());
-    }
-
-    private class UserForgotPasswordCallback implements RequestPasswordResetCallback {
-        public UserForgotPasswordCallback(){
-            super();
-        }
-
-        @Override
-        public void done(ParseException e) {
-            if (e == null) {
-                Toast.makeText(getApplicationContext(), getString(R.string.link_password_ok), Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), getString(R.string.link_password_ko), Toast.LENGTH_LONG).show();
-            }
+        try {
+            CloudUser.resetPassword("email", new CloudStringCallback() {
+                @Override
+                public void done(String msg, CloudException e) {
+                    if (msg != null) {
+                        //reset password email sent
+                        Toast.makeText(getApplicationContext(), getString(R.string.link_password_ok), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        } catch (CloudException e) {
+            Toast.makeText(getApplicationContext(), getString(R.string.link_password_ko), Toast.LENGTH_LONG).show();
         }
     }
 

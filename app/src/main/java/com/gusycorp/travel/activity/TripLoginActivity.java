@@ -18,13 +18,13 @@ import com.gusycorp.travel.R;
 import com.gusycorp.travel.util.ConnectionDetector;
 import com.gusycorp.travel.util.Constants;
 import com.gusycorp.travel.util.Utils;
-import com.parse.LogInCallback;
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import java.util.Locale;
+
+import io.cloudboost.CloudApp;
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudUser;
+import io.cloudboost.CloudUserCallback;
 
 /**
  * Created by agustin.huerta on 25/08/2015.
@@ -107,7 +107,7 @@ public class TripLoginActivity extends Activity {
     }
 
     public void onCreateParse() {
-        Parse.initialize(this, Utils.APPLICATION_ID, Utils.PARSE_KEY);
+        CloudApp.init(Utils.APPLICATION_ID, Utils.PARSE_KEY);
     }
 
 
@@ -178,19 +178,24 @@ public class TripLoginActivity extends Activity {
     }
 
     private void login(String lowerCase, String password) {
-        ParseUser.logInInBackground(lowerCase, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if (e == null)
-                    loginSuccessful(user);
-                else
-                    loginUnSuccessful();
-            }
-        });
-
+        CloudUser user = new CloudUser();
+        user.setUserName(lowerCase);
+        user.setPassword(password);
+        try {
+            user.logIn(new CloudUserCallback() {
+                @Override
+                public void done(CloudUser user, CloudException e) throws CloudException {
+                    if (user != null) {
+                        loginSuccessful(user);
+                    }
+                }
+            });
+        } catch (CloudException e) {
+            loginUnSuccessful();
+        }
     }
 
-    protected void loginSuccessful(ParseUser user) {
+    protected void loginSuccessful(CloudUser user) {
         Intent in =  new Intent(TripLoginActivity.this,HomeActivity.class);
         startActivity(in);
         finish();

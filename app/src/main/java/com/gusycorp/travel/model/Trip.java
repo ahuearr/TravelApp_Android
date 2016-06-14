@@ -1,55 +1,50 @@
 package com.gusycorp.travel.model;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
-@ParseClassName("Trip")
-public class Trip extends ParseObject {
+import io.cloudboost.CloudObject;
+
+public class Trip extends CloudObject {
 
 	private static String TAG = Constants.TAG_TRIPMODEL;
 	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+
+	public Trip() {
+		super(TAG);
+	}
 
 	public String getTripName() {
 		return getString(Constants.TRIPNAME);
 	}
 
 	public String getDateIni() {
-		if(getDate(Constants.DATEINI)==null){
-			return null;
-		}
-		return df.format(getDate(Constants.DATEINI));
+		return getString(Constants.DATEINI);
 	}
 
 	public String getDateFin() {
-
-		if(getDate(Constants.DATEFIN)==null){
-			return null;
-		}
-		return df.format(getDate(Constants.DATEFIN));
+		return getString(Constants.DATEFIN);
 	}
 
-	public Date getDateIniDate() {
-		return getDate(Constants.DATEINI);
+	public Date getDateIniDate() throws ParseException {
+		return df.parse(getDateIni());
 	}
 
-	public Date getDateFinDate() {
-		return getDate(Constants.DATEFIN);
+	public Date getDateFinDate() throws ParseException {
+		return df.parse(getDateFin());
 	}
 
 	public List<String> getDestinyName() {
-		return getList(Constants.DESTINYNAME);
+		return new ArrayList<String>(Arrays.<String>asList((String)getArray(Constants.DESTINYNAME)));
 	}
 
 	public String getStatus() {
