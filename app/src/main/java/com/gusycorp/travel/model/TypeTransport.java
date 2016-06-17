@@ -1,22 +1,22 @@
 package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@ParseClassName("TypeTransport")
-public class TypeTransport extends ParseObject {
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudQuery;
 
-	private static String TAG = Constants.TAG_TRIPMODEL;
+public class TypeTransport extends ITObject {
 
+	private static String TABLENAME = Constants.TAG_TRIPMODEL;
+
+	public TypeTransport(){
+		super(TABLENAME);
+	}
 	public String getTransportName() {
 		return getString(Constants.TRANSPORTNAME);
 	}
@@ -24,15 +24,51 @@ public class TypeTransport extends ParseObject {
 		return getString(Constants.TRANSPORTIMAGENAME);
 	}
 
-	public static void findTypeTransportInBackground(String objectId,
-													 final GetCallback<TypeTransport> callback) {
-		ParseQuery<TypeTransport> TypeTransportQuery = ParseQuery.getQuery(TypeTransport.class);
-		TypeTransportQuery.whereEqualTo(Constants.OBJECTID, objectId);
-		TypeTransportQuery.getFirstInBackground(new GetCallback<TypeTransport>() {
+	public static void findTypeTransportInBackground(String objectId, final ITObjectCallback<TypeTransport> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		query.findById(objectId, new ITObjectCallback<TypeTransport>(){
 			@Override
-			public void done(TypeTransport trip, ParseException e) {
+			public void done(TypeTransport typeTransport, CloudException e) {
+				if(typeTransport != null){
+					callback.done(typeTransport, null);
+				} else {
+					callback.done(null,e);
+				}
+			}
+			@Override
+			public void done(CloudObject obj, CloudException e) throws CloudException {
+				if(obj != null){
+					callback.done(obj, null);
+				} else {
+					callback.done(null,e);
+				}
+			}
+		});
+
+	}
+
+	public static void findTypeTransportListByFieldsInBackground(
+			Map<String, Object> filter, final ITObjectArrayCallback<TypeTransport> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		Iterator it = filter.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry e = (Map.Entry) it.next();
+			query.equalTo((String) e.getKey(), e.getValue());
+		}
+		query.find(new ITObjectArrayCallback<TypeTransport>() {
+			@Override
+			public void done(TypeTransport[] typeTransportList, CloudException e) throws CloudException {
 				if (e == null) {
-					callback.done(trip, null);
+					callback.done(typeTransportList, null);
+				} else {
+					callback.done(null, e);
+				}
+			}
+
+			@Override
+			public void done(CloudObject[] obj, CloudException e) throws CloudException {
+				if (e == null) {
+					callback.done(obj, null);
 				} else {
 					callback.done(null, e);
 				}
@@ -40,25 +76,6 @@ public class TypeTransport extends ParseObject {
 		});
 	}
 
-	public static void findTypeTransportListByFieldsInBackground(
-			Map<String, Object> filter, final FindCallback<TypeTransport> callback) {
-		ParseQuery<TypeTransport> TypeTransportQuery = ParseQuery.getQuery(TypeTransport.class);
-		Iterator it = filter.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry e = (Map.Entry) it.next();
-			TypeTransportQuery.whereEqualTo((String) e.getKey(), e.getValue());
-		}
-		TypeTransportQuery.findInBackground(new FindCallback<TypeTransport>() {
-			@Override
-			public void done(List<TypeTransport> tripList, ParseException e) {
-				if (e == null) {
-					callback.done(tripList, null);
-				} else {
-					callback.done(null, e);
-				}
-			}
-		});
-	}
 
 	@Override
 	public String toString() {

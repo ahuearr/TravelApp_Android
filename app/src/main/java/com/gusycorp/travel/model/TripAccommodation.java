@@ -1,47 +1,41 @@
 package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@ParseClassName("TripAccommodation")
-public class TripAccommodation extends ParseObject {
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudQuery;
 
-	private static String TAG = Constants.TAG_TRIPACCOMMODATIONMODEL;
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+public class TripAccommodation extends ITObject {
+
+	private static String TABLENAME = Constants.TAG_TRIPACCOMMODATIONMODEL;
+
+	public TripAccommodation() {
+		super(TABLENAME);
+	}
 
 	public String getDateFrom() {
-		if(getDate(Constants.DATEFROM)==null){
-			return null;
-		}
-		return df.format(getDate(Constants.DATEFROM));
+		return getString(Constants.DATEFROM);
 	}
 
 	public String getDateTo() {
-
-		if(getDate(Constants.DATETO)==null){
-			return null;
-		}
-		return df.format(getDate(Constants.DATETO));
+		return getString(Constants.DATETO);
 	}
 
-	public Date getDateFromDate() {
-		return getDate(Constants.DATEFROM);
+	public Date getDateFromDate() throws ParseException {
+		return getDate(getDateFrom());
 	}
 
-	public Date getDateToDate() {
-		return getDate(Constants.DATETO);
+	public Date getDateToDate() throws ParseException {
+		return getDate(getDateTo());
 	}
 
 	public String getPlace() {
@@ -57,49 +51,65 @@ public class TripAccommodation extends ParseObject {
 	}
 
 	public Integer getNumRooms() {
-		return getInt(Constants.NUMROOMS);
+		return getInteger(Constants.NUMROOMS);
 	}
 
 	public Double getPrize() { return getDouble(Constants.PRIZE);}
 
 	public Double getLatitude() { return getDouble(Constants.LATITUDE);}
 
-	public Double getLongtiude() { return getDouble(Constants.LONGITUDE);}
+	public Double getLongitude() { return getDouble(Constants.LONGITUDE);}
 
-	public static void findTripAccommodationInBackground(String objectId,
-			final GetCallback<TripAccommodation> callback) {
-		ParseQuery<TripAccommodation> TripAccommodationQuery = ParseQuery.getQuery(TripAccommodation.class);
-		TripAccommodationQuery.whereEqualTo(Constants.OBJECTID, objectId);
-		TripAccommodationQuery.getFirstInBackground(new GetCallback<TripAccommodation>() {
+	public static void findTripAccommodationInBackground(String objectId, final ITObjectCallback<TripAccommodation> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		query.findById(objectId, new ITObjectCallback<TripAccommodation>(){
 			@Override
-			public void done(TripAccommodation tripAccommodation, ParseException e) {
-
-				if (e == null) {
+			public void done(TripAccommodation tripAccommodation, CloudException e) {
+				if(tripAccommodation != null){
 					callback.done(tripAccommodation, null);
 				} else {
-					callback.done(null, e);
+					callback.done(null,e);
+				}
+			}
+			@Override
+			public void done(CloudObject obj, CloudException e) throws CloudException {
+				if(obj != null){
+					callback.done(obj, null);
+				} else {
+					callback.done(null,e);
 				}
 			}
 		});
+
 	}
 
 	public static void findTripAccommodationListByFieldsInBackground(
-			Map<String, Object> filter, final FindCallback<TripAccommodation> callback) {
-		ParseQuery<TripAccommodation> tripAccomodationQuery = ParseQuery.getQuery(TripAccommodation.class);
+			Map<String, Object> filter, final ITObjectArrayCallback<TripAccommodation> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
 		Iterator it = filter.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			tripAccomodationQuery.whereEqualTo((String) e.getKey(), e.getValue());
+			query.equalTo((String) e.getKey(), e.getValue());
 		}
-		tripAccomodationQuery.findInBackground(new FindCallback<TripAccommodation>() {
+		query.find(new ITObjectArrayCallback<TripAccommodation>() {
 			@Override
-			public void done(List<TripAccommodation> tripAccommodationList, ParseException e) {
+			public void done(TripAccommodation[] tripAccommodationList, CloudException e) throws CloudException {
 				if (e == null) {
 					callback.done(tripAccommodationList, null);
 				} else {
 					callback.done(null, e);
 				}
 			}
+
+			@Override
+			public void done(CloudObject[] obj, CloudException e) throws CloudException {
+				if (e == null) {
+					callback.done(obj, null);
+				} else {
+					callback.done(null, e);
+				}
+			}
 		});
 	}
+
 }

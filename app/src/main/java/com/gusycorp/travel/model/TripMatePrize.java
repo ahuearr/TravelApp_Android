@@ -1,65 +1,81 @@
 package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudQuery;
+
 /**
  * Created by agustin.huerta on 27/08/2015.
  */
-@ParseClassName("TripMatePrize")
-public class TripMatePrize extends ParseObject {
+public class TripMatePrize extends ITObject {
 
-    private static String TAG = Constants.TAG_TRIPMATEPRIZEMODEL;
+    private static String TABLENAME = Constants.TAG_TRIPMATEPRIZEMODEL;
 
+    public TripMatePrize(){
+        super(TABLENAME);
+    }
     public TripMate getTripMate() {
-        return (TripMate) getParseObject(Constants.TRIPMATE);
+        return (TripMate) getCloudObject(Constants.TRIPMATE);
     }
 
     public Double getPrize() { return getDouble(Constants.PRIZE);}
 
-    public static void findTripMatePrizeInBackground(String objectId,
-                                                         final GetCallback<TripMatePrize> callback) {
-        ParseQuery<TripMatePrize> TripMatePrizeQuery = ParseQuery.getQuery(TripMatePrize.class);
-        TripMatePrizeQuery.whereEqualTo(Constants.OBJECTID, objectId);
-        TripMatePrizeQuery.getFirstInBackground(new GetCallback<TripMatePrize>() {
+    public static void findTripMatePrizeInBackground(String objectId, final ITObjectCallback<TripMatePrize> callback) throws CloudException {
+        CloudQuery query = new CloudQuery(TABLENAME);
+        query.findById(objectId, new ITObjectCallback<TripMatePrize>(){
             @Override
-            public void done(TripMatePrize tripMatePrize, ParseException e) {
-
-                if (e == null) {
+            public void done(TripMatePrize tripMatePrize, CloudException e) {
+                if(tripMatePrize != null){
                     callback.done(tripMatePrize, null);
                 } else {
-                    callback.done(null, e);
+                    callback.done(null,e);
+                }
+            }
+            @Override
+            public void done(CloudObject obj, CloudException e) throws CloudException {
+                if(obj != null){
+                    callback.done(obj, null);
+                } else {
+                    callback.done(null,e);
                 }
             }
         });
+
     }
 
     public static void findTripMatePrizeListByFieldsInBackground(
-            Map<String, Object> filter, final FindCallback<TripMatePrize> callback) {
-        ParseQuery<TripMatePrize> tripMatePrizeQuery = ParseQuery.getQuery(TripMatePrize.class);
+            Map<String, Object> filter, final ITObjectArrayCallback<TripMatePrize> callback) throws CloudException {
+        CloudQuery query = new CloudQuery(TABLENAME);
         Iterator it = filter.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
-            tripMatePrizeQuery.whereEqualTo((String) e.getKey(), e.getValue());
+            query.equalTo((String) e.getKey(), e.getValue());
         }
-        tripMatePrizeQuery.findInBackground(new FindCallback<TripMatePrize>() {
+        query.find(new ITObjectArrayCallback<TripMatePrize>() {
             @Override
-            public void done(List<TripMatePrize> tripMatePrizeList, ParseException e) {
+            public void done(TripMatePrize[] tripMatePrizeList, CloudException e) throws CloudException {
                 if (e == null) {
                     callback.done(tripMatePrizeList, null);
                 } else {
                     callback.done(null, e);
                 }
             }
+
+            @Override
+            public void done(CloudObject[] obj, CloudException e) throws CloudException {
+                if (e == null) {
+                    callback.done(obj, null);
+                } else {
+                    callback.done(null, e);
+                }
+            }
         });
     }
+
 }

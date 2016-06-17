@@ -12,15 +12,17 @@ import java.util.Map;
 
 import com.gusycorp.travel.util.Constants;
 
+import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudQuery;
 
-public class Trip extends CloudObject {
+public class Trip extends ITObject {
 
-	private static String TAG = Constants.TAG_TRIPMODEL;
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+	private static String TABLENAME = Constants.TAG_TRIPMODEL;
 
 	public Trip() {
-		super(TAG);
+		super(TABLENAME);
 	}
 
 	public String getTripName() {
@@ -36,15 +38,15 @@ public class Trip extends CloudObject {
 	}
 
 	public Date getDateIniDate() throws ParseException {
-		return df.parse(getDateIni());
+		return getDate(getDateIni());
 	}
 
 	public Date getDateFinDate() throws ParseException {
-		return df.parse(getDateFin());
+		return getDate(getDateFin());
 	}
 
 	public List<String> getDestinyName() {
-		return new ArrayList<String>(Arrays.<String>asList((String)getArray(Constants.DESTINYNAME)));
+		return getListString(Constants.DESTINYNAME);
 	}
 
 	public String getStatus() {
@@ -55,35 +57,51 @@ public class Trip extends CloudObject {
 		return getString(Constants.ORGANIZERID);
 	}
 
-	public static void findTripInBackground(String objectId,
-			final GetCallback<Trip> callback) {
-		ParseQuery<Trip> TripQuery = ParseQuery.getQuery(Trip.class);
-		TripQuery.whereEqualTo(Constants.OBJECTID, objectId);
-		TripQuery.getFirstInBackground(new GetCallback<Trip>() {
+	public static void findTripInBackground(String objectId, final ITObjectCallback<Trip> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		query.findById(objectId, new ITObjectCallback<Trip>(){
 			@Override
-			public void done(Trip trip, ParseException e) {
-				if (e == null) {
+			public void done(Trip trip, CloudException e) {
+				if(trip != null){
 					callback.done(trip, null);
+				} else {
+					callback.done(null,e);
+				}
+			}
+			@Override
+			public void done(CloudObject obj, CloudException e) throws CloudException {
+				if(obj != null){
+					callback.done(obj, null);
+				} else {
+					callback.done(null,e);
+				}
+			}
+		});
+
+	}
+
+	public static void findTripListByFieldsInBackground(
+			Map<String, Object> filter, final ITObjectArrayCallback<Trip> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		Iterator it = filter.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry e = (Map.Entry) it.next();
+			query.equalTo((String) e.getKey(), e.getValue());
+		}
+		query.find(new ITObjectArrayCallback<Trip>() {
+			@Override
+			public void done(Trip[] tripList, CloudException e) throws CloudException {
+				if (e == null) {
+					callback.done(tripList, null);
 				} else {
 					callback.done(null, e);
 				}
 			}
-		});
-	}
 
-	public static void findTripListByFieldsInBackground(
-			Map<String, Object> filter, final FindCallback<Trip> callback) {
-		ParseQuery<Trip> TripQuery = ParseQuery.getQuery(Trip.class);
-		Iterator it = filter.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry e = (Map.Entry) it.next();
-			TripQuery.whereEqualTo((String) e.getKey(), e.getValue());
-		}
-		TripQuery.findInBackground(new FindCallback<Trip>() {
 			@Override
-			public void done(List<Trip> tripList, ParseException e) {
+			public void done(CloudObject[] obj, CloudException e) throws CloudException {
 				if (e == null) {
-					callback.done(tripList, null);
+					callback.done(obj, null);
 				} else {
 					callback.done(null, e);
 				}

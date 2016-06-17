@@ -1,35 +1,32 @@
 package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@ParseClassName("TripCalendar")
-public class TripCalendar extends ParseObject implements Comparable<TripCalendar> {
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudQuery;
 
-	private static String TAG = Constants.TAG_TRIPCALENDARMODEL;
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 
+	private static String TABLENAME = Constants.TAG_TRIPCALENDARMODEL;
+
+	public TripCalendar(){
+		super(TABLENAME);
+	}
 	public String getDate() {
-		if(getDate(Constants.DATE)==null){
-			return null;
-		}
-		return df.format(getDate(Constants.DATE));
+		return getString(Constants.DATE);
 	}
 
-	public Date getDateDate(){
-		return getDate(Constants.DATE);
+	public Date getDateDate() throws ParseException {
+		return getDate(getDate());
 	}
 	public String getActivity() {
 		return getString(Constants.ACTIVITY);
@@ -51,36 +48,51 @@ public class TripCalendar extends ParseObject implements Comparable<TripCalendar
 
 	public Double getLongitude() { return getDouble(Constants.LONGITUDE);}
 
-	public static void findTripCalendarInBackground(String objectId,
-			final GetCallback<TripCalendar> callback) {
-		ParseQuery<TripCalendar> tripCalendar = ParseQuery.getQuery(TripCalendar.class);
-		tripCalendar.whereEqualTo(Constants.OBJECTID, objectId);
-		tripCalendar.getFirstInBackground(new GetCallback<TripCalendar>() {
+	public static void findTripCalendarInBackground(String objectId, final ITObjectCallback<TripCalendar> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		query.findById(objectId, new ITObjectCallback<TripCalendar>(){
 			@Override
-			public void done(TripCalendar tripCalendar, ParseException e) {
-
-				if (e == null) {
+			public void done(TripCalendar tripCalendar, CloudException e) {
+				if(tripCalendar != null){
 					callback.done(tripCalendar, null);
+				} else {
+					callback.done(null,e);
+				}
+			}
+			@Override
+			public void done(CloudObject obj, CloudException e) throws CloudException {
+				if(obj != null){
+					callback.done(obj, null);
+				} else {
+					callback.done(null,e);
+				}
+			}
+		});
+
+	}
+
+	public static void findTripCalendarListByFieldsInBackground(
+			Map<String, Object> filter, final ITObjectArrayCallback<TripCalendar> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		Iterator it = filter.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry e = (Map.Entry) it.next();
+			query.equalTo((String) e.getKey(), e.getValue());
+		}
+		query.find(new ITObjectArrayCallback<TripCalendar>() {
+			@Override
+			public void done(TripCalendar[] tripCalendarList, CloudException e) throws CloudException {
+				if (e == null) {
+					callback.done(tripCalendarList, null);
 				} else {
 					callback.done(null, e);
 				}
 			}
-		});
-	}
 
-	public static void findTripCalendarListByFieldsInBackground(
-			Map<String, Object> filter, final FindCallback<TripCalendar> callback) {
-		ParseQuery<TripCalendar> tripCalendar = ParseQuery.getQuery(TripCalendar.class);
-		Iterator it = filter.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry e = (Map.Entry) it.next();
-			tripCalendar.whereEqualTo((String) e.getKey(), e.getValue());
-		}
-		tripCalendar.findInBackground(new FindCallback<TripCalendar>() {
 			@Override
-			public void done(List<TripCalendar> tripCalendarList, ParseException e) {
+			public void done(CloudObject[] obj, CloudException e) throws CloudException {
 				if (e == null) {
-					callback.done(tripCalendarList, null);
+					callback.done(obj, null);
 				} else {
 					callback.done(null, e);
 				}
@@ -90,6 +102,11 @@ public class TripCalendar extends ParseObject implements Comparable<TripCalendar
 
 	@Override
 	public int compareTo(TripCalendar another) {
-		return this.getDateDate().compareTo(another.getDateDate());
+		try {
+			return this.getDateDate().compareTo(another.getDateDate());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }
