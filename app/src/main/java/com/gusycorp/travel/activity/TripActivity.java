@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity;
 
+import java.text.ParseException;
 import java.util.List;
 
 import android.app.Activity;
@@ -13,11 +14,13 @@ import android.widget.TextView;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.application.TravelApplication;
+import com.gusycorp.travel.model.ITObjectCallback;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.util.Constants;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudUser;
 
 
 public class TripActivity extends MenuActivity {
@@ -63,16 +66,24 @@ public class TripActivity extends MenuActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		getTrip(tripObjectId);
+		try {
+			getTrip(tripObjectId);
+		} catch (CloudException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void getTrip(String tripObjectId) {
-		Trip.findTripInBackground(tripObjectId, new GetCallback<Trip>() {
+	private void getTrip(String tripObjectId) throws CloudException {
+		Trip.findTripInBackground(tripObjectId, new ITObjectCallback<Trip>() {
+			@Override
+			public void done(CloudObject x, CloudException t) throws CloudException {
+
+			}
 
 			@Override
-			public void done(Trip tripFind, ParseException e) {
+			public void done(Trip tripFind, CloudException e) {
 				app.setCurrentTrip(tripFind);
-				if(ParseUser.getCurrentUser().getObjectId().equals(tripFind.getOrganizerId())){
+				if(CloudUser.getcurrentUser().getId().equals(tripFind.getOrganizerId())){
 					app.setIsOrganizer(true);
 					edit.setVisibility(View.VISIBLE);
 				}else{

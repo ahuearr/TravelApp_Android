@@ -25,6 +25,7 @@ import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectArrayCallback;
 import io.cloudboost.CloudQuery;
 import io.cloudboost.CloudUser;
+import io.cloudboost.CloudUserCallback;
 
 public class HomeActivity extends ListActivity {
 
@@ -79,17 +80,14 @@ public class HomeActivity extends ListActivity {
 			mainQuery.find(new CloudObjectArrayCallback() {
 				public void done(CloudObject[] tripList, CloudException e) {
 					mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
-					for(int i=0;i<tripList.length;i++){
-						Trip trip = tripList[i];
-					}
-					for (Trip trip : tripList) {
+					for (Trip trip : (Trip[]) tripList) {
 						if (Constants.VALUE_STATUS_FUTURE.equals(trip
 								.getStatus())) {
 							mAdapter.addItem(trip);
 						}
 					}
 					mAdapter.addSectionHeaderItem(getString(R.string.past_trips));
-					for (Trip trip : tripList) {
+					for (Trip trip : (Trip[]) tripList) {
 						if (Constants.VALUE_STATUS_PAST.equals(trip
 								.getStatus())) {
 							mAdapter.addItem(trip);
@@ -129,7 +127,7 @@ public class HomeActivity extends ListActivity {
 		Trip trip = (Trip) l.getAdapter().getItem(position);
 		if (trip != null) {
 			Intent intent = new Intent(this, TripActivity.class);
-			intent.putExtra("tripObjectId", trip.getObjectId());
+			intent.putExtra("tripObjectId", trip.getId());
 			startActivity(intent);
 		}
 	}
@@ -138,10 +136,18 @@ public class HomeActivity extends ListActivity {
 	public void onBackPressed()
 	{
 		if (currentUser != null) {
-			currentUser.logOut();
-			Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
-			startActivity(in);
-			finish();
+			try {
+				currentUser.logOut(new CloudUserCallback() {
+                    @Override
+                    public void done(CloudUser user, CloudException e) throws CloudException {
+						Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
+						startActivity(in);
+						finish();
+                    }
+                });
+			} catch (CloudException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

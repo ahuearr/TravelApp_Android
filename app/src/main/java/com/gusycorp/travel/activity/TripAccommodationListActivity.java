@@ -14,9 +14,6 @@ import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +58,7 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
     @Override
     public void onResume() {
         super.onResume();
-        getTripAccommodations(currentTrip.getObjectId());
+        getTripAccommodations(currentTrip.getId());
     }
 
     @Override

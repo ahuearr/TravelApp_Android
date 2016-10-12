@@ -16,12 +16,17 @@ import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
 
 
 public class TripAccommodationActivity extends MenuActivity implements OnClickListener{
@@ -108,14 +113,14 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 				if(checkMandatory()){
 					try{
 						Date date = df.parse(dateArrival.getText().toString());
-						tripAccommodation.put(Constants.DATEFROM, date);
+						tripAccommodation.set(Constants.DATEFROM, date);
 						date = df.parse(dateDepart.getText().toString());
-						tripAccommodation.put(Constants.DATETO, date);
-						tripAccommodation.put(Constants.PLACE, place.getText().toString());
-						tripAccommodation.put(Constants.CITY, city.getText().toString());
-						tripAccommodation.put(Constants.ADDRESS, address.getText().toString());
-						tripAccommodation.put(Constants.NUMROOMS, Integer.parseInt(numRooms.getText().toString()));
-						tripAccommodation.put(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
+						tripAccommodation.set(Constants.DATETO, date);
+						tripAccommodation.set(Constants.PLACE, place.getText().toString());
+						tripAccommodation.set(Constants.CITY, city.getText().toString());
+						tripAccommodation.set(Constants.ADDRESS, address.getText().toString());
+						tripAccommodation.set(Constants.NUMROOMS, Integer.parseInt(numRooms.getText().toString()));
+						tripAccommodation.set(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
 
 						if(objectId!=null){
 							update();
@@ -123,6 +128,8 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 							save();
 						}
 					} catch (java.text.ParseException e){
+						e.printStackTrace();
+					} catch (CloudException e) {
 						e.printStackTrace();
 					}
 				} else{
@@ -136,27 +143,34 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 		}
 	}
 
-	private void save(){
-		try {
-			tripAccommodation.save();
-			ParseRelation<TripAccommodation> tripAccommodationRelation = currentTrip.getRelation(Constants.TRIPACCOMMODATION);
-			tripAccommodationRelation.add(tripAccommodation);
-			currentTrip.save();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		goOK();
+	private void save() throws CloudException {
+		tripAccommodation.save(new CloudObjectCallback() {
+			@Override
+			public void done(CloudObject x, CloudException t) throws CloudException {
+				tripAccommodation = (TripAccommodation) x;
+				List<TripAccommodation> tripAccommodations = currentTrip.getTripAccommodationList();
+				tripAccommodations.add(tripAccommodation);
+				currentTrip.set(Constants.TRIPACCOMMODATION, tripAccommodations);
+				currentTrip.save(new CloudObjectCallback() {
+					@Override
+					public void done(CloudObject x, CloudException t) throws CloudException {
+						Trip trip = (Trip) x;
+						app.setCurrentTrip(trip);
+						goOK();
+					}
+				});
+			}
+		});
 	}
 
-	private void update() {
-		try {
-			tripAccommodation.save();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		goOK();
+	private void update() throws CloudException {
+		tripAccommodation.save(new CloudObjectCallback() {
+			@Override
+			public void done(CloudObject x, CloudException t) throws CloudException {
+				//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??
+				goOK();
+			}
+		});
 	}
 	private boolean checkMandatory(){
 		if(viewIsEmpty(place) || viewIsEmpty(city)
