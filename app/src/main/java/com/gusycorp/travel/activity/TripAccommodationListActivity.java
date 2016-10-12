@@ -83,36 +83,28 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
         itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR, getString(R.string.checkout));
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIPACCOMMODATION);
+        List<TripAccommodation> tripAccommodationList = currentTrip.getTripAccommodationList();
 
-        tripAccommodation.getQuery().findInBackground(new FindCallback<TripAccommodation>() {
-            public void done(List<TripAccommodation> tripAccommodationList, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    for (TripAccommodation tripAccommodation : tripAccommodationList) {
-                        mAdapter.addItem(tripAccommodation);
-                    }
-                    listView.setAdapter(mAdapter);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            TripAccommodation tripAccommodation = (TripAccommodation) listView.getAdapter().getItem(position);
-                            if (tripAccommodation != null) {
-                                app.setCurrentTripAccommodation(tripAccommodation);
-                                Intent intent = new Intent(TripAccommodationListActivity.this, TripAccommodationActivity.class);
-                                intent.putExtra(Constants.OBJECTID, tripAccommodation.getObjectId());
-                                intent.putExtra(Constants.PLACE, tripAccommodation.getPlace());
-                                intent.putExtra(Constants.CITY, tripAccommodation.getCity());
-                                intent.putExtra(Constants.DATEFROM, tripAccommodation.getDateFrom());
-                                intent.putExtra(Constants.DATETO, tripAccommodation.getDateTo());
-                                intent.putExtra(Constants.ADDRESS, tripAccommodation.getAddress());
-                                intent.putExtra(Constants.NUMROOMS, tripAccommodation.getNumRooms());
-                                intent.putExtra(Constants.PRIZE, tripAccommodation.getPrize());
-                                startActivity(intent);
-                            }
-                        }
-                    });
+        for (TripAccommodation tripAccommodation : tripAccommodationList) {
+            mAdapter.addItem(tripAccommodation);
+        }
+        listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TripAccommodation tripAccommodation = (TripAccommodation) listView.getAdapter().getItem(position);
+                if (tripAccommodation != null) {
+                    app.setCurrentTripAccommodation(tripAccommodation);
+                    Intent intent = new Intent(TripAccommodationListActivity.this, TripAccommodationActivity.class);
+                    intent.putExtra(Constants.OBJECTID, tripAccommodation.getId());
+                    intent.putExtra(Constants.PLACE, tripAccommodation.getPlace());
+                    intent.putExtra(Constants.CITY, tripAccommodation.getCity());
+                    intent.putExtra(Constants.DATEFROM, tripAccommodation.getDateFrom());
+                    intent.putExtra(Constants.DATETO, tripAccommodation.getDateTo());
+                    intent.putExtra(Constants.ADDRESS, tripAccommodation.getAddress());
+                    intent.putExtra(Constants.NUMROOMS, tripAccommodation.getNumRooms());
+                    intent.putExtra(Constants.PRIZE, tripAccommodation.getPrize());
+                    startActivity(intent);
                 }
             }
         });

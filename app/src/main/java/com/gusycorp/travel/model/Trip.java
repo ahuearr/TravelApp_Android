@@ -63,6 +63,12 @@ public class Trip extends ITObject {
 		return Arrays.asList(array);
 	}
 
+	public List<TripMate> getTripMateList(){
+		Object[] objectArray = getArray(Constants.TRIPMATE);
+		TripMate[] array = Arrays.copyOf(objectArray, objectArray.length, TripMate[].class);
+		return Arrays.asList(array);
+	}
+
 	public static void findTripInBackground(String objectId, final ITObjectCallback<Trip> callback) throws CloudException {
 		CloudQuery query = new CloudQuery(TABLENAME);
 		query.findById(objectId, new ITObjectCallback<Trip>(){
