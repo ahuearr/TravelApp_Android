@@ -17,16 +17,19 @@ import android.widget.Toast;
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
 
 
 public class TripTransportActivity extends MenuActivity implements OnClickListener{
@@ -131,16 +134,16 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 				if(checkMandatory()){
 					try{
 						Date date = df.parse(dateDepart.getText().toString());
-						tripTransport.put(Constants.DATEFROM, date);
+						tripTransport.set(Constants.DATEFROM, date);
 						date = df.parse(dateArrival.getText().toString());
-						tripTransport.put(Constants.DATETO, date);
-						tripTransport.put(Constants.FROM, cityDepart.getText().toString());
-						tripTransport.put(Constants.TO, cityArrival.getText().toString());
-						tripTransport.put(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
-						tripTransport.put(Constants.LOCATOR, locator.getText().toString());
+						tripTransport.set(Constants.DATETO, date);
+						tripTransport.set(Constants.FROM, cityDepart.getText().toString());
+						tripTransport.set(Constants.TO, cityArrival.getText().toString());
+						tripTransport.set(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
+						tripTransport.set(Constants.LOCATOR, locator.getText().toString());
 
 						final TypeTransport typeTransportSelected = (TypeTransport) typeTransport.getSelectedItem();
-						tripTransport.put(Constants.TYPETRANSPORT, typeTransportSelected);
+						tripTransport.set(Constants.TYPETRANSPORT, typeTransportSelected);
 
 						if(objectId!=null){
 							update();
@@ -148,6 +151,8 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 							save();
 						}
 					} catch (java.text.ParseException e){
+						e.printStackTrace();
+					} catch (CloudException e) {
 						e.printStackTrace();
 					}
 				} else{
@@ -163,25 +168,40 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 	private void save(){
 		try {
-			tripTransport.save();
-			ParseRelation<TripTransport> tripTransportRelation = currentTrip.getRelation(Constants.TRIPTRANSPORT);
-			tripTransportRelation.add(tripTransport);
-			currentTrip.save();
-		} catch (ParseException e) {
+			tripTransport.save(new CloudObjectCallback() {
+				@Override
+				public void done(CloudObject x, CloudException t) throws CloudException {
+					tripTransport = (TripTransport) x;
+					List<TripTransport> tripTransports = currentTrip.getTripTransportList();
+					tripTransports.add(tripTransport);
+					currentTrip.set(Constants.TRIPTRANSPORT, tripTransports);
+					currentTrip.save(new CloudObjectCallback() {
+						@Override
+						public void done(CloudObject x, CloudException t) throws CloudException {
+							Trip trip = (Trip) x;
+							app.setCurrentTrip(trip);
+							goOK();
+						}
+					});
+				}
+			});
+		} catch (CloudException e) {
 			e.printStackTrace();
 		}
-
-		goOK();
 	}
 
 	private void update() {
 		try {
-			tripTransport.save();
-		} catch (ParseException e) {
+			tripTransport.save(new CloudObjectCallback() {
+				@Override
+				public void done(CloudObject x, CloudException t) throws CloudException {
+					//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??
+					goOK();
+				}
+			});
+		} catch (CloudException e) {
 			e.printStackTrace();
 		}
-
-		goOK();
 	}
 	private boolean checkMandatory(){
 		if(viewIsEmpty(dateDepart) || viewIsEmpty(dateArrival)

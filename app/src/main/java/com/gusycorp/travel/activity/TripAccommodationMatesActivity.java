@@ -149,6 +149,7 @@ public class TripAccommodationMatesActivity extends MenuActivity implements View
                         @Override
                         public void done(CloudObject x, CloudException t) throws CloudException {
                             TripMatePrize tripMatePrize = (TripMatePrize) x;
+                            //TODO Grabacion correcta de amigos?
                             tripAccommodationMateList.add(tripMatePrize);
                         }
                     });

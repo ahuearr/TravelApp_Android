@@ -5,6 +5,7 @@ import com.gusycorp.travel.util.Constants;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -59,7 +60,13 @@ public class TripTransport extends ITObject {
 
 	public Double getLatitudeTo() { return getDouble(Constants.LATITUDETO);}
 
-	public Double getLongtiudeTo() { return getDouble(Constants.LONGITUDETO);}
+	public Double getLongitudeTo() { return getDouble(Constants.LONGITUDETO);}
+
+	public List<TripMatePrize> getTripMatePrizeList(){
+		Object[] objectArray = getArray(Constants.TRIPMATEPRIZE);
+		TripMatePrize[] array = Arrays.copyOf(objectArray, objectArray.length, TripMatePrize[].class);
+		return Arrays.asList(array);
+	}
 
 	public static void findTripTransportInBackground(String objectId, final ITObjectCallback<TripTransport> callback) throws CloudException {
 		CloudQuery query = new CloudQuery(TABLENAME);
