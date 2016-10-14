@@ -64,8 +64,14 @@ public class Trip extends ITObject {
 	}
 
 	public List<TripTransport> getTripTransportList(){
-		Object[] objectArray = getArray(Constants.TRIPACCOMMODATION);
+		Object[] objectArray = getArray(Constants.TRIPTRANSPORT);
 		TripTransport[] array = Arrays.copyOf(objectArray, objectArray.length, TripTransport[].class);
+		return Arrays.asList(array);
+	}
+
+	public List<TripCalendar> getTripCalendarList(){
+		Object[] objectArray = getArray(Constants.TRIPCALENDAR);
+		TripCalendar[] array = Arrays.copyOf(objectArray, objectArray.length, TripCalendar[].class);
 		return Arrays.asList(array);
 	}
 
