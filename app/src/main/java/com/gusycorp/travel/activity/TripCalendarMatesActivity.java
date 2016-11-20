@@ -14,14 +14,15 @@ import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.model.TripMatePrize;
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
 
 public class TripCalendarMatesActivity extends MenuActivity implements View.OnClickListener{
 
@@ -76,7 +77,7 @@ public class TripCalendarMatesActivity extends MenuActivity implements View.OnCl
     @Override
     public void onResume() {
         super.onResume();
-        getTripMates(currentTrip.getObjectId());
+        getTripMates(currentTrip.getId());
     }
 
     @Override
@@ -100,59 +101,66 @@ public class TripCalendarMatesActivity extends MenuActivity implements View.OnCl
 
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        ParseRelation<TripMate> tripMateRelation = currentTrip.getRelation(Constants.TRIPMATE);
+        List<TripMate> tripMateList = currentTrip.getTripMateList();
 
-        tripMateRelation.getQuery().findInBackground(new FindCallback<TripMate>() {
-            @Override
-            public void done(final List<TripMate> tripMateList, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    tripMates.addAll(tripMateList);
-                    final ParseRelation<TripMatePrize> tripCalendarMate = currentTripCalendar.getRelation(Constants.TRIPMATEPRIZE);
-                    tripCalendarMate.getQuery().findInBackground(new FindCallback<TripMatePrize>() {
+        tripMates.addAll(tripMateList);
+
+        final List<TripMatePrize> tripCalendarMateList = currentTripCalendar.getTripMatePrizeList();
+
+        for(TripMatePrize tripMatePrize : tripCalendarMateList){
+            mAdapter.addItem(tripMatePrize);
+            tripMatefromTripMatePrize.add(tripMatePrize.getTripMate());
+        }
+
+        for(TripMate tripMate : tripMateList){
+            if(!tripMatefromTripMatePrize.contains(tripMate)){
+                TripMatePrize tripMatePrize = new TripMatePrize();
+                try {
+                    tripMatePrize.set(Constants.TRIPMATE, tripMate);
+                    tripMatePrize.set(Constants.PRIZE, BigDecimal.ZERO);
+                    tripMatePrize.save(new CloudObjectCallback() {
                         @Override
-                        public void done(List<TripMatePrize> tripCalendarMateList, ParseException e) {
-
-                            for(TripMatePrize tripMatePrize : tripCalendarMateList){
-                                mAdapter.addItem(tripMatePrize);
-                                tripMatefromTripMatePrize.add(tripMatePrize.getTripMate());
-                            }
-
-                            for(TripMate tripMate : tripMateList){
-                                if(!tripMatefromTripMatePrize.contains(tripMate)){
-                                    TripMatePrize tripMatePrize = new TripMatePrize();
-                                    tripMatePrize.put(Constants.TRIPMATE, tripMate);
-                                    tripMatePrize.put(Constants.PRIZE, BigDecimal.ZERO);
-                                    try {
-                                        tripMatePrize.save();
-                                        tripCalendarMate.add(tripMatePrize);
-                                        currentTripCalendar.save();
-                                    } catch (ParseException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                    mAdapter.addItem(tripMatePrize);
+                        public void done(CloudObject x, CloudException t) throws CloudException {
+                            TripMatePrize tripMatePrize = (TripMatePrize) x;
+                            tripCalendarMateList.add(tripMatePrize);
+                            currentTripCalendar.save(new CloudObjectCallback() {
+                                @Override
+                                public void done(CloudObject x, CloudException t) throws CloudException {
                                 }
-                            }
-                            listView.setAdapter(mAdapter);
+                            });
                         }
                     });
+                } catch (CloudException e1) {
+                    e1.printStackTrace();
                 }
+                mAdapter.addItem(tripMatePrize);
             }
-        });
+        }
+        listView.setAdapter(mAdapter);
     }
 
     private void saveCalendarMates() {
         try {
-            final ParseRelation<TripMatePrize> tripCalendarMate = currentTripCalendar.getRelation(Constants.TRIPMATEPRIZE);
-            for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
+            final List<TripMatePrize> tripCalendarMateList = currentTripCalendar.getTripMatePrizeList();
+
+            for(final TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
                 if(tripMatePrize!=null){
-                    tripMatePrize.save();
-                    tripCalendarMate.add(tripMatePrize);
+                    tripMatePrize.save(new CloudObjectCallback() {
+                        @Override
+                        public void done(CloudObject x, CloudException t) throws CloudException {
+                            TripMatePrize tripCalendarMate = (TripMatePrize) x;
+                            //TODO Grabacion correcta de amigos?
+                            tripCalendarMateList.add(tripMatePrize);
+                        }
+                    });
                 }
             }
-            currentTripCalendar.save();
-        } catch (ParseException e) {
+            currentTripCalendar.save(new CloudObjectCallback() {
+                @Override
+                public void done(CloudObject x, CloudException t) throws CloudException {
+                }
+            });
+        } catch (CloudException e) {
             e.printStackTrace();
         }
 
@@ -166,7 +174,11 @@ public class TripCalendarMatesActivity extends MenuActivity implements View.OnCl
         }
         for(int i=0;i<mAdapter.getTripMateList().size();i++){
             if (mAdapter.getTripMateList().get(i) != null) {
-                mAdapter.getTripMateList().get(i).put(Constants.PRIZE, sharedPrize);
+                try {
+                    mAdapter.getTripMateList().get(i).set(Constants.PRIZE, sharedPrize);
+                } catch (CloudException e) {
+                    e.printStackTrace();
+                }
             }
         }
         mAdapter.notifyDataSetChanged();

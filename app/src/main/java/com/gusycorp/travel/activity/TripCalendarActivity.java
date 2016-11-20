@@ -14,14 +14,19 @@ import android.widget.Toast;
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.util.Constants;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
 
 
 public class TripCalendarActivity extends MenuActivity implements OnClickListener{
@@ -99,19 +104,21 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 				if(checkMandatory()){
 					try{
 						Date dateActivity = df.parse(date.getText().toString());
-						tripCalendar.put(Constants.DATE, dateActivity);
-						tripCalendar.put(Constants.ACTIVITY, activity.getText().toString());
-						tripCalendar.put(Constants.PLACE, place.getText().toString());
-						tripCalendar.put(Constants.CITY, city.getText().toString());
-						tripCalendar.put(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
-						tripCalendar.put(Constants.ISACTIVITY, true);
+						tripCalendar.set(Constants.DATE, dateActivity);
+						tripCalendar.set(Constants.ACTIVITY, activity.getText().toString());
+						tripCalendar.set(Constants.PLACE, place.getText().toString());
+						tripCalendar.set(Constants.CITY, city.getText().toString());
+						tripCalendar.set(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
+						tripCalendar.set(Constants.ISACTIVITY, true);
 
 						if(objectId!=null){
 							update();
 						} else {
 							save();
 						}
-					} catch (java.text.ParseException e){
+					} catch (CloudException e) {
+						e.printStackTrace();
+					} catch (ParseException e) {
 						e.printStackTrace();
 					}
 				} else{
@@ -127,11 +134,24 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 
 	private void save(){
 		try {
-			tripCalendar.save();
-			ParseRelation<TripCalendar> tripCalendarRelation = currentTrip.getRelation(Constants.TRIPCALENDAR);
-			tripCalendarRelation.add(tripCalendar);
-			currentTrip.save();
-		} catch (ParseException e) {
+			tripCalendar.save(new CloudObjectCallback() {
+				@Override
+				public void done(CloudObject x, CloudException t) throws CloudException {
+					tripCalendar = (TripCalendar) x;
+					List<TripCalendar> tripCalendars = currentTrip.getTripCalendarList();
+					tripCalendars.add(tripCalendar);
+					currentTrip.set(Constants.TRIPCALENDAR, tripCalendars);
+					currentTrip.save(new CloudObjectCallback() {
+						@Override
+						public void done(CloudObject x, CloudException t) throws CloudException {
+							Trip trip = (Trip) x;
+							app.setCurrentTrip(trip);
+							goOK();
+						}
+					});
+				}
+			});
+		} catch (CloudException e) {
 			e.printStackTrace();
 		}
 
@@ -140,8 +160,14 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 
 	private void update() {
 		try {
-			tripCalendar.save();
-		} catch (ParseException e) {
+			tripCalendar.save(new CloudObjectCallback() {
+				@Override
+				public void done(CloudObject x, CloudException t) throws CloudException {
+					//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??
+					goOK();
+				}
+			});
+		} catch (CloudException e) {
 			e.printStackTrace();
 		}
 
