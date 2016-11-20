@@ -19,6 +19,8 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.cloudboost.CloudException;
+
 /**
  * Created by agustin.huerta on 24/07/2015.
  */
@@ -121,7 +123,11 @@ public class ListTripActivitiesMateAdapter extends ArrayAdapter<TripMatePrize> {
                         final int position = v.getId();
                         final EditText matePrize = (EditText) v;
                         double prize = StringUtils.isNotBlank(matePrize.getText().toString()) ? Double.parseDouble(matePrize.getText().toString()) : 0.0;
-                        mData.get(position).put(Constants.PRIZE, prize);
+                        try {
+                            mData.get(position).set(Constants.PRIZE, prize);
+                        } catch (CloudException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });

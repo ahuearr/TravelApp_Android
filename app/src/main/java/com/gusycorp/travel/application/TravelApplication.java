@@ -2,6 +2,7 @@ package com.gusycorp.travel.application;
 
 import android.app.Application;
 
+import com.gusycorp.travel.model.ITObjectArrayCallback;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
@@ -11,14 +12,14 @@ import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
 import com.gusycorp.travel.util.Utils;
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
 
 public class TravelApplication extends Application {
 
@@ -33,16 +34,6 @@ public class TravelApplication extends Application {
 	private boolean isOrganizer;
 
 	public void onCreate() {
-		ParseObject.registerSubclass(Trip.class);
-		ParseObject.registerSubclass(TripTransport.class);
-		ParseObject.registerSubclass(TypeTransport.class);
-		ParseObject.registerSubclass(TripAccommodation.class);
-		ParseObject.registerSubclass(TripCalendar.class);
-		ParseObject.registerSubclass(TripMate.class);
-		ParseObject.registerSubclass(TripMatePrize.class);
-		Parse.enableLocalDatastore(this);
-		Parse.initialize(this, Utils.APPLICATION_ID, Utils.PARSE_KEY);
-
 		getListsSpinners();
 	}
 
@@ -100,13 +91,22 @@ public class TravelApplication extends Application {
 
 	void getListsSpinners(){
 		HashMap<String, Object> filter = new HashMap();
-		TypeTransport.findTypeTransportListByFieldsInBackground(filter, new FindCallback<TypeTransport>() {
+        try {
+            TypeTransport.findTypeTransportListByFieldsInBackground(filter, new ITObjectArrayCallback<TypeTransport>() {
+                @Override
+                public void done(TypeTransport[] x, CloudException t) throws CloudException {
+                    ArrayList<TypeTransport> typeTransportList = new ArrayList<TypeTransport>(Arrays.asList(x));
+                    transportstype.addAll(typeTransportList);
+                }
 
-			@Override
-			public void done(List<TypeTransport> list, ParseException e) {
-				transportstype.addAll(list);
-			}
-		});
-	}
+                @Override
+                public void done(CloudObject[] x, CloudException t) throws CloudException {
+
+                }
+            });
+        } catch (CloudException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

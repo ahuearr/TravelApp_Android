@@ -18,15 +18,19 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
 
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectArrayCallback;
+import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudQuery;
+import io.cloudboost.CloudUser;
 
 public class TripMatesActivity extends MenuActivity implements View.OnClickListener{
 
@@ -71,7 +75,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        getTripMates(currentTrip.getObjectId());
+        getTripMates(currentTrip.getId());
     }
 
     @Override
@@ -80,7 +84,11 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             case R.id.add_mate_trip:
                 String mate = mateText.getText().toString();
                 if(!"".equals(mate)){
-                    addMateToTrip(mate);
+                    try {
+                        addMateToTrip(mate);
+                    } catch (CloudException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     Toast.makeText(this, getString(R.string.user_not_exists), Toast.LENGTH_LONG).show();
                 }
@@ -98,30 +106,22 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
         itemHeader.put(getString(R.string.rol), getString(R.string.rol));
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        ParseRelation<TripMate> tripMate = currentTrip.getRelation(Constants.TRIPMATE);
+        List<TripMate> tripMateList = currentTrip.getTripMateList();
 
-        tripMate.getQuery().findInBackground(new FindCallback<TripMate>() {
-            public void done(List<TripMate> tripMateList, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    tripMates.addAll(tripMateList);
-                    for (TripMate tripMate : tripMateList) {
-                        mAdapter.addItem(tripMate);
-                    }
-                    listView.setAdapter(mAdapter);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            //TODO Delete Mate
-                        }
-                    });
-                }
+        tripMates.addAll(tripMateList);
+        for (TripMate tripMate : tripMateList) {
+            mAdapter.addItem(tripMate);
+        }
+        listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO Delete Mate
             }
         });
     }
 
-    private void addMateToTrip(String mate) {
+    private void addMateToTrip(String mate) throws CloudException {
         boolean existsMate = false;
         for(TripMate tripMate : tripMates){
             if(mate.equals(tripMate.getUsername())){
@@ -129,26 +129,36 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             }
         }
         if(!existsMate){
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
-            query.whereEqualTo(Constants.USERNAME, mate);
-            query.findInBackground(new FindCallback<ParseUser>() {
-                public void done(List<ParseUser> userList, ParseException e) {
+            CloudQuery query = new CloudQuery("User");
+            query.equalTo(Constants.USERNAME, mate);
+            query.find(new CloudObjectArrayCallback() {
+                public void done(CloudObject[] obj, final CloudException e) {
                     if (e == null) {
-                        TripMate tripMate = new TripMate();
-                        tripMate.put(Constants.USERID,userList.get(0).getObjectId());
-                        tripMate.put(Constants.USERNAME,userList.get(0).get(Constants.USERNAME));
-                        tripMate.put(Constants.ORGANIZER, false);
+                        CloudUser user = (CloudUser) obj[0];
+                        final TripMate[] tripMate = {new TripMate()};
                         try {
-                            tripMate.save();
-                            ParseRelation<TripMate> tripMateRelation = currentTrip.getRelation(Constants.TRIPMATE);
-                            tripMateRelation.add(tripMate);
-                            ParseRelation<ParseUser> tripUserRelation = currentTrip.getRelation(Constants.USER);
-                            tripUserRelation.add(userList.get(0));
-                            currentTrip.save();
-                            tripMates.add(tripMate);
-                            mAdapter.addItem(tripMate);
-                            mAdapter.notifyDataSetChanged();
-                        } catch (ParseException e1) {
+                            tripMate[0].set(Constants.USERID,user.getId());
+                            tripMate[0].set(Constants.USERNAME,user.get(Constants.USERNAME));
+                            tripMate[0].set(Constants.ORGANIZER, false);
+                            tripMate[0].save(new CloudObjectCallback() {
+                                @Override
+                                public void done(CloudObject x, CloudException t) throws CloudException {
+                                    tripMate[0] = (TripMate) x;
+                                    List<TripMate> tripMateList = currentTrip.getTripMateList();
+                                    tripMateList.add(tripMate[0]);
+                                    currentTrip.set(Constants.TRIPMATE, tripMateList);
+                                    currentTrip.save(new CloudObjectCallback() {
+                                        @Override
+                                        public void done(CloudObject x, CloudException t) throws CloudException {
+                                            currentTrip = (Trip) x;
+                                            tripMates.add(tripMate[0]);
+                                            mAdapter.addItem(tripMate[0]);
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                                }
+                            });
+                        } catch (CloudException e1) {
                             e1.printStackTrace();
                         }
                     } else {
