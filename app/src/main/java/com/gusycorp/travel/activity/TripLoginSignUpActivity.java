@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -137,12 +138,49 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             Toast.makeText(getApplicationContext(),getString(R.string.signUp), Toast.LENGTH_SHORT).show();
-            signUp(mUsername.toLowerCase(Locale.getDefault()), mEmail, mPassword);
+            new SignUp().execute(mUsername.toLowerCase(Locale.getDefault()), mEmail, mPassword);
+            //signUp(mUsername.toLowerCase(Locale.getDefault()), mEmail, mPassword);
 
         }
 
     }
 
+    private class SignUp extends AsyncTask <String, Void, Void> {
+
+        private String mUsername;
+        private String mEmail;
+        private String mPassword;
+
+        @Override
+        protected Void doInBackground(String... params) {
+            mUsername = params[0];
+            mEmail = params[1];
+            mPassword = params[2];
+            CloudUser user = new CloudUser();
+            user.setUserName(mUsername);
+            user.setPassword(mPassword);
+            user.setEmail(mEmail);
+
+            try {
+                user.signUp(new CloudUserCallback() {
+                    @Override
+                    public void done(CloudUser user, CloudException e) throws CloudException {
+                        if (user != null) {
+                            Intent in = new Intent(getApplicationContext(), HomeActivity.class);
+                            startActivity(in);
+                        }
+                    }
+                });
+            } catch (CloudException e) {
+                e.printStackTrace();
+                // Sign up didn't succeed. Look at the ParseException
+                // to figure out what went wrong
+                signUpMsg(getString(R.string.cuenta_existente));
+            }
+            return null;
+        }
+
+    }
     private void signUp(final String mUsername, String mEmail, String mPassword) {
         Toast.makeText(getApplicationContext(), mUsername + " - " + mEmail, Toast.LENGTH_SHORT).show();
         CloudUser user = new CloudUser();
