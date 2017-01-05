@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.Accommodation.TripAccommodationListActivity;
+import com.gusycorp.travel.activity.Calendar.TripCalendarListActivity;
+import com.gusycorp.travel.activity.Map.TripMapActivity;
+import com.gusycorp.travel.activity.Mates.TripMatesActivity;
+import com.gusycorp.travel.activity.Transport.TripTransportListActivity;
 import com.gusycorp.travel.application.TravelApplication;
 
 import java.util.Arrays;

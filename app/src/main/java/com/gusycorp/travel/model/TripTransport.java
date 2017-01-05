@@ -2,6 +2,8 @@ package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
 
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,11 +32,11 @@ public class TripTransport extends ITObject {
 		return getString(Constants.DATETO);
 	}
 
-	public Date getDateFromDate() throws ParseException {
+	public DateTime getDateFromDate() throws ParseException {
 		return getDate(getDateFrom());
 	}
 
-	public Date getDateToDate() throws ParseException {
+	public DateTime getDateToDate() throws ParseException {
 		return getDate(getDateTo());
 	}
 
@@ -72,7 +74,7 @@ public class TripTransport extends ITObject {
 		CloudQuery query = new CloudQuery(TABLENAME);
 		query.findById(objectId, new ITObjectCallback<TripTransport>(){
 			@Override
-			public void done(TripTransport tripTransport, CloudException e) {
+			public void done(TripTransport tripTransport, CloudException e) throws CloudException {
 				if(tripTransport != null){
 					callback.done(tripTransport, null);
 				} else {

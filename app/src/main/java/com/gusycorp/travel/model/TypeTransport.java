@@ -28,7 +28,7 @@ public class TypeTransport extends ITObject {
 		CloudQuery query = new CloudQuery(TABLENAME);
 		query.findById(objectId, new ITObjectCallback<TypeTransport>(){
 			@Override
-			public void done(TypeTransport typeTransport, CloudException e) {
+			public void done(TypeTransport typeTransport, CloudException e) throws CloudException {
 				if(typeTransport != null){
 					callback.done(typeTransport, null);
 				} else {

@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3' // 1.3.0-beta4
+        classpath 'com.android.tools.build:gradle:2.2.3' // 1.3.0-beta4
     }
 }
 
@@ -39,6 +39,7 @@ repositories { jcenter() }
 dependencies {
     compile files('libs/bolts-android-1.2.0.jar')
     compile files('libs/dagger-1.2.2.jar')
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.6'
     compile group: 'io.cloudboost', name: 'JavaSDK', version: '1.0.7'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
     androidTestCompile 'com.android.support.test:runner:0.3'

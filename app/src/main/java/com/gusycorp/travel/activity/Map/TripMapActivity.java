@@ -1,4 +1,4 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Map;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -33,7 +33,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

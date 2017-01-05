@@ -1,6 +1,5 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Mates;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,16 +10,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
-import com.gusycorp.travel.adapter.ListTripAccommodationAdapter;
+import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.adapter.ListTripMateAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
-import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.util.Constants;
 
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -2,6 +2,8 @@ package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
 
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +28,7 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 		return getString(Constants.DATE);
 	}
 
-	public Date getDateDate() throws ParseException {
+	public DateTime getDateDate() throws ParseException {
 		return getDate(getDate());
 	}
 	public String getActivity() {
@@ -60,7 +62,7 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 		CloudQuery query = new CloudQuery(TABLENAME);
 		query.findById(objectId, new ITObjectCallback<TripCalendar>(){
 			@Override
-			public void done(TripCalendar tripCalendar, CloudException e) {
+			public void done(TripCalendar tripCalendar, CloudException e) throws CloudException {
 				if(tripCalendar != null){
 					callback.done(tripCalendar, null);
 				} else {

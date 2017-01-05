@@ -1,10 +1,11 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Login;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -15,8 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.HomeActivity;
 import com.gusycorp.travel.util.ConnectionDetector;
-import com.gusycorp.travel.util.Constants;
 import com.gusycorp.travel.util.Utils;
 
 import java.util.Locale;
@@ -96,7 +97,7 @@ public class TripLoginActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent in =  new Intent(TripLoginActivity.this,TripLoginForgetParsePasswordActivity.class);
+                Intent in =  new Intent(TripLoginActivity.this,TripLoginForgetPasswordActivity.class);
                 startActivity(in);
                 finish();
             }
@@ -149,7 +150,7 @@ public class TripLoginActivity extends Activity {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password.
+        // Check for a valid email.
         if (TextUtils.isEmpty(password)) {
             mPasswordEditText.setError(getString(R.string.error_field_required));
             focusView = mPasswordEditText;
@@ -173,25 +174,7 @@ public class TripLoginActivity extends Activity {
             focusView.requestFocus();
         } else {
             // perform the user login attempt.
-            login(username.toLowerCase(Locale.getDefault()), password);
-        }
-    }
-
-    private void login(String lowerCase, String password) {
-        CloudUser user = new CloudUser();
-        user.setUserName(lowerCase);
-        user.setPassword(password);
-        try {
-            user.logIn(new CloudUserCallback() {
-                @Override
-                public void done(CloudUser user, CloudException e) throws CloudException {
-                    if (user != null) {
-                        loginSuccessful(user);
-                    }
-                }
-            });
-        } catch (CloudException e) {
-            loginUnSuccessful();
+            new Login().execute(username.toLowerCase(Locale.getDefault()), password);
         }
     }
 
@@ -202,7 +185,6 @@ public class TripLoginActivity extends Activity {
     }
     protected void loginUnSuccessful() {
         // TODO Auto-generated method stub
-        Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
         showAlertDialog(TripLoginActivity.this,getString(R.string.login), getString(R.string.login_password_incorrect), false);
     }
 
@@ -234,6 +216,42 @@ public class TripLoginActivity extends Activity {
         alertDialog.show();
     }
 
+    private class Login extends AsyncTask<String, Void, Integer> {
+
+        private String username;
+        private String password;
+
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            username=params[0];
+            password=params[1];
+
+            CloudUser user = new CloudUser();
+            user.setUserName(username);
+            user.setPassword(password);
+            try {
+                user.logIn(new CloudUserCallback() {
+                    @Override
+                    public void done(CloudUser user, CloudException e) throws CloudException {
+                        if (user != null) {
+                            loginSuccessful(user);
+                        }
+                    }
+                });
+            } catch (CloudException e) {
+                return 1;
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if(result==1){
+                loginUnSuccessful();
+            }
+        }
+    }
 
 
 

@@ -2,7 +2,7 @@ package com.gusycorp.travel.util;
 
 public class Constants {
 
-	public final static String DATE_MASK = "dd/MM/yyyy HH:mm";
+	public final static String DATE_MASK = "dd/MM/yyyy HH:mm:ss";
 	public final static String ONLY_DATE_MASK = "dd/MM/yyyy";
 
 	// Adapters
@@ -85,9 +85,9 @@ public class Constants {
 	public static final String TRIPCALENDARLIST_COLUMN_TWO="Actividad";
 
 	// TripMate
-	public final static String TAG_TRIPMATEMODEL = "TripModel";
+	public final static String TAG_TRIPMATEMODEL = "TripMate";
 	public final static String USERID = "userId";
-	public final static String ORGANIZER = "organizer";
+	public final static String ORGANIZER = "isOrganizer";
 
 	// TripMatePrize
 	public final static String TAG_TRIPMATEPRIZEMODEL = "TripModelPrize";

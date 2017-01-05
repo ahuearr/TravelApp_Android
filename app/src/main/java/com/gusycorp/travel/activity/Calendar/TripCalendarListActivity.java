@@ -1,4 +1,4 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Calendar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.adapter.ListTripCalendarAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
@@ -17,6 +18,8 @@ import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.util.Constants;
+
+import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -31,7 +34,7 @@ import java.util.List;
 
 import io.cloudboost.CloudException;
 
-public class TripCalendarListActivity extends MenuActivity{
+public class TripCalendarListActivity extends MenuActivity {
 
     private Button addCalendarTrip;
     private TextView tripNameText;
@@ -85,10 +88,10 @@ public class TripCalendarListActivity extends MenuActivity{
         int month = extras.getInt("month");
         int day = extras.getInt("day");
         if(year == 0 && month == 0 && day == 0){
-            Date dateIni = null;
+            DateTime dateIni = null;
             try {
                 dateIni = currentTrip.getDateIniDate();
-                calendar.setTime(dateIni);
+                calendar.setTime(dateIni.toDate());
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
                 day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -149,8 +152,8 @@ public class TripCalendarListActivity extends MenuActivity{
             Calendar calendar1 = Calendar.getInstance();
             Calendar calendar2 = Calendar.getInstance();
             try {
-                calendar1.setTime(tripTransport.getDateFromDate());
-                calendar2.setTime(tripTransport.getDateToDate());
+                calendar1.setTime(tripTransport.getDateFromDate().toDate());
+                calendar2.setTime(tripTransport.getDateToDate().toDate());
                 if ((calendar1.get(Calendar.DAY_OF_MONTH) == day
                         && calendar1.get(Calendar.MONTH) == month
                         && calendar1.get(Calendar.YEAR) == year)
@@ -175,8 +178,8 @@ public class TripCalendarListActivity extends MenuActivity{
             Calendar calendar1 = Calendar.getInstance();
             Calendar calendar2 = Calendar.getInstance();
             try {
-                calendar1.setTime(tripAccommodation.getDateFromDate());
-                calendar2.setTime(tripAccommodation.getDateToDate());
+                calendar1.setTime(tripAccommodation.getDateFromDate().toDate());
+                calendar2.setTime(tripAccommodation.getDateToDate().toDate());
                 if ((calendar1.get(Calendar.DAY_OF_MONTH) == day
                         && calendar1.get(Calendar.MONTH) == month
                         && calendar1.get(Calendar.YEAR) == year)
@@ -199,7 +202,7 @@ public class TripCalendarListActivity extends MenuActivity{
         try {
             for (TripCalendar tripCalendar : tripCalendarList) {
                 Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(tripCalendar.getDateDate());
+                    calendar.setTime(tripCalendar.getDateDate().toDate());
                 if (calendar.get(Calendar.DAY_OF_MONTH) == day
                         && calendar.get(Calendar.MONTH) == month
                         && calendar.get(Calendar.YEAR) == year) {
@@ -211,7 +214,7 @@ public class TripCalendarListActivity extends MenuActivity{
                 TripCalendar itemCalendar = new TripCalendar();
                 itemCalendar.set(Constants.ISACTIVITY, false);
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(itemTransport.getDateFromDate());
+                calendar.setTime(itemTransport.getDateFromDate().toDate());
                 if (calendar.get(Calendar.DAY_OF_MONTH) == day
                         && calendar.get(Calendar.MONTH) == month
                         && calendar.get(Calendar.YEAR) == year) {
@@ -223,7 +226,7 @@ public class TripCalendarListActivity extends MenuActivity{
                     itemCalendar = new TripCalendar();
                     itemCalendar.set(Constants.ISACTIVITY, false);
                 }
-                calendar.setTime(itemTransport.getDateToDate());
+                calendar.setTime(itemTransport.getDateToDate().toDate());
                 if (calendar.get(Calendar.DAY_OF_MONTH) == day
                         && calendar.get(Calendar.MONTH) == month
                         && calendar.get(Calendar.YEAR) == year) {
@@ -239,7 +242,7 @@ public class TripCalendarListActivity extends MenuActivity{
                 TripCalendar itemCalendar = new TripCalendar();
                 itemCalendar.set(Constants.ISACTIVITY, false);
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(itemAccommodation.getDateFromDate());
+                calendar.setTime(itemAccommodation.getDateFromDate().toDate());
                 if (calendar.get(Calendar.DAY_OF_MONTH) == day
                         && calendar.get(Calendar.MONTH) == month
                         && calendar.get(Calendar.YEAR) == year) {
@@ -252,7 +255,7 @@ public class TripCalendarListActivity extends MenuActivity{
                     itemCalendar = new TripCalendar();
                     itemCalendar.set(Constants.ISACTIVITY, false);
                 }
-                calendar.setTime(itemAccommodation.getDateToDate());
+                calendar.setTime(itemAccommodation.getDateToDate().toDate());
                 if (calendar.get(Calendar.DAY_OF_MONTH) == day
                         && calendar.get(Calendar.MONTH) == month
                         && calendar.get(Calendar.YEAR) == year) {

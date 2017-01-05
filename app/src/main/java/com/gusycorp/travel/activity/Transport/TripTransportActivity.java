@@ -1,4 +1,4 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Transport;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +9,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
-import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;

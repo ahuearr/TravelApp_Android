@@ -30,7 +30,7 @@ public class TripMatePrize extends ITObject {
         CloudQuery query = new CloudQuery(TABLENAME);
         query.findById(objectId, new ITObjectCallback<TripMatePrize>(){
             @Override
-            public void done(TripMatePrize tripMatePrize, CloudException e) {
+            public void done(TripMatePrize tripMatePrize, CloudException e) throws CloudException {
                 if(tripMatePrize != null){
                     callback.done(tripMatePrize, null);
                 } else {

@@ -11,54 +11,77 @@ import java.util.Map;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
 import io.cloudboost.CloudQuery;
 
 /**
  * Created by agustin.huerta on 27/08/2015.
  */
-public class TripMate extends ITObject {
+public class TripMate extends ITObject{
 
     private static String TABLENAME = Constants.TAG_TRIPMATEMODEL;
+    private CloudObject tripMate;
 
     public TripMate(){
-        super(TABLENAME);
+        tripMate = new CloudObject(TABLENAME);
+    }
+
+    public String getId() {
+        return tripMate.getId();
     }
 
     public String getUserId() {
-        return getString(Constants.USERID);
+        return tripMate.getString(Constants.USERID);
+    }
+
+    public void setUserId(String userId) throws CloudException {
+        tripMate.set(Constants.USERID, userId);
     }
 
     public String getUsername() {
-        return getString(Constants.USERNAME);
+        return tripMate.getString(Constants.USERNAME);
+    }
+
+    public void setUserName(String userName) throws CloudException {
+        tripMate.set(Constants.USERNAME, userName);
     }
 
     public Boolean getOrganizer() {
-        return getBoolean(Constants.ORGANIZER);
+        return tripMate.getBoolean(Constants.ORGANIZER);
     }
 
-    public static void findTripMateInBackground(String objectId, final ITObjectCallback<TripMate> callback) throws CloudException {
+    public void setOrganizer(Boolean organizer) throws CloudException {
+        tripMate.set(Constants.ORGANIZER, organizer);
+    }
+
+    public void findTripMateInBackground(String objectId) throws CloudException {
         CloudQuery query = new CloudQuery(TABLENAME);
-        query.findById(objectId, new ITObjectCallback<TripMate>(){
-            @Override
-            public void done(TripMate tripMate, CloudException e) {
-                if(tripMate != null){
-                    callback.done(tripMate, null);
-                } else {
-                    callback.done(null,e);
-                }
-            }
-            @Override
+        query.findById(objectId, new CloudObjectCallback(){
             public void done(CloudObject obj, CloudException e) throws CloudException {
                 if(obj != null){
-                    callback.done(obj, null);
+                    tripMate = obj;
                 } else {
-                    callback.done(null,e);
+                    e.printStackTrace();
                 }
             }
         });
 
     }
 
+    public void save() throws CloudException {
+        tripMate.save(new CloudObjectCallback(){
+            @Override
+            public void done(CloudObject obj, CloudException e) throws CloudException {
+                if(obj != null){
+                    tripMate = obj;
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+/*
     public static void findTripMateListByFieldsInBackground(
             Map<String, Object> filter, final ITObjectArrayCallback<TripMate> callback) throws CloudException {
         CloudQuery query = new CloudQuery(TABLENAME);
@@ -86,5 +109,6 @@ public class TripMate extends ITObject {
             }
         });
     }
+*/
 
 }

@@ -1,11 +1,10 @@
 package com.gusycorp.travel.activity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +13,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.Login.TripLoginActivity;
+import com.gusycorp.travel.activity.Trip.TripActivity;
+import com.gusycorp.travel.activity.Trip.TripEditActivity;
 import com.gusycorp.travel.adapter.ListTripAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
@@ -69,36 +71,7 @@ public class HomeActivity extends ListActivity {
 	private void getTrips() {
 		mAdapter = new ListTripAdapter(HomeActivity.this,
 				R.layout.row_list_trip, new ArrayList<Trip>());
-		CloudQuery queryTrip = new CloudQuery(Constants.TAG_TRIPMODEL);
-		queryTrip.equalTo(Constants.USER, currentUser);
-		CloudQuery queryTripOrganizer = new CloudQuery(Constants.TAG_TRIPMODEL);
-		queryTripOrganizer.equalTo(Constants.ORGANIZERID, userObjectId);
-
-		CloudQuery mainQuery = null;
-		try {
-			mainQuery = CloudQuery.or(queryTrip, queryTripOrganizer);
-			mainQuery.find(new CloudObjectArrayCallback() {
-				public void done(CloudObject[] tripList, CloudException e) {
-					mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
-					for (Trip trip : (Trip[]) tripList) {
-						if (Constants.VALUE_STATUS_FUTURE.equals(trip
-								.getStatus())) {
-							mAdapter.addItem(trip);
-						}
-					}
-					mAdapter.addSectionHeaderItem(getString(R.string.past_trips));
-					for (Trip trip : (Trip[]) tripList) {
-						if (Constants.VALUE_STATUS_PAST.equals(trip
-								.getStatus())) {
-							mAdapter.addItem(trip);
-						}
-					}
-					setListAdapter(mAdapter);
-				}
-			});
-		} catch (CloudException e) {
-			e.printStackTrace();
-		}
+		new Find().execute();
 	}
 
 	@Override
@@ -149,5 +122,54 @@ public class HomeActivity extends ListActivity {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private class Find extends AsyncTask<String, Void, Integer> {
+
+		@Override
+		protected Integer doInBackground(String... params) {
+
+			CloudQuery queryTrip = new CloudQuery(Constants.TAG_TRIPMODEL);
+			queryTrip.equalTo(Constants.USER, currentUser);
+			CloudQuery queryTripOrganizer = new CloudQuery(Constants.TAG_TRIPMODEL);
+			queryTripOrganizer.equalTo(Constants.ORGANIZERID, userObjectId);
+
+			CloudQuery mainQuery = null;
+			try {
+				mainQuery = CloudQuery.or(queryTrip, queryTripOrganizer);
+				mainQuery.find(new CloudObjectArrayCallback() {
+					public void done(CloudObject[] tripListCloudObject, CloudException e) {
+						mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
+						for (CloudObject tripCloudObject : tripListCloudObject) {
+							Trip trip = new Trip(tripCloudObject.getId());
+							if (Constants.VALUE_STATUS_FUTURE.equals(trip
+									.getStatus())) {
+								mAdapter.addItem(trip);
+							}
+						}
+						mAdapter.addSectionHeaderItem(getString(R.string.past_trips));
+						for (CloudObject tripCloudObject : tripListCloudObject) {
+							Trip trip = new Trip(tripCloudObject.getId());
+							if (Constants.VALUE_STATUS_PAST.equals(trip
+									.getStatus())) {
+								mAdapter.addItem(trip);
+							}
+						}
+					}
+				});
+			} catch (CloudException e) {
+				e.printStackTrace();
+				return 1;
+			}
+			return 0;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			if(result==0){
+				setListAdapter(mAdapter);
+			}
+		}
+
 	}
 }
