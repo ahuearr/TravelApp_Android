@@ -26,6 +26,18 @@ public class TripMate extends ITObject{
         tripMate = new CloudObject(TABLENAME);
     }
 
+    public TripMate(CloudObject tripMate){
+        this.tripMate = tripMate;
+    }
+
+    public CloudObject getTripMate(){
+        return tripMate;
+    }
+
+    public void setTripMate(CloudObject tripMate){
+        this.tripMate = tripMate;
+    }
+
     public String getId() {
         return tripMate.getId();
     }
@@ -54,28 +66,15 @@ public class TripMate extends ITObject{
         tripMate.set(Constants.ORGANIZER, organizer);
     }
 
-    public void findTripMateInBackground(String objectId) throws CloudException {
+    public static void findTripMateInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
         CloudQuery query = new CloudQuery(TABLENAME);
         query.findById(objectId, new CloudObjectCallback(){
-            public void done(CloudObject obj, CloudException e) throws CloudException {
-                if(obj != null){
-                    tripMate = obj;
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
-
-    public void save() throws CloudException {
-        tripMate.save(new CloudObjectCallback(){
             @Override
             public void done(CloudObject obj, CloudException e) throws CloudException {
                 if(obj != null){
-                    tripMate = obj;
+                    callback.done(obj, e);
                 } else {
-                    e.printStackTrace();
+                    callback.done(null, e);
                 }
             }
         });

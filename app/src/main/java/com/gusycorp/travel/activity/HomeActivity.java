@@ -141,7 +141,7 @@ public class HomeActivity extends ListActivity {
 					public void done(CloudObject[] tripListCloudObject, CloudException e) {
 						mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
 						for (CloudObject tripCloudObject : tripListCloudObject) {
-							Trip trip = new Trip(tripCloudObject.getId());
+							Trip trip = new Trip(tripCloudObject);
 							if (Constants.VALUE_STATUS_FUTURE.equals(trip
 									.getStatus())) {
 								mAdapter.addItem(trip);
@@ -149,7 +149,7 @@ public class HomeActivity extends ListActivity {
 						}
 						mAdapter.addSectionHeaderItem(getString(R.string.past_trips));
 						for (CloudObject tripCloudObject : tripListCloudObject) {
-							Trip trip = new Trip(tripCloudObject.getId());
+							Trip trip = new Trip(tripCloudObject);
 							if (Constants.VALUE_STATUS_PAST.equals(trip
 									.getStatus())) {
 								mAdapter.addItem(trip);

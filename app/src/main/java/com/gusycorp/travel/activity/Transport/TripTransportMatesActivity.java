@@ -117,14 +117,16 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
             if(!tripMatefromTripMatePrize.contains(tripMate)){
                 TripMatePrize tripMatePrize = new TripMatePrize();
                 try {
-                tripMatePrize.set(Constants.TRIPMATE, tripMate);
-                tripMatePrize.set(Constants.PRIZE, BigDecimal.ZERO);
-                    tripMatePrize.save(new CloudObjectCallback() {
+                tripMatePrize.setTripMate(tripMate);
+                tripMatePrize.setPrize(BigDecimal.ZERO.doubleValue());
+                    tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {
                         @Override
-                        public void done(CloudObject x, CloudException t) throws CloudException {
-                            TripMatePrize tripMatePrize = (TripMatePrize) x;
+                        public void done(CloudObject tripMatePrizeSaved, CloudException t) throws CloudException {
+                            TripMatePrize tripMatePrize = new TripMatePrize(tripMatePrizeSaved);
                             tripTransportMateList.add(tripMatePrize);
-                            currentTripTransport.save(new CloudObjectCallback() {
+                            //TODO La siguiente linea añadira el amigo o hara un append de la lista entera con el nuevo amigo?
+                            currentTripTransport.setTripMatePrizeList(tripTransportMateList);
+                            currentTripTransport.getTripTransport().save(new CloudObjectCallback() {
                                 @Override
                                 public void done(CloudObject x, CloudException t) throws CloudException {
                                 }
@@ -143,25 +145,31 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     private void saveTransportMates() {
         try {
 
-            final List<TripMatePrize> tripTransportMateList = currentTripTransport.getTripMatePrizeList();
+            //TODO No deberia ser necesario coger y actualizar la lista de nuevo
+//            final List<TripMatePrize> tripTransportMateList = currentTripTransport.getTripMatePrizeList();
 
             for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
                 if(tripMatePrize!=null){
-                    tripMatePrize.save(new CloudObjectCallback() {
+                    tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {
                         @Override
                         public void done(CloudObject x, CloudException t) throws CloudException {
-                            TripMatePrize tripMatePrize = (TripMatePrize) x;
-                            //TODO Grabacion correcta de amigos?
+                            //TODO Grabacion correcta de amigos? Se actualizará solo? Hara falta hacer algo?
+/*
+                            TripMatePrize tripMatePrize = new TripMatePrize(x);
                             tripTransportMateList.add(tripMatePrize);
+*/
                         }
                     });
                 }
             }
+            //TODO Es necesario actualizar el transporte con la nueva lista de tripmateprizes? Yo creo que no
+/*
             currentTripTransport.save(new CloudObjectCallback() {
                 @Override
                 public void done(CloudObject x, CloudException t) throws CloudException {
                 }
             });
+*/
         } catch (CloudException e) {
             e.printStackTrace();
         }
@@ -177,7 +185,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         for(int i=0;i<mAdapter.getTripMateList().size();i++){
             if (mAdapter.getTripMateList().get(i) != null) {
                 try {
-                    mAdapter.getTripMateList().get(i).set(Constants.PRIZE, sharedPrize);
+                    mAdapter.getTripMateList().get(i).setPrize(sharedPrize);
                 } catch (CloudException e) {
                     e.printStackTrace();
                 }

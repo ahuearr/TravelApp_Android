@@ -21,8 +21,13 @@ import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +58,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 	TravelApplication app;
 
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+	private DateTimeFormatter df = DateTimeFormat.forPattern(Constants.ONLY_DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,26 +137,26 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						Date date = df.parse(dateDepart.getText().toString());
-						tripTransport.set(Constants.DATEFROM, date);
-						date = df.parse(dateArrival.getText().toString());
-						tripTransport.set(Constants.DATETO, date);
-						tripTransport.set(Constants.FROM, cityDepart.getText().toString());
-						tripTransport.set(Constants.TO, cityArrival.getText().toString());
-						tripTransport.set(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
-						tripTransport.set(Constants.LOCATOR, locator.getText().toString());
+						DateTime date = df.parseDateTime(dateDepart.getText().toString());
+						tripTransport.setDateFrom(date);
+						date = df.parseDateTime(dateArrival.getText().toString());
+						tripTransport.setDateTo(date);
+						tripTransport.setFrom(cityDepart.getText().toString());
+						tripTransport.setTo(cityArrival.getText().toString());
+						tripTransport.setPrize(Double.parseDouble(prize.getText().toString()));
+						tripTransport.setLocator(locator.getText().toString());
 
-						final TypeTransport typeTransportSelected = (TypeTransport) typeTransport.getSelectedItem();
-						tripTransport.set(Constants.TYPETRANSPORT, typeTransportSelected);
+						final TypeTransport typeTransportSelected = new TypeTransport((CloudObject)typeTransport.getSelectedItem());
+						tripTransport.setTypeTransport(typeTransportSelected);
 
 						if(objectId!=null){
 							update();
 						} else {
 							save();
 						}
-					} catch (java.text.ParseException e){
-						e.printStackTrace();
 					} catch (CloudException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else{
@@ -167,17 +172,17 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 	private void save(){
 		try {
-			tripTransport.save(new CloudObjectCallback() {
+			tripTransport.getTripTransport().save(new CloudObjectCallback() {
 				@Override
-				public void done(CloudObject x, CloudException t) throws CloudException {
-					tripTransport = (TripTransport) x;
-					List<TripTransport> tripTransports = currentTrip.getTripTransportList();
-					tripTransports.add(tripTransport);
-					currentTrip.set(Constants.TRIPTRANSPORT, tripTransports);
-					currentTrip.save(new CloudObjectCallback() {
+				public void done(CloudObject transportSaved, CloudException t) throws CloudException {
+					tripTransport = new TripTransport(transportSaved);
+					List<TripTransport> tripTransportsList = currentTrip.getTripTransportList();
+					tripTransportsList.add(tripTransport);
+					currentTrip.setTripTransportList(tripTransportsList);
+					currentTrip.getTrip().save(new CloudObjectCallback() {
 						@Override
-						public void done(CloudObject x, CloudException t) throws CloudException {
-							Trip trip = (Trip) x;
+						public void done(CloudObject tripSaved, CloudException t) throws CloudException {
+							Trip trip = new Trip(tripSaved);
 							app.setCurrentTrip(trip);
 							goOK();
 						}
@@ -191,7 +196,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 	private void update() {
 		try {
-			tripTransport.save(new CloudObjectCallback() {
+			tripTransport.getTripTransport().save(new CloudObjectCallback() {
 				@Override
 				public void done(CloudObject x, CloudException t) throws CloudException {
 					//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??

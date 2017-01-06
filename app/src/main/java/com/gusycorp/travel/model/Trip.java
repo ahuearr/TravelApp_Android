@@ -28,6 +28,22 @@ public class Trip extends ITObject{
 		trip = new CloudObject(TABLENAME);
 	}
 
+	public Trip(CloudObject trip){
+		this.trip = trip;
+	}
+
+	public CloudObject getTrip(){
+		return trip;
+	}
+
+	public void setTrip(CloudObject trip){
+		this.trip = trip;
+	}
+
+	public String getId() {
+		return trip.getId();
+	}
+
 	public String getTripName() {
 		return trip.getString(Constants.TRIPNAME);
 	}
@@ -84,11 +100,21 @@ public class Trip extends ITObject{
 		trip.set(Constants.ORGANIZERID, organizerId);
 	}
 
-	//TODO Set all lists of CloudObjects
 	public List<TripAccommodation> getTripAccommodationList(){
 		Object[] objectArray = trip.getArray(Constants.TRIPACCOMMODATION);
 		TripAccommodation[] array = Arrays.copyOf(objectArray, objectArray.length, TripAccommodation[].class);
 		return Arrays.asList(array);
+	}
+
+	public void setTripAccommodationList (List<TripAccommodation> tripAccommodationList) throws CloudException {
+		CloudObject[] tripAccommodationListObjects = new CloudObject[tripAccommodationList.size()];
+		tripAccommodationList.toArray(tripAccommodationListObjects);
+		trip.set(Constants.TRIPACCOMMODATION, tripAccommodationListObjects);
+	}
+
+	public CloudObject[] getTripTransportArray(){
+		Object[] objectArray = trip.getArray(Constants.TRIPTRANSPORT);
+		return Arrays.copyOf(objectArray, objectArray.length, CloudObject[].class);
 	}
 
 	public List<TripTransport> getTripTransportList(){
@@ -97,10 +123,22 @@ public class Trip extends ITObject{
 		return Arrays.asList(array);
 	}
 
+	public void setTripTransportList (List<TripTransport> tripTransportList) throws CloudException {
+		CloudObject[] tripTransportListObjects = new CloudObject[tripTransportList.size()];
+		tripTransportList.toArray(tripTransportListObjects);
+		trip.set(Constants.TRIPTRANSPORT, tripTransportListObjects);
+	}
+
 	public List<TripCalendar> getTripCalendarList(){
 		Object[] objectArray = trip.getArray(Constants.TRIPCALENDAR);
 		TripCalendar[] array = Arrays.copyOf(objectArray, objectArray.length, TripCalendar[].class);
 		return Arrays.asList(array);
+	}
+
+	public void setTripCalendarList (List<TripCalendar> tripCalendarList) throws CloudException {
+		CloudObject[] tripCalendarListObjects = new CloudObject[tripCalendarList.size()];
+		tripCalendarList.toArray(tripCalendarListObjects);
+		trip.set(Constants.TRIPCALENDAR, tripCalendarListObjects);
 	}
 
 	public List<TripMate> getTripMateList(){
@@ -109,29 +147,21 @@ public class Trip extends ITObject{
 		return Arrays.asList(array);
 	}
 
-	public void findTripInBackground(String objectId) throws CloudException {
+	public void setTripMateList (List<TripMate> tripMateList) throws CloudException {
+		CloudObject[] tripMateListObjects = new CloudObject[tripMateList.size()];
+		tripMateList.toArray(tripMateListObjects);
+		trip.set(Constants.TRIPMATE, tripMateListObjects);
+	}
+
+	public static void findTripInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
 		CloudQuery query = new CloudQuery(TABLENAME);
 		query.findById(objectId, new CloudObjectCallback(){
 			@Override
 			public void done(CloudObject obj, CloudException e) throws CloudException {
 				if(obj != null){
-					trip = obj;
+					callback.done(obj, e);
 				} else {
-					e.printStackTrace();
-				}
-			}
-		});
-
-	}
-
-	public void save() throws CloudException {
-		trip.save(new CloudObjectCallback(){
-			@Override
-			public void done(CloudObject obj, CloudException e) throws CloudException {
-				if(obj != null){
-					trip = obj;
-				} else {
-					e.printStackTrace();
+					callback.done(null, e);
 				}
 			}
 		});

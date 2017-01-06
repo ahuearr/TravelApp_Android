@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectArrayCallback;
 
 public class TravelApplication extends Application {
 
@@ -92,17 +93,17 @@ public class TravelApplication extends Application {
 	void getListsSpinners(){
 		HashMap<String, Object> filter = new HashMap();
         try {
-            TypeTransport.findTypeTransportListByFieldsInBackground(filter, new ITObjectArrayCallback<TypeTransport>() {
+            TypeTransport.findTypeTransportListByFieldsInBackground(filter, new CloudObjectArrayCallback() {
                 @Override
-                public void done(TypeTransport[] x, CloudException t) throws CloudException {
-                    ArrayList<TypeTransport> typeTransportList = new ArrayList<TypeTransport>(Arrays.asList(x));
+                public void done(CloudObject[] transportList, CloudException t) throws CloudException {
+                    ArrayList<TypeTransport> typeTransportList = new ArrayList<TypeTransport>();
+					for(CloudObject transport: transportList){
+						TypeTransport typeTransport = new TypeTransport(transport);
+						typeTransportList.add(typeTransport);
+					}
                     transportstype.addAll(typeTransportList);
                 }
 
-                @Override
-                public void done(CloudObject[] x, CloudException t) throws CloudException {
-
-                }
             });
         } catch (CloudException e) {
             e.printStackTrace();

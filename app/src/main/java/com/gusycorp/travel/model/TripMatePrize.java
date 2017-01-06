@@ -8,6 +8,7 @@ import java.util.Map;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
 import io.cloudboost.CloudQuery;
 
 /**
@@ -16,39 +17,59 @@ import io.cloudboost.CloudQuery;
 public class TripMatePrize extends ITObject {
 
     private static String TABLENAME = Constants.TAG_TRIPMATEPRIZEMODEL;
+    private CloudObject tripMatePrize;
 
     public TripMatePrize(){
-        super(TABLENAME);
+        tripMatePrize = new CloudObject(TABLENAME);
     }
+
+    public TripMatePrize(CloudObject tripMatePrize){
+        this.tripMatePrize = tripMatePrize;
+    }
+
+    public CloudObject getTripMatePrize(){
+        return tripMatePrize;
+    }
+
+    public void setTripMatePrize(CloudObject tripMatePrize){
+        this.tripMatePrize = tripMatePrize;
+    }
+
+    public String getId() {
+        return tripMatePrize.getId();
+    }
+
     public TripMate getTripMate() {
-        return (TripMate) getCloudObject(Constants.TRIPMATE);
+        return new TripMate(tripMatePrize.getCloudObject(Constants.TRIPMATE));
     }
 
-    public Double getPrize() { return getDouble(Constants.PRIZE);}
+    public void setTripMate(TripMate tripMate) throws CloudException {
+        tripMatePrize.set(Constants.TRIPMATE, tripMate.getTripMate());
+    }
 
-    public static void findTripMatePrizeInBackground(String objectId, final ITObjectCallback<TripMatePrize> callback) throws CloudException {
+    public Double getPrize() {
+        return tripMatePrize.getDouble(Constants.PRIZE);
+    }
+
+    public void setPrize(Double prize) throws CloudException {
+        tripMatePrize.set(Constants.PRIZE, prize);
+    }
+
+    public static void findTripMatePrizeInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
         CloudQuery query = new CloudQuery(TABLENAME);
-        query.findById(objectId, new ITObjectCallback<TripMatePrize>(){
-            @Override
-            public void done(TripMatePrize tripMatePrize, CloudException e) throws CloudException {
-                if(tripMatePrize != null){
-                    callback.done(tripMatePrize, null);
-                } else {
-                    callback.done(null,e);
-                }
-            }
+        query.findById(objectId, new CloudObjectCallback(){
             @Override
             public void done(CloudObject obj, CloudException e) throws CloudException {
                 if(obj != null){
-                    callback.done(obj, null);
+                    callback.done(obj, e);
                 } else {
-                    callback.done(null,e);
+                    callback.done(null, e);
                 }
             }
         });
-
     }
 
+/*
     public static void findTripMatePrizeListByFieldsInBackground(
             Map<String, Object> filter, final ITObjectArrayCallback<TripMatePrize> callback) throws CloudException {
         CloudQuery query = new CloudQuery(TABLENAME);
@@ -77,5 +98,6 @@ public class TripMatePrize extends ITObject {
             }
         });
     }
+*/
 
 }

@@ -8,33 +8,54 @@ import java.util.Map;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectArrayCallback;
+import io.cloudboost.CloudObjectCallback;
 import io.cloudboost.CloudQuery;
 
 public class TypeTransport extends ITObject {
 
 	private static String TABLENAME = Constants.TAG_TRIPMODEL;
+	private CloudObject typeTransport;
 
 	public TypeTransport(){
-		super(TABLENAME);
-	}
-	public String getTransportName() {
-		return getString(Constants.TRANSPORTNAME);
-	}
-	public String getTransportImageName() {
-		return getString(Constants.TRANSPORTIMAGENAME);
+		typeTransport = new CloudObject(TABLENAME);
 	}
 
-	public static void findTypeTransportInBackground(String objectId, final ITObjectCallback<TypeTransport> callback) throws CloudException {
+	public TypeTransport(CloudObject typeTransport){
+		this.typeTransport = typeTransport;
+	}
+
+	public CloudObject getTypeTransport(){
+		return typeTransport;
+	}
+
+	public void setTypeTransport(CloudObject typeTransport){
+		this.typeTransport = typeTransport;
+	}
+
+	public String getId() {
+		return typeTransport.getId();
+	}
+
+	public String getTransportName() {
+		return typeTransport.getString(Constants.TRANSPORTNAME);
+	}
+
+	public void setTransportName(String transportName) throws CloudException {
+		typeTransport.set(Constants.TRANSPORTNAME, transportName);
+	}
+
+	public String getTransportImageName() {
+		return typeTransport.getString(Constants.TRANSPORTIMAGENAME);
+	}
+
+	public void setTransportImageName(String transportImageName) throws CloudException {
+		typeTransport.set(Constants.TRANSPORTIMAGENAME, transportImageName);
+	}
+
+	public static void findTypeTransportInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
 		CloudQuery query = new CloudQuery(TABLENAME);
-		query.findById(objectId, new ITObjectCallback<TypeTransport>(){
-			@Override
-			public void done(TypeTransport typeTransport, CloudException e) throws CloudException {
-				if(typeTransport != null){
-					callback.done(typeTransport, null);
-				} else {
-					callback.done(null,e);
-				}
-			}
+		query.findById(objectId, new CloudObjectCallback(){
 			@Override
 			public void done(CloudObject obj, CloudException e) throws CloudException {
 				if(obj != null){
@@ -48,23 +69,14 @@ public class TypeTransport extends ITObject {
 	}
 
 	public static void findTypeTransportListByFieldsInBackground(
-			Map<String, Object> filter, final ITObjectArrayCallback<TypeTransport> callback) throws CloudException {
+			Map<String, Object> filter, final CloudObjectArrayCallback callback) throws CloudException {
 		CloudQuery query = new CloudQuery(TABLENAME);
 		Iterator it = filter.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
 			query.equalTo((String) e.getKey(), e.getValue());
 		}
-		query.find(new ITObjectArrayCallback<TypeTransport>() {
-			@Override
-			public void done(TypeTransport[] typeTransportList, CloudException e) throws CloudException {
-				if (e == null) {
-					callback.done(typeTransportList, null);
-				} else {
-					callback.done(null, e);
-				}
-			}
-
+		query.find(new CloudObjectArrayCallback() {
 			@Override
 			public void done(CloudObject[] obj, CloudException e) throws CloudException {
 				if (e == null) {

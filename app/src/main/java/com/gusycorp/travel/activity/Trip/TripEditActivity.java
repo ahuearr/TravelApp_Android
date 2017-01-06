@@ -112,19 +112,19 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 			case R.id.save_button:
 				if(checkMandatory()) {
 					try {
-						trip.set(Constants.TRIPNAME, tripNameText.getText().toString());
+						trip.setTripName(tripNameText.getText().toString());
 						DateTime date = df.parseDateTime(dateIniText.getText().toString());
-						trip.set(Constants.DATEINI, date);
+						trip.setDateIni(date);
 						date = df.parseDateTime(dateFinText.getText().toString());
-						trip.set(Constants.DATEFIN, date);
+						trip.setDateFin(date);
 						List<String> destinyList = Arrays.asList(destinyNameText.getText().toString().split(","));
 						List<String> destinyListTrimmed = new ArrayList<>();
 						for(String destiny : destinyList){
 							destinyListTrimmed.add(destiny.trim());
 						}
-						trip.set(Constants.DESTINYNAME, destinyListTrimmed);
-						trip.set(Constants.STATUS, Constants.VALUE_STATUS_FUTURE);
-						trip.set(Constants.ORGANIZERID, CloudUser.getcurrentUser().getId());
+						trip.setDestinyName(destinyListTrimmed);
+						trip.setStatus(Constants.VALUE_STATUS_FUTURE);
+						trip.setOrganizerId(CloudUser.getcurrentUser().getId());
 						new Save().execute();
 					} catch (CloudException e) {
 						e.printStackTrace();
@@ -161,30 +161,30 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 
 			try{
 				if (tripObjectId != null) {
-					trip.save(new CloudObjectCallback() {
+					trip.getTrip().save(new CloudObjectCallback() {
 						@Override
-						public void done(CloudObject x, CloudException t) throws CloudException {
-							trip = new Trip(x.getId());
+						public void done(CloudObject tripSaved, CloudException t) throws CloudException {
+							trip = new Trip(tripSaved);
 							app.setCurrentTrip(trip);
 							onBackPressed();
 						}
 					});
 				} else {
 					TripMate tripMate = new TripMate();
-					tripMate.set(Constants.USERID, CloudUser.getcurrentUser().getId());
-					tripMate.set(Constants.USERNAME, CloudUser.getcurrentUser().get(Constants.USERNAME));
-					tripMate.set(Constants.ORGANIZER, true);
-					tripMate.save(new ITObjectCallback<TripMate>() {
+					tripMate.setUserId(CloudUser.getcurrentUser().getId());
+					tripMate.setUserName(CloudUser.getcurrentUser().getString(Constants.USERNAME));
+					tripMate.setOrganizer(true);
+					tripMate.getTripMate().save(new CloudObjectCallback() {
 						@Override
-						public void done(TripMate tripMateSaved, CloudException e) throws CloudException {
+						public void done(CloudObject tripMateSaved, CloudException e) throws CloudException {
 							if(tripMateSaved!=null){
-								TripMate[] tripMateList = new TripMate[]{tripMateSaved};
-								trip.set(Constants.TRIPMATE, tripMateList);
-								trip.save(new ITObjectCallback<Trip>() {
+								CloudObject[] tripMateList = new CloudObject[]{tripMateSaved};
+								trip.setTripMateList(tripMateList);
+								trip.getTrip().save(new CloudObjectCallback() {
 									@Override
-									public void done(Trip tripSaved, CloudException e) {
+									public void done(CloudObject tripSaved, CloudException e) {
 										if(tripSaved!=null){
-											trip = tripSaved;
+											trip = new Trip(tripSaved);
 											app.setCurrentTrip(trip);
 											Intent intent = new Intent(TripEditActivity.this, TripActivity.class);
 											intent.putExtra("tripObjectId", trip.getId());
@@ -194,18 +194,11 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 											e.printStackTrace();
 										}
 									}
-									@Override
-									public void done(CloudObject x, CloudException t) throws CloudException {
-									}
 								});
 							}else{
 								e.printStackTrace();
 							}
 						}
-						@Override
-						public void done(CloudObject x, CloudException t) throws CloudException {
-						}
-
 					});
 				}
 			} catch (CloudException e) {
