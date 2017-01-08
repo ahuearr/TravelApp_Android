@@ -14,7 +14,7 @@ import io.cloudboost.CloudQuery;
 
 public class TypeTransport extends ITObject {
 
-	private static String TABLENAME = Constants.TAG_TRIPMODEL;
+	private static String TABLENAME = Constants.TAG_TYPETRANSPORTMODEL;
 	private CloudObject typeTransport;
 
 	public TypeTransport(){

@@ -15,6 +15,7 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.util.Constants;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,52 +85,55 @@ public class ListTripTransportAdapter extends ArrayAdapter<TripTransport> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ListTripTransportAdapter.ViewHolder holder = null;
-        int rowType = getItemViewType(position);
+        try{
+            ListTripTransportAdapter.ViewHolder holder = null;
+            int rowType = getItemViewType(position);
 
-        if (convertView == null) {
-            holder = new ListTripTransportAdapter.ViewHolder();
-            switch (rowType) {
-                case TYPE_ITEM:
-                    convertView = mInflater.inflate(R.layout.row_list_transport_trip, null);
-                    holder.columnDate = (TextView) convertView.findViewById(R.id.transport_date);
-                    holder.columnOrigin = (TextView) convertView.findViewById(R.id.transport_from);
-                    holder.columnDestination = (TextView) convertView.findViewById(R.id.transport_to);
-                    holder.columnTransport = (ImageView) convertView.findViewById(R.id.transport_transport);
-                    break;
-                case TYPE_SEPARATOR:
-                    convertView = mInflater
-                            .inflate(R.layout.header_list_transport_trip, null);
-                    holder.columnDate = (TextView) convertView.findViewById(R.id.header_transport_date);
-                    holder.columnOrigin = (TextView) convertView.findViewById(R.id.header_transport_from);
-                    holder.columnDestination = (TextView) convertView.findViewById(R.id.header_transport_to);
-                    break;
+            if (convertView == null) {
+                holder = new ListTripTransportAdapter.ViewHolder();
+                switch (rowType) {
+                    case TYPE_ITEM:
+                        convertView = mInflater.inflate(R.layout.row_list_transport_trip, null);
+                        holder.columnDate = (TextView) convertView.findViewById(R.id.transport_date);
+                        holder.columnOrigin = (TextView) convertView.findViewById(R.id.transport_from);
+                        holder.columnDestination = (TextView) convertView.findViewById(R.id.transport_to);
+                        holder.columnTransport = (ImageView) convertView.findViewById(R.id.transport_transport);
+                        break;
+                    case TYPE_SEPARATOR:
+                        convertView = mInflater
+                                .inflate(R.layout.header_list_transport_trip, null);
+                        holder.columnDate = (TextView) convertView.findViewById(R.id.header_transport_date);
+                        holder.columnOrigin = (TextView) convertView.findViewById(R.id.header_transport_from);
+                        holder.columnDestination = (TextView) convertView.findViewById(R.id.header_transport_to);
+                        break;
+                }
+                convertView.setTag(holder);
+            } else {
+                holder = (ListTripTransportAdapter.ViewHolder) convertView.getTag();
             }
-            convertView.setTag(holder);
-        } else {
-            holder = (ListTripTransportAdapter.ViewHolder) convertView.getTag();
-        }
-        if (mData.get(position) != null) {
-            holder.columnDate.setText(mData.get(position).getDateFrom());
-            holder.columnOrigin.setText(mData.get(position).getFrom());
-            holder.columnDestination.setText(mData.get(position).getTo());
-            if(mContext.getString(R.string.bus).equals(mData.get(position).getTypeTransport().getTransportName())){
-                holder.columnTransport.setImageResource(R.drawable.bus);
-            } else if(mContext.getString(R.string.plane).equals(mData.get(position).getTypeTransport().getTransportName())){
-                holder.columnTransport.setImageResource(R.drawable.plane);
-            } else if(mContext.getString(R.string.train).equals(mData.get(position).getTypeTransport().getTransportName())){
-                holder.columnTransport.setImageResource(R.drawable.train);
-            } else if(mContext.getString(R.string.boat).equals(mData.get(position).getTypeTransport().getTransportName())){
-                holder.columnTransport.setImageResource(R.drawable.boat);
-            } else if(mContext.getString(R.string.car).equals(mData.get(position).getTypeTransport().getTransportName())) {
-                holder.columnTransport.setImageResource(R.drawable.car);
+            if (mData.get(position) != null) {
+                holder.columnDate.setText(mData.get(position).getDateFrom());
+                holder.columnOrigin.setText(mData.get(position).getFrom());
+                holder.columnDestination.setText(mData.get(position).getTo());
+                if(mContext.getString(R.string.bus).equals(mData.get(position).getTypeTransport().getTransportName())){
+                    holder.columnTransport.setImageResource(R.drawable.bus);
+                } else if(mContext.getString(R.string.plane).equals(mData.get(position).getTypeTransport().getTransportName())){
+                    holder.columnTransport.setImageResource(R.drawable.plane);
+                } else if(mContext.getString(R.string.train).equals(mData.get(position).getTypeTransport().getTransportName())){
+                    holder.columnTransport.setImageResource(R.drawable.train);
+                } else if(mContext.getString(R.string.boat).equals(mData.get(position).getTypeTransport().getTransportName())){
+                    holder.columnTransport.setImageResource(R.drawable.boat);
+                } else if(mContext.getString(R.string.car).equals(mData.get(position).getTypeTransport().getTransportName())) {
+                    holder.columnTransport.setImageResource(R.drawable.car);
+                }
+            } else {
+                holder.columnDate.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_ONE));
+                holder.columnOrigin.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_TWO));
+                holder.columnDestination.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_THREE));
             }
-        } else {
-            holder.columnDate.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_ONE));
-            holder.columnOrigin.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_TWO));
-            holder.columnDestination.setText(mDataHeader.get(position).get(Constants.TRIPTRANSPORTLIST_COLUMN_THREE));
+        }catch(ParseException e){
+            e.printStackTrace();
         }
-
         return convertView;
     }
 

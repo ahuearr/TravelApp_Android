@@ -18,6 +18,10 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.util.Constants;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,7 +50,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 
 	TravelApplication app;
 
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+	private DateTimeFormatter df = DateTimeFormat.forPattern(Constants.ONLY_DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,13 +107,13 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						Date dateActivity = df.parse(date.getText().toString());
-						tripCalendar.set(Constants.DATE, dateActivity);
-						tripCalendar.set(Constants.ACTIVITY, activity.getText().toString());
-						tripCalendar.set(Constants.PLACE, place.getText().toString());
-						tripCalendar.set(Constants.CITY, city.getText().toString());
-						tripCalendar.set(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
-						tripCalendar.set(Constants.ISACTIVITY, true);
+						DateTime dateActivity = df.parseDateTime(date.getText().toString());
+						tripCalendar.setDate(dateActivity);
+						tripCalendar.setActivity(activity.getText().toString());
+						tripCalendar.setPlace(place.getText().toString());
+						tripCalendar.setCity(city.getText().toString());
+						tripCalendar.setPrize(Double.parseDouble(prize.getText().toString()));
+						tripCalendar.setIsActivity(true);
 
 						if(objectId!=null){
 							update();
@@ -118,7 +122,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 						}
 					} catch (CloudException e) {
 						e.printStackTrace();
-					} catch (ParseException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else{
@@ -134,17 +138,17 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 
 	private void save(){
 		try {
-			tripCalendar.save(new CloudObjectCallback() {
+			tripCalendar.getTripCalendar().save(new CloudObjectCallback() {
 				@Override
-				public void done(CloudObject x, CloudException t) throws CloudException {
-					tripCalendar = (TripCalendar) x;
+				public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
+					tripCalendar = new TripCalendar(tripCalendarSaved);
 					List<TripCalendar> tripCalendars = currentTrip.getTripCalendarList();
 					tripCalendars.add(tripCalendar);
-					currentTrip.set(Constants.TRIPCALENDAR, tripCalendars);
-					currentTrip.save(new CloudObjectCallback() {
+					currentTrip.setTripCalendarList(tripCalendars);
+					currentTrip.getTrip().save(new CloudObjectCallback() {
 						@Override
-						public void done(CloudObject x, CloudException t) throws CloudException {
-							Trip trip = (Trip) x;
+						public void done(CloudObject tripSaved, CloudException t) throws CloudException {
+							Trip trip = new Trip(tripSaved);
 							app.setCurrentTrip(trip);
 							goOK();
 						}
@@ -160,9 +164,9 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 
 	private void update() {
 		try {
-			tripCalendar.save(new CloudObjectCallback() {
+			tripCalendar.getTripCalendar().save(new CloudObjectCallback() {
 				@Override
-				public void done(CloudObject x, CloudException t) throws CloudException {
+				public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
 					//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??
 					goOK();
 				}

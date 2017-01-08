@@ -124,11 +124,11 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
                         public void done(CloudObject tripMatePrizeSaved, CloudException t) throws CloudException {
                             TripMatePrize tripMatePrize = new TripMatePrize(tripMatePrizeSaved);
                             tripTransportMateList.add(tripMatePrize);
-                            //TODO La siguiente linea añadira el amigo o hara un append de la lista entera con el nuevo amigo?
+                            //TODO La siguiente linea añadira el amigo o hara un append de la lista entera con el nuevo amigo duplicando los existentes?
                             currentTripTransport.setTripMatePrizeList(tripTransportMateList);
                             currentTripTransport.getTripTransport().save(new CloudObjectCallback() {
                                 @Override
-                                public void done(CloudObject x, CloudException t) throws CloudException {
+                                public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
                                 }
                             });
                         }
@@ -152,10 +152,10 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
                 if(tripMatePrize!=null){
                     tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {
                         @Override
-                        public void done(CloudObject x, CloudException t) throws CloudException {
+                        public void done(CloudObject tripMatePrizeSaved, CloudException t) throws CloudException {
                             //TODO Grabacion correcta de amigos? Se actualizará solo? Hara falta hacer algo?
 /*
-                            TripMatePrize tripMatePrize = new TripMatePrize(x);
+                            TripMatePrize tripMatePrize = new TripMatePrize(tripMatePrizeSaved);
                             tripTransportMateList.add(tripMatePrize);
 */
                         }

@@ -16,6 +16,7 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,19 +94,23 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TripAccommodation tripAccommodation = (TripAccommodation) listView.getAdapter().getItem(position);
-                if (tripAccommodation != null) {
-                    app.setCurrentTripAccommodation(tripAccommodation);
-                    Intent intent = new Intent(TripAccommodationListActivity.this, TripAccommodationActivity.class);
-                    intent.putExtra(Constants.OBJECTID, tripAccommodation.getId());
-                    intent.putExtra(Constants.PLACE, tripAccommodation.getPlace());
-                    intent.putExtra(Constants.CITY, tripAccommodation.getCity());
-                    intent.putExtra(Constants.DATEFROM, tripAccommodation.getDateFrom());
-                    intent.putExtra(Constants.DATETO, tripAccommodation.getDateTo());
-                    intent.putExtra(Constants.ADDRESS, tripAccommodation.getAddress());
-                    intent.putExtra(Constants.NUMROOMS, tripAccommodation.getNumRooms());
-                    intent.putExtra(Constants.PRIZE, tripAccommodation.getPrize());
-                    startActivity(intent);
+                try{
+                    TripAccommodation tripAccommodation = (TripAccommodation) listView.getAdapter().getItem(position);
+                    if (tripAccommodation != null) {
+                        app.setCurrentTripAccommodation(tripAccommodation);
+                        Intent intent = new Intent(TripAccommodationListActivity.this, TripAccommodationActivity.class);
+                        intent.putExtra(Constants.OBJECTID, tripAccommodation.getId());
+                        intent.putExtra(Constants.PLACE, tripAccommodation.getPlace());
+                        intent.putExtra(Constants.CITY, tripAccommodation.getCity());
+                        intent.putExtra(Constants.DATEFROM, tripAccommodation.getDateFrom());
+                        intent.putExtra(Constants.DATETO, tripAccommodation.getDateTo());
+                        intent.putExtra(Constants.ADDRESS, tripAccommodation.getAddress());
+                        intent.putExtra(Constants.NUMROOMS, tripAccommodation.getNumRooms());
+                        intent.putExtra(Constants.PRIZE, tripAccommodation.getPrize());
+                        startActivity(intent);
+                    }
+                }catch(ParseException e){
+                    e.printStackTrace();
                 }
             }
         });

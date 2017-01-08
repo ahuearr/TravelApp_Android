@@ -117,16 +117,18 @@ public class TripCalendarMatesActivity extends MenuActivity implements View.OnCl
             if(!tripMatefromTripMatePrize.contains(tripMate)){
                 TripMatePrize tripMatePrize = new TripMatePrize();
                 try {
-                    tripMatePrize.set(Constants.TRIPMATE, tripMate);
-                    tripMatePrize.set(Constants.PRIZE, BigDecimal.ZERO);
-                    tripMatePrize.save(new CloudObjectCallback() {
+                    tripMatePrize.setTripMate(tripMate);
+                    tripMatePrize.setPrize(BigDecimal.ZERO.doubleValue());
+                    tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {
                         @Override
-                        public void done(CloudObject x, CloudException t) throws CloudException {
-                            TripMatePrize tripMatePrize = (TripMatePrize) x;
+                        public void done(CloudObject tripMatePrizeSaved, CloudException t) throws CloudException {
+                            TripMatePrize tripMatePrize = new TripMatePrize(tripMatePrizeSaved);
                             tripCalendarMateList.add(tripMatePrize);
-                            currentTripCalendar.save(new CloudObjectCallback() {
+                            //TODO La siguiente linea añadira el amigo o hara un append de la lista entera con el nuevo amigo duplicando los existentes?
+                            currentTripCalendar.setTripMatePrizeList(tripCalendarMateList);
+                            currentTripCalendar.getTripCalendar().save(new CloudObjectCallback() {
                                 @Override
-                                public void done(CloudObject x, CloudException t) throws CloudException {
+                                public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
                                 }
                             });
                         }
@@ -142,25 +144,31 @@ public class TripCalendarMatesActivity extends MenuActivity implements View.OnCl
 
     private void saveCalendarMates() {
         try {
-            final List<TripMatePrize> tripCalendarMateList = currentTripCalendar.getTripMatePrizeList();
+            //TODO No deberia ser necesario coger y actualizar la lista de nuevo
+//            final List<TripMatePrize> tripCalendarMateList = currentTripCalendar.getTripMatePrizeList();
 
             for(final TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
                 if(tripMatePrize!=null){
-                    tripMatePrize.save(new CloudObjectCallback() {
+                    tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {
                         @Override
-                        public void done(CloudObject x, CloudException t) throws CloudException {
-                            TripMatePrize tripCalendarMate = (TripMatePrize) x;
-                            //TODO Grabacion correcta de amigos?
+                        public void done(CloudObject tripMatePrizeSaved, CloudException t) throws CloudException {
+                            //TODO Grabacion correcta de amigos? Se actualizará solo? Hara falta hacer algo?
+/*
+                            TripMatePrize tripCalendarMate = new TripMatePrize(tripMatePrizeSaved);
                             tripCalendarMateList.add(tripMatePrize);
+*/
                         }
                     });
                 }
             }
+            //TODO Es necesario actualizar el transporte con la nueva lista de tripmateprizes? Yo creo que no
+/*
             currentTripCalendar.save(new CloudObjectCallback() {
                 @Override
                 public void done(CloudObject x, CloudException t) throws CloudException {
                 }
             });
+*/
         } catch (CloudException e) {
             e.printStackTrace();
         }
@@ -176,7 +184,7 @@ public class TripCalendarMatesActivity extends MenuActivity implements View.OnCl
         for(int i=0;i<mAdapter.getTripMateList().size();i++){
             if (mAdapter.getTripMateList().get(i) != null) {
                 try {
-                    mAdapter.getTripMateList().get(i).set(Constants.PRIZE, sharedPrize);
+                    mAdapter.getTripMateList().get(i).setPrize(sharedPrize);
                 } catch (CloudException e) {
                     e.printStackTrace();
                 }

@@ -43,16 +43,16 @@ public class TripTransport extends ITObject {
 		return tripTransport.getId();
 	}
 
-	public String getDateFrom() {
-		return tripTransport.getString(Constants.DATEFROM);
+	public String getDateFrom() throws ParseException {
+		return dfTime.print(getDate(tripTransport.getString(Constants.DATEFROM)));
 	}
 
 	public void setDateFrom(DateTime dateFrom) throws CloudException {
 		tripTransport.set(Constants.DATEFROM, dateFrom);
 	}
 
-	public String getDateTo() {
-		return tripTransport.getString(Constants.DATETO);
+	public String getDateTo() throws ParseException {
+		return dfTime.print(getDate(tripTransport.getString(Constants.DATETO)));
 	}
 
 	public void setDateTo(DateTime dateTo) throws CloudException {
@@ -111,16 +111,32 @@ public class TripTransport extends ITObject {
 		return tripTransport.getDouble(Constants.LATITUDEFROM);
 	}
 
-	public Double getLongtiudeFrom() {
+	public void setLatitudeFrom(Double latitudeFrom) throws CloudException {
+		tripTransport.set(Constants.LATITUDEFROM, latitudeFrom);
+	}
+
+	public Double getLongitudeFrom() {
 		return tripTransport.getDouble(Constants.LONGITUDEFROM);
+	}
+
+	public void setLongitudeFrom(Double longitudeFrom) throws CloudException {
+		tripTransport.set(Constants.LONGITUDEFROM, longitudeFrom);
 	}
 
 	public Double getLatitudeTo() {
 		return tripTransport.getDouble(Constants.LATITUDETO);
 	}
 
+	public void setLatitudeTo(Double latitudeTo) throws CloudException {
+		tripTransport.set(Constants.LATITUDETO, latitudeTo);
+	}
+
 	public Double getLongitudeTo() {
 		return tripTransport.getDouble(Constants.LONGITUDETO);
+	}
+
+	public void setLongitudeTo(Double longitudeTo) throws CloudException {
+		tripTransport.set(Constants.LONGITUDETO, longitudeTo);
 	}
 
 	public List<TripMatePrize> getTripMatePrizeList(){

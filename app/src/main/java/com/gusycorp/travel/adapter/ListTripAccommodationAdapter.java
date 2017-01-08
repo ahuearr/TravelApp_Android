@@ -11,6 +11,7 @@ import com.gusycorp.travel.R;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,42 +79,46 @@ public class ListTripAccommodationAdapter extends ArrayAdapter<TripAccommodation
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ListTripAccommodationAdapter.ViewHolder holder = null;
-        int rowType = getItemViewType(position);
+        try{
+            ListTripAccommodationAdapter.ViewHolder holder = null;
+            int rowType = getItemViewType(position);
 
-        if (convertView == null) {
-            holder = new ListTripAccommodationAdapter.ViewHolder();
-            switch (rowType) {
-                case TYPE_ITEM:
-                    convertView = mInflater.inflate(R.layout.row_list_accommodation_trip, null);
-                    holder.columnPlace = (TextView) convertView.findViewById(R.id.accommodation_place);
-                    holder.columnCity = (TextView) convertView.findViewById(R.id.accommodation_city);
-                    holder.columnDateFrom = (TextView) convertView.findViewById(R.id.accommodation_date_from);
-                    holder.columnDateTo = (TextView) convertView.findViewById(R.id.accommodation_date_to);
-                    break;
-                case TYPE_SEPARATOR:
-                    convertView = mInflater
-                            .inflate(R.layout.header_list_accommodation_trip, null);
-                    holder.columnPlace = (TextView) convertView.findViewById(R.id.header_accommodation_place);
-                    holder.columnCity = (TextView) convertView.findViewById(R.id.header_accommodation_city);
-                    holder.columnDateFrom = (TextView) convertView.findViewById(R.id.header_accommodation_date_from);
-                    holder.columnDateTo = (TextView) convertView.findViewById(R.id.header_accommodation_date_to);
-                    break;
+            if (convertView == null) {
+                holder = new ListTripAccommodationAdapter.ViewHolder();
+                switch (rowType) {
+                    case TYPE_ITEM:
+                        convertView = mInflater.inflate(R.layout.row_list_accommodation_trip, null);
+                        holder.columnPlace = (TextView) convertView.findViewById(R.id.accommodation_place);
+                        holder.columnCity = (TextView) convertView.findViewById(R.id.accommodation_city);
+                        holder.columnDateFrom = (TextView) convertView.findViewById(R.id.accommodation_date_from);
+                        holder.columnDateTo = (TextView) convertView.findViewById(R.id.accommodation_date_to);
+                        break;
+                    case TYPE_SEPARATOR:
+                        convertView = mInflater
+                                .inflate(R.layout.header_list_accommodation_trip, null);
+                        holder.columnPlace = (TextView) convertView.findViewById(R.id.header_accommodation_place);
+                        holder.columnCity = (TextView) convertView.findViewById(R.id.header_accommodation_city);
+                        holder.columnDateFrom = (TextView) convertView.findViewById(R.id.header_accommodation_date_from);
+                        holder.columnDateTo = (TextView) convertView.findViewById(R.id.header_accommodation_date_to);
+                        break;
+                }
+                convertView.setTag(holder);
+            } else {
+                holder = (ListTripAccommodationAdapter.ViewHolder) convertView.getTag();
             }
-            convertView.setTag(holder);
-        } else {
-            holder = (ListTripAccommodationAdapter.ViewHolder) convertView.getTag();
-        }
-        if (mData.get(position) != null) {
-            holder.columnPlace.setText(mData.get(position).getPlace());
-            holder.columnCity.setText(mData.get(position).getCity());
-            holder.columnDateFrom.setText(mData.get(position).getDateFrom());
-            holder.columnDateTo.setText(mData.get(position).getDateTo());
-        } else {
-            holder.columnPlace.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_ONE));
-            holder.columnCity.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_TWO));
-            holder.columnDateFrom.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_THREE));
-            holder.columnDateTo.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR));
+            if (mData.get(position) != null) {
+                holder.columnPlace.setText(mData.get(position).getPlace());
+                holder.columnCity.setText(mData.get(position).getCity());
+                holder.columnDateFrom.setText(mData.get(position).getDateFrom());
+                holder.columnDateTo.setText(mData.get(position).getDateTo());
+            } else {
+                holder.columnPlace.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_ONE));
+                holder.columnCity.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_TWO));
+                holder.columnDateFrom.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_THREE));
+                holder.columnDateTo.setText(mDataHeader.get(position).get(Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR));
+            }
+        }catch(ParseException e){
+            e.printStackTrace();
         }
 
         return convertView;

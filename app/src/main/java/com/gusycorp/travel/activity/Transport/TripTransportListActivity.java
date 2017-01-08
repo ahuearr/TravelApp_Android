@@ -17,6 +17,7 @@ import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -94,20 +95,24 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TripTransport tripTransport = (TripTransport) listView.getAdapter().getItem(position);
-                if (tripTransport != null) {
-                    app.setCurrentTripTransport(tripTransport);
-                    Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
-                    intent.putExtra(Constants.OBJECTID, tripTransport.getId());
-                    intent.putExtra(Constants.DATEFROM, tripTransport.getDateFrom());
-                    intent.putExtra(Constants.DATETO, tripTransport.getDateTo());
-                    intent.putExtra(Constants.FROM, tripTransport.getFrom());
-                    intent.putExtra(Constants.TO, tripTransport.getTo());
-                    intent.putExtra(Constants.PRIZE, tripTransport.getPrize());
-                    intent.putExtra(Constants.LOCATOR, tripTransport.getLocator());
-                    TypeTransport typeTransport = tripTransport.getTypeTransport();
-                    intent.putExtra(Constants.TYPETRANSPORT, typeTransport.getTransportName());
-                    startActivity(intent);
+                try{
+                    TripTransport tripTransport = (TripTransport) listView.getAdapter().getItem(position);
+                    if (tripTransport != null) {
+                        app.setCurrentTripTransport(tripTransport);
+                        Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);
+                        intent.putExtra(Constants.OBJECTID, tripTransport.getId());
+                        intent.putExtra(Constants.DATEFROM, tripTransport.getDateFrom());
+                        intent.putExtra(Constants.DATETO, tripTransport.getDateTo());
+                        intent.putExtra(Constants.FROM, tripTransport.getFrom());
+                        intent.putExtra(Constants.TO, tripTransport.getTo());
+                        intent.putExtra(Constants.PRIZE, tripTransport.getPrize());
+                        intent.putExtra(Constants.LOCATOR, tripTransport.getLocator());
+                        TypeTransport typeTransport = tripTransport.getTypeTransport();
+                        intent.putExtra(Constants.TYPETRANSPORT, typeTransport.getTransportName());
+                        startActivity(intent);
+                    }
+                }catch(ParseException e){
+                    e.printStackTrace();
                 }
             }
         });

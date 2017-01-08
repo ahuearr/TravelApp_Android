@@ -18,6 +18,10 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,7 +51,7 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 
 	TravelApplication app;
 
-	private DateFormat df = new SimpleDateFormat(Constants.ONLY_DATE_MASK);
+	private DateTimeFormatter df = DateTimeFormat.forPattern(Constants.ONLY_DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,24 +115,24 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						Date date = df.parse(dateArrival.getText().toString());
-						tripAccommodation.set(Constants.DATEFROM, date);
-						date = df.parse(dateDepart.getText().toString());
-						tripAccommodation.set(Constants.DATETO, date);
-						tripAccommodation.set(Constants.PLACE, place.getText().toString());
-						tripAccommodation.set(Constants.CITY, city.getText().toString());
-						tripAccommodation.set(Constants.ADDRESS, address.getText().toString());
-						tripAccommodation.set(Constants.NUMROOMS, Integer.parseInt(numRooms.getText().toString()));
-						tripAccommodation.set(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
+						DateTime date = df.parseDateTime(dateArrival.getText().toString());
+						tripAccommodation.setDateFrom(date);
+						date = df.parseDateTime(dateDepart.getText().toString());
+						tripAccommodation.setDateTo(date);
+						tripAccommodation.setPlace(place.getText().toString());
+						tripAccommodation.setCity(city.getText().toString());
+						tripAccommodation.setAddress(address.getText().toString());
+						tripAccommodation.setNumRooms(Integer.parseInt(numRooms.getText().toString()));
+						tripAccommodation.setPrize(Double.parseDouble(prize.getText().toString()));
 
 						if(objectId!=null){
 							update();
 						} else {
 							save();
 						}
-					} catch (java.text.ParseException e){
-						e.printStackTrace();
 					} catch (CloudException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else{
@@ -143,17 +147,18 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 	}
 
 	private void save() throws CloudException {
-		tripAccommodation.save(new CloudObjectCallback() {
+		tripAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
 			@Override
-			public void done(CloudObject x, CloudException t) throws CloudException {
-				tripAccommodation = (TripAccommodation) x;
+			public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
+				tripAccommodation = new TripAccommodation(tripAccommodationSaved);
 				List<TripAccommodation> tripAccommodations = currentTrip.getTripAccommodationList();
+				//TODO La siguiente linea añadira el registro o hara un append de la lista entera con el nuevo registro duplicando los existentes?
 				tripAccommodations.add(tripAccommodation);
-				currentTrip.set(Constants.TRIPACCOMMODATION, tripAccommodations);
-				currentTrip.save(new CloudObjectCallback() {
+				currentTrip.setTripAccommodationList(tripAccommodations);
+				currentTrip.getTrip().save(new CloudObjectCallback() {
 					@Override
-					public void done(CloudObject x, CloudException t) throws CloudException {
-						Trip trip = (Trip) x;
+					public void done(CloudObject tripSaved, CloudException t) throws CloudException {
+						Trip trip = new Trip(tripSaved);
 						app.setCurrentTrip(trip);
 						goOK();
 					}
@@ -163,9 +168,9 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 	}
 
 	private void update() throws CloudException {
-		tripAccommodation.save(new CloudObjectCallback() {
+		tripAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
 			@Override
-			public void done(CloudObject x, CloudException t) throws CloudException {
+			public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
 				//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??
 				goOK();
 			}

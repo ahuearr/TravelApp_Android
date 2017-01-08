@@ -48,9 +48,6 @@ public class TripLoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Initializing Cloudboost
-        initCloudBoost();
-
         // creating connection detector class instance
         cd = new ConnectionDetector(getApplicationContext());
 
@@ -106,11 +103,6 @@ public class TripLoginActivity extends Activity {
 
 
     }
-
-    public void initCloudBoost() {
-        CloudApp.init(Utils.APP_ID, Utils.CLIENT_KEY);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

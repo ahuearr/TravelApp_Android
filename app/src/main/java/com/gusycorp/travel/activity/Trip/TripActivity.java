@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity.Trip;
 
+import java.text.ParseException;
 import java.util.List;
 
 import android.content.Intent;
@@ -19,6 +20,7 @@ import com.gusycorp.travel.util.Constants;
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectArrayCallback;
+import io.cloudboost.CloudObjectCallback;
 import io.cloudboost.CloudQuery;
 import io.cloudboost.CloudUser;
 
@@ -71,56 +73,18 @@ public class TripActivity extends MenuActivity {
 
 	private class GetTrip extends AsyncTask<String, Void, Integer> {
 
+		private Trip tripFind;
+
 		@Override
 		protected Integer doInBackground(String... params) {
 
 			try{
-				Trip.findTripInBackground(tripObjectId, new ITObjectCallback<Trip>() {
+				Trip.findTripInBackground(tripObjectId, new CloudObjectCallback() {
 					@Override
-					public void done(CloudObject x, CloudException t) throws CloudException {
-
+					public void done(CloudObject trip, CloudException t) throws CloudException {
+						tripFind = new Trip(trip);
 					}
 
-					@Override
-					public void done(Trip tripFind, CloudException e) {
-						app.setCurrentTrip(tripFind);
-						if(CloudUser.getcurrentUser().getId().equals(tripFind.getOrganizerId())){
-							app.setIsOrganizer(true);
-							edit.setVisibility(View.VISIBLE);
-						}else{
-							app.setIsOrganizer(false);
-						}
-						tripNameText.setText(tripFind.getTripName());
-						tripName = tripFind.getTripName();
-						if (tripFind.getDateIni() != null) {
-							dateIniText.setText(tripFind.getDateIni());
-						} else {
-							dateIniText.setText(getString(R.string.date_empty));
-						}
-						if (tripFind.getDateFin() != null) {
-							dateFinText.setText(tripFind.getDateFin());
-						} else {
-							dateFinText.setText(getString(R.string.date_empty));
-						}
-						List<String> destinyList = tripFind.getDestinyName();
-						String destinies = "";
-						if (destinyList != null) {
-							if (destinyList.size() > 0) {
-								for (String destiny : destinyList) {
-									destinies += destiny + ",";
-								}
-								destinies = destinies.substring(0,
-										destinies.length() - 1);
-								destinyNameText.setText(destinies);
-							} else {
-								destinyNameText
-										.setText(getString(R.string.destiny_name_empty));
-							}
-						} else {
-							destinyNameText
-									.setText(getString(R.string.destiny_name_empty));
-						}
-					}
 				});
 			}catch (CloudException e){
 				e.printStackTrace();
@@ -129,6 +93,52 @@ public class TripActivity extends MenuActivity {
 			return 0;
 		}
 
+		@Override
+		protected void onPostExecute(Integer integer) {
+			try{
+				if(tripFind!=null){
+					app.setCurrentTrip(tripFind);
+					if(CloudUser.getcurrentUser().getId().equals(tripFind.getOrganizerId())){
+						app.setIsOrganizer(true);
+						edit.setVisibility(View.VISIBLE);
+					}else{
+						app.setIsOrganizer(false);
+					}
+					tripNameText.setText(tripFind.getTripName());
+					tripName = tripFind.getTripName();
+					if (tripFind.getDateIni() != null) {
+						dateIniText.setText(tripFind.getDateIni());
+					} else {
+						dateIniText.setText(getString(R.string.date_empty));
+					}
+					if (tripFind.getDateFin() != null) {
+						dateFinText.setText(tripFind.getDateFin());
+					} else {
+						dateFinText.setText(getString(R.string.date_empty));
+					}
+					List<String> destinyList = tripFind.getDestinyName();
+					String destinies = "";
+					if (destinyList != null) {
+						if (destinyList.size() > 0) {
+							for (String destiny : destinyList) {
+								destinies += destiny + ",";
+							}
+							destinies = destinies.substring(0,
+									destinies.length() - 1);
+							destinyNameText.setText(destinies);
+						} else {
+							destinyNameText
+									.setText(getString(R.string.destiny_name_empty));
+						}
+					} else {
+						destinyNameText
+								.setText(getString(R.string.destiny_name_empty));
+					}
+				}
+			}catch(ParseException e){
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

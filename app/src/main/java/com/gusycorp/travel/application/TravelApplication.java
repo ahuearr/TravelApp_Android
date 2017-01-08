@@ -1,7 +1,11 @@
 package com.gusycorp.travel.application;
 
 import android.app.Application;
+import android.content.Intent;
+import android.os.AsyncTask;
 
+import com.gusycorp.travel.activity.Trip.TripActivity;
+import com.gusycorp.travel.activity.Trip.TripEditActivity;
 import com.gusycorp.travel.model.ITObjectArrayCallback;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
@@ -18,9 +22,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import io.cloudboost.CloudApp;
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectArrayCallback;
+import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudUser;
 
 public class TravelApplication extends Application {
 
@@ -35,7 +42,8 @@ public class TravelApplication extends Application {
 	private boolean isOrganizer;
 
 	public void onCreate() {
-		getListsSpinners();
+		CloudApp.init(Utils.APP_ID, Utils.CLIENT_KEY);
+		new GetListsSpinners().execute();
 	}
 
 	public List<Integer> getMenus() {
@@ -88,6 +96,16 @@ public class TravelApplication extends Application {
 
 	public void setIsOrganizer(boolean isOrganizer) {
 		this.isOrganizer = isOrganizer;
+	}
+
+	private class GetListsSpinners extends AsyncTask<String, Void, Integer> {
+
+		@Override
+		protected Integer doInBackground(String... params) {
+
+			getListsSpinners();
+			return 0;
+		}
 	}
 
 	void getListsSpinners(){

@@ -113,7 +113,7 @@ public class TripMapActivity extends FragmentActivity {
     private void setUpMap() {
         for(TripTransport item : tripTransports){
             Double latitudeFrom = item.getLatitudeFrom();
-            Double longitudeFrom = item.getLongtiudeFrom();
+            Double longitudeFrom = item.getLongitudeFrom();
             if(latitudeFrom!=null && latitudeFrom!=0.0 && longitudeFrom!=null && longitudeFrom!=0.0){
                 mMap.addMarker(new MarkerOptions().position(new LatLng(latitudeFrom, longitudeFrom)).title(getString(R.string.transportDepartureFrom) + " " + item.getFrom()));
             } else {
@@ -125,11 +125,11 @@ public class TripMapActivity extends FragmentActivity {
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
                         try {
-                            item.set(Constants.LATITUDEFROM, address.getLatitude());
-                            item.set(Constants.LONGITUDEFROM, address.getLongitude());
-                            item.save(new CloudObjectCallback() {
+                            item.setLatitudeFrom(address.getLatitude());
+                            item.setLongitudeFrom(address.getLongitude());
+                            item.getTripTransport().save(new CloudObjectCallback() {
                                 @Override
-                                public void done(CloudObject x, CloudException t) throws CloudException {
+                                public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
                                 }
                             });
                         } catch (CloudException e) {
@@ -153,11 +153,11 @@ public class TripMapActivity extends FragmentActivity {
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
                         try {
-                            item.set(Constants.LATITUDETO, address.getLatitude());
-                            item.set(Constants.LONGITUDETO, address.getLongitude());
-                            item.save(new CloudObjectCallback() {
+                            item.setLatitudeTo(address.getLatitude());
+                            item.setLongitudeTo(address.getLongitude());
+                            item.getTripTransport().save(new CloudObjectCallback() {
                                 @Override
-                                public void done(CloudObject x, CloudException t) throws CloudException {
+                                public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
                                 }
                             });
                         } catch (CloudException e) {
@@ -184,11 +184,11 @@ public class TripMapActivity extends FragmentActivity {
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
                         try {
-                            item.set(Constants.LATITUDE, address.getLatitude());
-                            item.set(Constants.LONGITUDE, address.getLongitude());
-                            item.save(new CloudObjectCallback() {
+                            item.setLatitude(address.getLatitude());
+                            item.setLongitude(address.getLongitude());
+                            item.getTripAccommodation().save(new CloudObjectCallback() {
                                 @Override
-                                public void done(CloudObject x, CloudException t) throws CloudException {
+                                public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
                                 }
                             });
                         } catch (CloudException e) {
@@ -215,11 +215,11 @@ public class TripMapActivity extends FragmentActivity {
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
                         try {
-                            item.set(Constants.LATITUDE, address.getLatitude());
-                            item.set(Constants.LONGITUDE, address.getLongitude());
-                            item.save(new CloudObjectCallback() {
+                            item.setLatitude(address.getLatitude());
+                            item.setLongitude(address.getLongitude());
+                            item.getTripCalendar().save(new CloudObjectCallback() {
                                 @Override
-                                public void done(CloudObject x, CloudException t) throws CloudException {
+                                public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
                                 }
                             });
                         } catch (CloudException e) {
@@ -469,11 +469,11 @@ public class TripMapActivity extends FragmentActivity {
                         TripTransport itemTransport = (TripTransport) item;
                         if(Constants.FROM.equals(fromOrTo)){
                             try {
-                                itemTransport.set(Constants.LATITUDEFROM, address.getLatitude());
-                                itemTransport.set(Constants.LONGITUDEFROM, address.getLongitude());
-                                itemTransport.save(new CloudObjectCallback() {
+                                itemTransport.setLatitudeFrom(address.getLatitude());
+                                itemTransport.setLongitudeFrom(address.getLongitude());
+                                itemTransport.getTripTransport().save(new CloudObjectCallback() {
                                     @Override
-                                    public void done(CloudObject x, CloudException t) throws CloudException {
+                                    public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
                                     }
                                 });
                             } catch (CloudException e) {
@@ -481,11 +481,11 @@ public class TripMapActivity extends FragmentActivity {
                             }
                         }else{
                             try {
-                                itemTransport.set(Constants.LATITUDETO, address.getLatitude());
-                                itemTransport.set(Constants.LONGITUDETO, address.getLongitude());
-                                itemTransport.save(new CloudObjectCallback() {
+                                itemTransport.setLatitudeTo(address.getLatitude());
+                                itemTransport.setLongitudeTo(address.getLongitude());
+                                itemTransport.getTripTransport().save(new CloudObjectCallback() {
                                     @Override
-                                    public void done(CloudObject x, CloudException t) throws CloudException {
+                                    public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
                                     }
                                 });
                             } catch (CloudException e) {
@@ -496,11 +496,11 @@ public class TripMapActivity extends FragmentActivity {
                     case Constants.TAG_TRIPACCOMMODATIONMODEL:
                         TripAccommodation itemAccommodation = (TripAccommodation) item;
                         try {
-                            itemAccommodation.set(Constants.LATITUDE, address.getLatitude());
-                            itemAccommodation.set(Constants.LONGITUDE, address.getLongitude());
-                            itemAccommodation.save(new CloudObjectCallback() {
+                            itemAccommodation.setLatitude(address.getLatitude());
+                            itemAccommodation.setLongitude(address.getLongitude());
+                            itemAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
                                 @Override
-                                public void done(CloudObject x, CloudException t) throws CloudException {
+                                public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
                                 }
                             });
                         } catch (CloudException e) {
@@ -510,11 +510,11 @@ public class TripMapActivity extends FragmentActivity {
                     case Constants.TAG_TRIPCALENDARMODEL:
                         TripCalendar itemCalendar = (TripCalendar) item;
                         try {
-                            itemCalendar.set(Constants.LATITUDE, address.getLatitude());
-                            itemCalendar.set(Constants.LONGITUDE, address.getLongitude());
-                            itemCalendar.save(new CloudObjectCallback() {
+                            itemCalendar.setLatitude(address.getLatitude());
+                            itemCalendar.setLongitude(address.getLongitude());
+                            itemCalendar.getTripCalendar().save(new CloudObjectCallback() {
                                 @Override
-                                public void done(CloudObject x, CloudException t) throws CloudException {
+                                public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
                                 }
                             });
                         } catch (CloudException e) {

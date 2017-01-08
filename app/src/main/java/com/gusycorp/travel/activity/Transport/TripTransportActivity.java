@@ -1,6 +1,7 @@
 package com.gusycorp.travel.activity.Transport;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,8 +16,11 @@ import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.activity.MenuActivity;
+import com.gusycorp.travel.activity.Trip.TripActivity;
+import com.gusycorp.travel.activity.Trip.TripEditActivity;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
+import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
@@ -34,6 +38,7 @@ import java.util.List;
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudUser;
 
 
 public class TripTransportActivity extends MenuActivity implements OnClickListener{
@@ -58,7 +63,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 
 	TravelApplication app;
 
-	private DateTimeFormatter df = DateTimeFormat.forPattern(Constants.ONLY_DATE_MASK);
+	private DateTimeFormatter df = DateTimeFormat.forPattern(Constants.DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +175,33 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		}
 	}
 
+	private class Save extends AsyncTask<Integer, Void, Integer> {
+
+		int saveType;
+		@Override
+		protected Integer doInBackground(Integer... params) {
+
+			saveType = params[0];
+
+			switch(saveType){
+				case 0: //Save
+					save();
+					break;
+				case 1:  //Update
+					update();
+					break;
+			}
+			return 0;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			if(result==2){
+				onBackPressed();
+			}
+		}
+	}
+
 	private void save(){
 		try {
 			tripTransport.getTripTransport().save(new CloudObjectCallback() {
@@ -198,7 +230,7 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 		try {
 			tripTransport.getTripTransport().save(new CloudObjectCallback() {
 				@Override
-				public void done(CloudObject x, CloudException t) throws CloudException {
+				public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
 					//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??
 					goOK();
 				}

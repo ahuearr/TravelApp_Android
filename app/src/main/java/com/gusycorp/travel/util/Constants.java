@@ -2,6 +2,7 @@ package com.gusycorp.travel.util;
 
 public class Constants {
 
+	public final static String DATE_MASK_DATABASE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 	public final static String DATE_MASK = "dd/MM/yyyy HH:mm:ss";
 	public final static String ONLY_DATE_MASK = "dd/MM/yyyy";
 
@@ -97,4 +98,7 @@ public class Constants {
 
 	// Others
 	public final static String TAG_UTILS = "Utils";
+	public final static int SAVE=0;
+	public final static int UPDATE=1;
+
 }

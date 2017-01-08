@@ -52,16 +52,16 @@ public class Trip extends ITObject{
 		trip.set(Constants.TRIPNAME, tripName);
 	}
 
-	public String getDateIni() {
-		return trip.getString(Constants.DATEINI);
+	public String getDateIni() throws ParseException {
+		return dfDate.print(getDate(trip.getString(Constants.DATEINI)));
 	}
 
 	public void setDateIni(DateTime dateIni) throws CloudException {
 		trip.set(Constants.DATEINI, dateIni);
 	}
 
-	public String getDateFin() {
-		return trip.getString(Constants.DATEFIN);
+	public String getDateFin() throws ParseException {
+		return dfDate.print(getDate(trip.getString(Constants.DATEFIN)));
 	}
 
 	public void setDateFin(DateTime dateFin) throws CloudException {
@@ -118,9 +118,13 @@ public class Trip extends ITObject{
 	}
 
 	public List<TripTransport> getTripTransportList(){
-		Object[] objectArray = trip.getArray(Constants.TRIPTRANSPORT);
-		TripTransport[] array = Arrays.copyOf(objectArray, objectArray.length, TripTransport[].class);
-		return Arrays.asList(array);
+		CloudObject[] objectArray = getArray(trip,Constants.TRIPTRANSPORT);
+		if(objectArray!=null){
+			TripTransport[] array = Arrays.copyOf(objectArray, objectArray.length, TripTransport[].class);
+			return Arrays.asList(array);
+		}else{
+			return new ArrayList<TripTransport>();
+		}
 	}
 
 	public void setTripTransportList (List<TripTransport> tripTransportList) throws CloudException {
@@ -149,7 +153,9 @@ public class Trip extends ITObject{
 
 	public void setTripMateList (List<TripMate> tripMateList) throws CloudException {
 		CloudObject[] tripMateListObjects = new CloudObject[tripMateList.size()];
-		tripMateList.toArray(tripMateListObjects);
+		for(int i=0;i<tripMateList.size();i++){
+			tripMateListObjects[i] = tripMateList.get(i).getTripMate();
+		}
 		trip.set(Constants.TRIPMATE, tripMateListObjects);
 	}
 

@@ -43,8 +43,8 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 		return tripCalendar.getId();
 	}
 
-	public String getDate() {
-		return tripCalendar.getString(Constants.DATE);
+	public String getDate() throws ParseException {
+		return dfDate.print(getDate(tripCalendar.getString(Constants.DATE)));
 	}
 
 	public void setDate(DateTime date) throws CloudException {
@@ -116,7 +116,9 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 		return Arrays.asList(array);
 	}
 
-	public void setTripMatePrizeList (CloudObject[] tripMatePrizeList) throws CloudException {
+	public void setTripMatePrizeList (List<TripMatePrize> tripMatePrizeList) throws CloudException {
+		CloudObject[] tripMatePrizeListObjects = new CloudObject[tripMatePrizeList.size()];
+		tripMatePrizeList.toArray(tripMatePrizeListObjects);
 		tripCalendar.set(Constants.TRIPMATEPRIZE, tripMatePrizeList);
 	}
 

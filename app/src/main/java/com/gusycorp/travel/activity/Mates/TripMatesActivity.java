@@ -129,27 +129,27 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             CloudQuery query = new CloudQuery("User");
             query.equalTo(Constants.USERNAME, mate);
             query.find(new CloudObjectArrayCallback() {
-                public void done(CloudObject[] obj, final CloudException e) {
-                    if (e == null) {
-                        CloudUser user = (CloudUser) obj[0];
-                        final TripMate[] tripMate = {new TripMate()};
+                public void done(CloudObject[] userList, final CloudException e) {
+                    if (userList != null) {
+                        CloudUser user = (CloudUser) userList[0];
+                        final TripMate tripMate = new TripMate();
                         try {
-                            tripMate[0].set(Constants.USERID,user.getId());
-                            tripMate[0].set(Constants.USERNAME,user.get(Constants.USERNAME));
-                            tripMate[0].set(Constants.ORGANIZER, false);
-                            tripMate[0].save(new CloudObjectCallback() {
+                            tripMate.setUserId(user.getId());
+                            tripMate.setUserName(user.get(Constants.USERNAME).toString());
+                            tripMate.setOrganizer(false);
+                            tripMate.getTripMate().save(new CloudObjectCallback() {
                                 @Override
-                                public void done(CloudObject x, CloudException t) throws CloudException {
-                                    tripMate[0] = (TripMate) x;
+                                public void done(CloudObject tripMateSaved, CloudException t) throws CloudException {
+                                    final TripMate tripMate = new TripMate(tripMateSaved);
                                     List<TripMate> tripMateList = currentTrip.getTripMateList();
-                                    tripMateList.add(tripMate[0]);
-                                    currentTrip.set(Constants.TRIPMATE, tripMateList);
-                                    currentTrip.save(new CloudObjectCallback() {
+                                    tripMateList.add(tripMate);
+                                    currentTrip.setTripMateList(tripMateList);
+                                    currentTrip.getTrip().save(new CloudObjectCallback() {
                                         @Override
-                                        public void done(CloudObject x, CloudException t) throws CloudException {
-                                            currentTrip = (Trip) x;
-                                            tripMates.add(tripMate[0]);
-                                            mAdapter.addItem(tripMate[0]);
+                                        public void done(CloudObject tripSaved, CloudException t) throws CloudException {
+                                            currentTrip = new Trip(tripSaved);
+                                            tripMates.add(tripMate);
+                                            mAdapter.addItem(tripMate);
                                             mAdapter.notifyDataSetChanged();
                                         }
                                     });

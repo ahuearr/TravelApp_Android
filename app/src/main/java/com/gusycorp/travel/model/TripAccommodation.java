@@ -43,16 +43,16 @@ public class TripAccommodation extends ITObject {
 		return tripAccommodation.getId();
 	}
 
-	public String getDateFrom() {
-		return tripAccommodation.getString(Constants.DATEFROM);
+	public String getDateFrom() throws ParseException {
+		return dfDate.print(getDate(tripAccommodation.getString(Constants.DATEFROM)));
 	}
 
 	public void setDateFrom(DateTime dateFrom) throws CloudException {
 		tripAccommodation.set(Constants.DATEFROM, dateFrom);
 	}
 
-	public String getDateTo() {
-		return tripAccommodation.getString(Constants.DATETO);
+	public String getDateTo() throws ParseException {
+		return dfDate.print(getDate(tripAccommodation.getString(Constants.DATETO)));
 	}
 
 	public void setDateTo(DateTime dateTo) throws CloudException {
@@ -129,7 +129,9 @@ public class TripAccommodation extends ITObject {
 		return Arrays.asList(array);
 	}
 
-	public void setTripMatePrizeList (CloudObject[] tripMatePrizeList) throws CloudException {
+	public void setTripMatePrizeList (List<TripMatePrize> tripMatePrizeList) throws CloudException {
+		CloudObject[] tripMatePrizeListObjects = new CloudObject[tripMatePrizeList.size()];
+		tripMatePrizeList.toArray(tripMatePrizeListObjects);
 		tripAccommodation.set(Constants.TRIPMATEPRIZE, tripMatePrizeList);
 	}
 

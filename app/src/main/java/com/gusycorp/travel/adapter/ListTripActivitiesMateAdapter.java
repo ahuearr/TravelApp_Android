@@ -124,7 +124,7 @@ public class ListTripActivitiesMateAdapter extends ArrayAdapter<TripMatePrize> {
                         final EditText matePrize = (EditText) v;
                         double prize = StringUtils.isNotBlank(matePrize.getText().toString()) ? Double.parseDouble(matePrize.getText().toString()) : 0.0;
                         try {
-                            mData.get(position).set(Constants.PRIZE, prize);
+                            mData.get(position).setPrize(prize);
                         } catch (CloudException e) {
                             e.printStackTrace();
                         }

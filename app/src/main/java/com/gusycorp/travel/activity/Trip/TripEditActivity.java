@@ -24,6 +24,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,53 +57,57 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_trip_edit);
+		try{
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_trip_edit);
 
-		app = (TravelApplication) getApplication();
+			app = (TravelApplication) getApplication();
 
-		tripNameText = (EditText) findViewById(R.id.text_trip_name);
-		dateIniText = (EditText) findViewById(R.id.text_date_depart);
-		dateFinText = (EditText) findViewById(R.id.text_date_arrival);
-		destinyNameText = (EditText) findViewById(R.id.text_destiny_name);
-		save = (Button) findViewById(R.id.save_button);
+			tripNameText = (EditText) findViewById(R.id.text_trip_name);
+			dateIniText = (EditText) findViewById(R.id.text_date_depart);
+			dateFinText = (EditText) findViewById(R.id.text_date_arrival);
+			destinyNameText = (EditText) findViewById(R.id.text_destiny_name);
+			save = (Button) findViewById(R.id.save_button);
 
-		save.setOnClickListener(this);
+			save.setOnClickListener(this);
 
-		Bundle extras = getIntent().getExtras();
-		if(extras!=null){
-			tripObjectId = extras.getString("tripObjectId");
+			Bundle extras = getIntent().getExtras();
+			if(extras!=null){
+				tripObjectId = extras.getString("tripObjectId");
 
-			trip = app.getCurrentTrip();
-			tripNameText.setText(trip.getTripName());
-			if (trip.getDateIni() != null) {
-				dateIniText.setText(trip.getDateIni());
-			} else {
-				dateIniText.setText(getString(R.string.date_empty));
-			}
-			if (trip.getDateFin() != null) {
-				dateFinText.setText(trip.getDateFin());
-			} else {
-				dateFinText.setText(getString(R.string.date_empty));
-			}
-			List<String> destinyList = trip.getDestinyName();
-			String destinies = "";
-			if (destinyList != null) {
-				if (destinyList.size() > 0) {
-					for (String destiny : destinyList) {
-						destinies += destiny + ",";
+				trip = app.getCurrentTrip();
+				tripNameText.setText(trip.getTripName());
+				if (trip.getDateIni() != null) {
+					dateIniText.setText(trip.getDateIni());
+				} else {
+					dateIniText.setText(getString(R.string.date_empty));
+				}
+				if (trip.getDateFin() != null) {
+					dateFinText.setText(trip.getDateFin());
+				} else {
+					dateFinText.setText(getString(R.string.date_empty));
+				}
+				List<String> destinyList = trip.getDestinyName();
+				String destinies = "";
+				if (destinyList != null) {
+					if (destinyList.size() > 0) {
+						for (String destiny : destinyList) {
+							destinies += destiny + ",";
+						}
+						destinies = destinies.substring(0,
+								destinies.length() - 1);
+						destinyNameText.setText(destinies);
+					} else {
+						destinyNameText
+								.setText(getString(R.string.destiny_name_empty));
 					}
-					destinies = destinies.substring(0,
-							destinies.length() - 1);
-					destinyNameText.setText(destinies);
 				} else {
 					destinyNameText
 							.setText(getString(R.string.destiny_name_empty));
 				}
-			} else {
-				destinyNameText
-						.setText(getString(R.string.destiny_name_empty));
 			}
+		}catch(ParseException e){
+			e.printStackTrace();
 		}
 	}
 
@@ -166,9 +171,9 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 						public void done(CloudObject tripSaved, CloudException t) throws CloudException {
 							trip = new Trip(tripSaved);
 							app.setCurrentTrip(trip);
-							onBackPressed();
 						}
 					});
+					return 2;
 				} else {
 					TripMate tripMate = new TripMate();
 					tripMate.setUserId(CloudUser.getcurrentUser().getId());
@@ -178,7 +183,9 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 						@Override
 						public void done(CloudObject tripMateSaved, CloudException e) throws CloudException {
 							if(tripMateSaved!=null){
-								CloudObject[] tripMateList = new CloudObject[]{tripMateSaved};
+								TripMate tripMate = new TripMate(tripMateSaved);
+								ArrayList<TripMate> tripMateList = new ArrayList<TripMate>();
+								tripMateList.add(tripMate);
 								trip.setTripMateList(tripMateList);
 								trip.getTrip().save(new CloudObjectCallback() {
 									@Override
@@ -203,8 +210,16 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 				}
 			} catch (CloudException e) {
 				e.printStackTrace();
+				return 1;
 			}
 			return 0;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			if(result==2){
+				onBackPressed();
+			}
 		}
 	}
 
