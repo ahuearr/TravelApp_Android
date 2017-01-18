@@ -84,7 +84,11 @@ public class TripTransport extends ITObject {
 	}
 
 	public Double getPrize() {
-		return tripTransport.getDouble(Constants.PRIZE);
+		try{
+			return tripTransport.getDouble(Constants.PRIZE);
+		}catch(ClassCastException e){
+			return (double) tripTransport.getInteger(Constants.PRIZE);
+		}
 	}
 
 	public void setPrize(Double prize) throws CloudException {
@@ -99,16 +103,20 @@ public class TripTransport extends ITObject {
 		tripTransport.set(Constants.LOCATOR, locator);
 	}
 
-	public TypeTransport getTypeTransport(){
-		return new TypeTransport(tripTransport.getCloudObject(Constants.TYPETRANSPORT));
+	public String getTypeTransport(){
+		return tripTransport.getString(Constants.TYPETRANSPORT);
 	}
 
-	public void setTypeTransport(TypeTransport typeTransport) throws CloudException {
-		tripTransport.set(Constants.TYPETRANSPORT, typeTransport.getTypeTransport());
+	public void setTypeTransport(String typeTransport) throws CloudException {
+		tripTransport.set(Constants.TYPETRANSPORT, typeTransport);
 	}
 
 	public Double getLatitudeFrom() {
-		return tripTransport.getDouble(Constants.LATITUDEFROM);
+		try{
+			return tripTransport.getDouble(Constants.LATITUDEFROM);
+		}catch (ClassCastException e){
+			return (double)tripTransport.getInteger(Constants.LATITUDEFROM);
+		}
 	}
 
 	public void setLatitudeFrom(Double latitudeFrom) throws CloudException {
@@ -116,7 +124,11 @@ public class TripTransport extends ITObject {
 	}
 
 	public Double getLongitudeFrom() {
-		return tripTransport.getDouble(Constants.LONGITUDEFROM);
+		try{
+			return tripTransport.getDouble(Constants.LONGITUDEFROM);
+		}catch (ClassCastException e){
+			return (double)tripTransport.getInteger(Constants.LONGITUDEFROM);
+		}
 	}
 
 	public void setLongitudeFrom(Double longitudeFrom) throws CloudException {
@@ -124,7 +136,11 @@ public class TripTransport extends ITObject {
 	}
 
 	public Double getLatitudeTo() {
-		return tripTransport.getDouble(Constants.LATITUDETO);
+		try{
+			return tripTransport.getDouble(Constants.LATITUDETO);
+		}catch (ClassCastException e){
+			return (double)tripTransport.getInteger(Constants.LATITUDETO);
+		}
 	}
 
 	public void setLatitudeTo(Double latitudeTo) throws CloudException {
@@ -132,11 +148,23 @@ public class TripTransport extends ITObject {
 	}
 
 	public Double getLongitudeTo() {
-		return tripTransport.getDouble(Constants.LONGITUDETO);
+		try{
+			return tripTransport.getDouble(Constants.LONGITUDETO);
+		}catch (ClassCastException e){
+			return (double)tripTransport.getInteger(Constants.LONGITUDETO);
+		}
 	}
 
 	public void setLongitudeTo(Double longitudeTo) throws CloudException {
 		tripTransport.set(Constants.LONGITUDETO, longitudeTo);
+	}
+
+	public String getTripId(){
+		return tripTransport.getString(Constants.TRIPID);
+	}
+
+	public void setTripId(String tripId) throws CloudException {
+		tripTransport.set(Constants.TRIPID, tripId);
 	}
 
 	public List<TripMatePrize> getTripMatePrizeList(){

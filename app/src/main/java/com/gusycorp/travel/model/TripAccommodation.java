@@ -100,7 +100,11 @@ public class TripAccommodation extends ITObject {
 	}
 
 	public Double getPrize() {
-		return tripAccommodation.getDouble(Constants.PRIZE);
+		try{
+			return tripAccommodation.getDouble(Constants.PRIZE);
+		}catch (ClassCastException e){
+			return (double)tripAccommodation.getInteger(Constants.PRIZE);
+		}
 	}
 
 	public void setPrize(Double prize) throws CloudException {
@@ -108,7 +112,11 @@ public class TripAccommodation extends ITObject {
 	}
 
 	public Double getLatitude() {
-		return tripAccommodation.getDouble(Constants.LATITUDE);
+		try{
+			return tripAccommodation.getDouble(Constants.LATITUDE);
+		}catch (ClassCastException e){
+			return (double)tripAccommodation.getInteger(Constants.LATITUDE);
+		}
 	}
 
 	public void setLatitude(Double latitude) throws CloudException {
@@ -116,11 +124,23 @@ public class TripAccommodation extends ITObject {
 	}
 
 	public Double getLongitude() {
-		return tripAccommodation.getDouble(Constants.LONGITUDE);
+		try{
+			return tripAccommodation.getDouble(Constants.LONGITUDE);
+		}catch (ClassCastException e){
+			return (double)tripAccommodation.getInteger(Constants.LONGITUDE);
+		}
 	}
 
 	public void setLongitude(Double longitude) throws CloudException {
 		tripAccommodation.set(Constants.LONGITUDE, longitude);
+	}
+
+	public String getTripId(){
+		return tripAccommodation.getString(Constants.TRIPID);
+	}
+
+	public void setTripId(String tripId) throws CloudException {
+		tripAccommodation.set(Constants.TRIPID, tripId);
 	}
 
 	public List<TripMatePrize> getTripMatePrizeList(){

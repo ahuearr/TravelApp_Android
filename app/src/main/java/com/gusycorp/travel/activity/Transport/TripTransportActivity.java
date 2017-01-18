@@ -150,14 +150,14 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 						tripTransport.setTo(cityArrival.getText().toString());
 						tripTransport.setPrize(Double.parseDouble(prize.getText().toString()));
 						tripTransport.setLocator(locator.getText().toString());
-
-						final TypeTransport typeTransportSelected = new TypeTransport((CloudObject)typeTransport.getSelectedItem());
-						tripTransport.setTypeTransport(typeTransportSelected);
+						tripTransport.setTripId(currentTrip.getId());
+						final TypeTransport typeTransportSelected = (TypeTransport)typeTransport.getSelectedItem();
+						tripTransport.setTypeTransport(typeTransportSelected.getTransportName());
 
 						if(objectId!=null){
-							update();
+							new Save().execute(Constants.UPDATE);
 						} else {
-							save();
+							new Save().execute(Constants.SAVE);
 						}
 					} catch (CloudException e) {
 						e.printStackTrace();
@@ -186,18 +186,18 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 			switch(saveType){
 				case 0: //Save
 					save();
-					break;
+					return 0;
 				case 1:  //Update
 					update();
-					break;
+					return 1;
 			}
-			return 0;
+			return 2;
 		}
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			if(result==2){
-				onBackPressed();
+			if(result<=2){
+				goOK();
 			}
 		}
 	}
@@ -207,18 +207,15 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 			tripTransport.getTripTransport().save(new CloudObjectCallback() {
 				@Override
 				public void done(CloudObject transportSaved, CloudException t) throws CloudException {
-					tripTransport = new TripTransport(transportSaved);
-					List<TripTransport> tripTransportsList = currentTrip.getTripTransportList();
-					tripTransportsList.add(tripTransport);
-					currentTrip.setTripTransportList(tripTransportsList);
-					currentTrip.getTrip().save(new CloudObjectCallback() {
-						@Override
-						public void done(CloudObject tripSaved, CloudException t) throws CloudException {
-							Trip trip = new Trip(tripSaved);
-							app.setCurrentTrip(trip);
-							goOK();
-						}
-					});
+					if(transportSaved!=null){
+						TripTransport tripTransport = new TripTransport(transportSaved);
+						ArrayList<TripTransport> tripTransportsList = currentTrip.getTripTransportList();
+						tripTransportsList.add(tripTransport);
+						currentTrip.setTripTransportList(tripTransportsList);
+						app.setCurrentTrip(currentTrip);
+					}else{
+						t.printStackTrace();
+					}
 				}
 			});
 		} catch (CloudException e) {

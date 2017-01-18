@@ -24,6 +24,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -124,7 +125,7 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 						tripAccommodation.setAddress(address.getText().toString());
 						tripAccommodation.setNumRooms(Integer.parseInt(numRooms.getText().toString()));
 						tripAccommodation.setPrize(Double.parseDouble(prize.getText().toString()));
-
+						tripAccommodation.setTripId(currentTrip.getId());
 						if(objectId!=null){
 							update();
 						} else {
@@ -151,7 +152,7 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 			@Override
 			public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
 				tripAccommodation = new TripAccommodation(tripAccommodationSaved);
-				List<TripAccommodation> tripAccommodations = currentTrip.getTripAccommodationList();
+				ArrayList<TripAccommodation> tripAccommodations = currentTrip.getTripAccommodationList();
 				//TODO La siguiente linea añadira el registro o hara un append de la lista entera con el nuevo registro duplicando los existentes?
 				tripAccommodations.add(tripAccommodation);
 				currentTrip.setTripAccommodationList(tripAccommodations);

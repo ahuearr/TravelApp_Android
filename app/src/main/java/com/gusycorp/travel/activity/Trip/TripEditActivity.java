@@ -175,33 +175,38 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 					});
 					return 2;
 				} else {
-					TripMate tripMate = new TripMate();
-					tripMate.setUserId(CloudUser.getcurrentUser().getId());
-					tripMate.setUserName(CloudUser.getcurrentUser().getString(Constants.USERNAME));
-					tripMate.setOrganizer(true);
-					tripMate.getTripMate().save(new CloudObjectCallback() {
+					trip.getTrip().save(new CloudObjectCallback() {
 						@Override
-						public void done(CloudObject tripMateSaved, CloudException e) throws CloudException {
-							if(tripMateSaved!=null){
-								TripMate tripMate = new TripMate(tripMateSaved);
-								ArrayList<TripMate> tripMateList = new ArrayList<TripMate>();
-								tripMateList.add(tripMate);
-								trip.setTripMateList(tripMateList);
-								trip.getTrip().save(new CloudObjectCallback() {
-									@Override
-									public void done(CloudObject tripSaved, CloudException e) {
-										if(tripSaved!=null){
-											trip = new Trip(tripSaved);
-											app.setCurrentTrip(trip);
-											Intent intent = new Intent(TripEditActivity.this, TripActivity.class);
-											intent.putExtra("tripObjectId", trip.getId());
-											startActivity(intent);
-											finish();
-										}else{
-											e.printStackTrace();
+						public void done(CloudObject tripSaved, CloudException e) {
+							if(tripSaved!=null){
+								trip = new Trip(tripSaved);
+								TripMate tripMate = new TripMate();
+								try{
+									tripMate.setUserId(CloudUser.getcurrentUser().getId());
+									tripMate.setUserName(CloudUser.getcurrentUser().getString(Constants.USERNAME));
+									tripMate.setOrganizer(true);
+									tripMate.setTripId(trip.getId());
+									tripMate.getTripMate().save(new CloudObjectCallback() {
+										@Override
+										public void done(CloudObject tripMateSaved, CloudException e) throws CloudException {
+											if(tripMateSaved!=null){
+												TripMate tripMate = new TripMate(tripMateSaved);
+												ArrayList<TripMate> tripMateList = new ArrayList<TripMate>();
+												tripMateList.add(tripMate);
+												trip.setTripMateList(tripMateList);
+												app.setCurrentTrip(trip);
+												Intent intent = new Intent(TripEditActivity.this, TripActivity.class);
+												intent.putExtra("tripObjectId", trip.getId());
+												startActivity(intent);
+												finish();
+											}else{
+												e.printStackTrace();
+											}
 										}
-									}
-								});
+									});
+								}catch(CloudException e1){
+									e1.printStackTrace();
+								}
 							}else{
 								e.printStackTrace();
 							}

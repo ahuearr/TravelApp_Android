@@ -33,10 +33,18 @@ public class ITObject {
         return dfTime.parseDateTime(dateString);
     }
 
-    public List<String> getListString(String field, CloudObject object){
-        Object[] objectArray = object.getArray(field);
-        String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+    public List<String> getListString(String field, CloudObject table){
+        Object[] objectArray;
+        String[] stringArray;
+        try{
+            objectArray = table.getArray(field);
+            stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            return Arrays.asList(stringArray);
+        }catch(NullPointerException e){
+            stringArray = new String[0];
+        }
         return Arrays.asList(stringArray);
+
     }
 
     public CloudObject[] getArray (CloudObject table, String field){

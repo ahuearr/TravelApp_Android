@@ -66,6 +66,14 @@ public class TripMate extends ITObject{
         tripMate.set(Constants.ORGANIZER, organizer);
     }
 
+    public String getTripId(){
+        return tripMate.getString(Constants.TRIPID);
+    }
+
+    public void setTripId(String tripId) throws CloudException {
+        tripMate.set(Constants.TRIPID, tripId);
+    }
+
     public static void findTripMateInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
         CloudQuery query = new CloudQuery(TABLENAME);
         query.findById(objectId, new CloudObjectCallback(){

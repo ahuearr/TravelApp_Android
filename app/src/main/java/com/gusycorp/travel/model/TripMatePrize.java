@@ -18,6 +18,7 @@ public class TripMatePrize extends ITObject {
 
     private static String TABLENAME = Constants.TAG_TRIPMATEPRIZEMODEL;
     private CloudObject tripMatePrize;
+    private String mateUsername;
 
     public TripMatePrize(){
         tripMatePrize = new CloudObject(TABLENAME);
@@ -39,21 +40,58 @@ public class TripMatePrize extends ITObject {
         return tripMatePrize.getId();
     }
 
-    public TripMate getTripMate() {
-        return new TripMate(tripMatePrize.getCloudObject(Constants.TRIPMATE));
-    }
-
-    public void setTripMate(TripMate tripMate) throws CloudException {
-        tripMatePrize.set(Constants.TRIPMATE, tripMate.getTripMate());
-    }
-
     public Double getPrize() {
-        return tripMatePrize.getDouble(Constants.PRIZE);
+        try{
+            return tripMatePrize.getDouble(Constants.PRIZE);
+        }catch (ClassCastException e){
+            return (double)tripMatePrize.getInteger(Constants.PRIZE);
+        }
     }
 
     public void setPrize(Double prize) throws CloudException {
         tripMatePrize.set(Constants.PRIZE, prize);
     }
+
+    public String getTripMateId(){
+        return tripMatePrize.getString(Constants.TRIPMATEID);
+    }
+
+    public void setTripMateId(String tripMateId) throws CloudException {
+        tripMatePrize.set(Constants.TRIPMATEID, tripMateId);
+    }
+
+    public String getParentId(){
+        return tripMatePrize.getString(Constants.PARENTID);
+    }
+
+    public void setParentId(String parentId) throws CloudException {
+        tripMatePrize.set(Constants.PARENTID, parentId);
+    }
+
+    public String getParentType(){
+        return tripMatePrize.getString(Constants.PARENTTYPE);
+    }
+
+    public void setParentType(String parentType) throws CloudException {
+        tripMatePrize.set(Constants.PARENTTYPE, parentType);
+    }
+
+    public String getTripId(){
+        return tripMatePrize.getString(Constants.TRIPID);
+    }
+
+    public void setTripId(String tripId) throws CloudException {
+        tripMatePrize.set(Constants.TRIPID, tripId);
+    }
+
+    public String getMateUsername() {
+        return mateUsername;
+    }
+
+    public void setMateUsername(String mateUsername) {
+        this.mateUsername = mateUsername;
+    }
+
 
     public static void findTripMatePrizeInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
         CloudQuery query = new CloudQuery(TABLENAME);

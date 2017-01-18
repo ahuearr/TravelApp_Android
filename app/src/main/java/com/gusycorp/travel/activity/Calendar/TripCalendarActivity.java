@@ -25,6 +25,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -142,7 +143,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 				@Override
 				public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
 					tripCalendar = new TripCalendar(tripCalendarSaved);
-					List<TripCalendar> tripCalendars = currentTrip.getTripCalendarList();
+					ArrayList<TripCalendar> tripCalendars = currentTrip.getTripCalendarList();
 					tripCalendars.add(tripCalendar);
 					currentTrip.setTripCalendarList(tripCalendars);
 					currentTrip.getTrip().save(new CloudObjectCallback() {

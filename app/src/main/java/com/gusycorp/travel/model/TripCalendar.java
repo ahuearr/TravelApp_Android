@@ -79,7 +79,11 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 	}
 
 	public Double getPrize() {
-		return tripCalendar.getDouble(Constants.PRIZE);
+		try{
+			return tripCalendar.getDouble(Constants.PRIZE);
+		}catch (ClassCastException e){
+			return (double)tripCalendar.getInteger(Constants.PRIZE);
+		}
 	}
 
 	public void setPrize(Double prize) throws CloudException {
@@ -95,7 +99,11 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 	}
 
 	public Double getLatitude() {
-		return tripCalendar.getDouble(Constants.LATITUDE);
+		try{
+			return tripCalendar.getDouble(Constants.LATITUDE);
+		}catch (ClassCastException e){
+			return (double)tripCalendar.getInteger(Constants.LATITUDE);
+		}
 	}
 
 	public void setLatitude(Double latitude) throws CloudException {
@@ -103,7 +111,11 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 	}
 
 	public Double getLongitude() {
-		return tripCalendar.getDouble(Constants.LONGITUDE);
+		try{
+			return tripCalendar.getDouble(Constants.LONGITUDE);
+		}catch (ClassCastException e){
+			return (double)tripCalendar.getInteger(Constants.LONGITUDE);
+		}
 	}
 
 	public void setLongitude(Double longitude) throws CloudException {
@@ -116,11 +128,20 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 		return Arrays.asList(array);
 	}
 
+	public String getTripId(){
+		return tripCalendar.getString(Constants.TRIPID);
+	}
+
+	public void setTripId(String tripId) throws CloudException {
+		tripCalendar.set(Constants.TRIPID, tripId);
+	}
+
 	public void setTripMatePrizeList (List<TripMatePrize> tripMatePrizeList) throws CloudException {
 		CloudObject[] tripMatePrizeListObjects = new CloudObject[tripMatePrizeList.size()];
 		tripMatePrizeList.toArray(tripMatePrizeListObjects);
 		tripCalendar.set(Constants.TRIPMATEPRIZE, tripMatePrizeList);
 	}
+
 
 	public static void findTripCalendarInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
 		CloudQuery query = new CloudQuery(TABLENAME);

@@ -40,6 +40,12 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
         setContentView(R.layout.activity_transport_trip_list);
 
         app = (TravelApplication) getApplication();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         currentTrip = app.getCurrentTrip();
         app.setCurrentTripTransport(new TripTransport());
 
@@ -55,12 +61,6 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
         tripNameText.setText(tripName);
 
         listView=(ListView)findViewById(R.id.transport_list);
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         getTripTransports(currentTrip.getId());
     }
 
@@ -107,8 +107,8 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
                         intent.putExtra(Constants.TO, tripTransport.getTo());
                         intent.putExtra(Constants.PRIZE, tripTransport.getPrize());
                         intent.putExtra(Constants.LOCATOR, tripTransport.getLocator());
-                        TypeTransport typeTransport = tripTransport.getTypeTransport();
-                        intent.putExtra(Constants.TYPETRANSPORT, typeTransport.getTransportName());
+                        String typeTransport = tripTransport.getTypeTransport();
+                        intent.putExtra(Constants.TYPETRANSPORT, typeTransport);
                         startActivity(intent);
                     }
                 }catch(ParseException e){

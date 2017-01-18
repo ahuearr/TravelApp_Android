@@ -3,7 +3,7 @@ package com.gusycorp.travel.util;
 public class Constants {
 
 	public final static String DATE_MASK_DATABASE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-	public final static String DATE_MASK = "dd/MM/yyyy HH:mm:ss";
+	public final static String DATE_MASK = "dd/MM/yyyy HH:mm";
 	public final static String ONLY_DATE_MASK = "dd/MM/yyyy";
 
 	// Adapters
@@ -33,6 +33,7 @@ public class Constants {
 	public final static String TRIPCALENDAR = "tripCalendar";
 	public final static String TRIPMATE = "tripMate";
 	public final static String USER = "user";
+	public final static String TRIPID = "tripId";
 
 	// TripTransport
 	public final static String TAG_TRIPTRANSPORTMODEL = "TripTransport";
@@ -91,7 +92,10 @@ public class Constants {
 	public final static String ORGANIZER = "isOrganizer";
 
 	// TripMatePrize
-	public final static String TAG_TRIPMATEPRIZEMODEL = "TripModelPrize";
+	public final static String TAG_TRIPMATEPRIZEMODEL = "TripMatePrize";
+	public final static String TRIPMATEID = "tripMateId";
+	public final static String PARENTID = "parentId";
+	public final static String PARENTTYPE = "parentType";
 
 	//User
 	public final static String USERNAME = "username";
@@ -100,5 +104,9 @@ public class Constants {
 	public final static String TAG_UTILS = "Utils";
 	public final static int SAVE=0;
 	public final static int UPDATE=1;
+
+	public final static String PARENTTYPE_TRANSPORT = "T";
+	public final static String PARENTTYPE_ACCOMODATION = "A";
+	public final static String PARENTTYPE_CALENDAR = "C";
 
 }

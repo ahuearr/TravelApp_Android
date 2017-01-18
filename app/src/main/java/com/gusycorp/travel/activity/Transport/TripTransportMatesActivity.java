@@ -1,13 +1,18 @@
 package com.gusycorp.travel.activity.Transport;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.activity.MenuActivity;
+import com.gusycorp.travel.activity.Trip.TripActivity;
+import com.gusycorp.travel.activity.Trip.TripEditActivity;
 import com.gusycorp.travel.adapter.ListTripActivitiesMateAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
@@ -24,6 +29,7 @@ import java.util.List;
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudUser;
 
 public class TripTransportMatesActivity extends MenuActivity implements View.OnClickListener{
 
@@ -39,8 +45,8 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
 
     private Trip currentTrip;
     private TripTransport currentTripTransport = new TripTransport();
-    private List<TripMate> tripMates;
-    List<TripMate> tripMatefromTripMatePrize = new ArrayList<TripMate>();
+    private ArrayList<String> tripMates;
+    ArrayList<String> tripMatefromTripMatePrize = new ArrayList<String>();
 
     private Double prize = 0.0;
 
@@ -70,7 +76,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         transportNameText.setText(tripTransportName);
         prize = currentTripTransport.getPrize()==null ? 0 : currentTripTransport.getPrize();
         sharePrize.setText(Double.toString(prize));
-        tripMates = new ArrayList<TripMate>();
+        tripMates = new ArrayList<String>();
         listView=(ListView)findViewById(R.id.mates_list);
 
     }
@@ -85,7 +91,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.save_button:
-                saveTransportMates();
+                new Save().execute();
                 break;
             case R.id.share_button:
                 sharePrize();
@@ -102,35 +108,33 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
 
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        List<TripMate> tripMateList = currentTrip.getTripMateList();
+        ArrayList<TripMate> tripMateList = currentTrip.getTripMateList();
+        for(TripMate tripMate : tripMateList){
+            tripMates.add(tripMate.getId());
+        }
 
-        tripMates.addAll(tripMateList);
-
-        final List<TripMatePrize> tripTransportMateList = currentTripTransport.getTripMatePrizeList();
+        final ArrayList<TripMatePrize> tripTransportMateList = currentTrip.getTripMatePrize(Constants.PARENTTYPE_TRANSPORT, currentTripTransport.getId());
 
         for(TripMatePrize tripMatePrize : tripTransportMateList){
             mAdapter.addItem(tripMatePrize);
-            tripMatefromTripMatePrize.add(tripMatePrize.getTripMate());
+            tripMatefromTripMatePrize.add(tripMatePrize.getTripMateId());
         }
 
         for(TripMate tripMate : tripMateList){
-            if(!tripMatefromTripMatePrize.contains(tripMate)){
+            if(!tripMatefromTripMatePrize.contains(tripMate.getId())){
                 TripMatePrize tripMatePrize = new TripMatePrize();
                 try {
-                tripMatePrize.setTripMate(tripMate);
-                tripMatePrize.setPrize(BigDecimal.ZERO.doubleValue());
+                    tripMatePrize.setPrize(BigDecimal.ZERO.doubleValue());
+                    tripMatePrize.setTripMateId(tripMate.getId());
+                    tripMatePrize.setParentId(currentTripTransport.getId());
+                    tripMatePrize.setParentType(Constants.PARENTTYPE_TRANSPORT);
+                    tripMatePrize.setTripId(currentTrip.getId());
+                    tripMatePrize.setMateUsername(tripMate.getUsername());
                     tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {
                         @Override
                         public void done(CloudObject tripMatePrizeSaved, CloudException t) throws CloudException {
                             TripMatePrize tripMatePrize = new TripMatePrize(tripMatePrizeSaved);
                             tripTransportMateList.add(tripMatePrize);
-                            //TODO La siguiente linea añadira el amigo o hara un append de la lista entera con el nuevo amigo duplicando los existentes?
-                            currentTripTransport.setTripMatePrizeList(tripTransportMateList);
-                            currentTripTransport.getTripTransport().save(new CloudObjectCallback() {
-                                @Override
-                                public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
-                                }
-                            });
                         }
                     });
                 } catch (CloudException e1) {
@@ -142,38 +146,49 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         listView.setAdapter(mAdapter);
     }
 
-    private void saveTransportMates() {
+    private class Save extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+
+            return saveTransportMates();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if(result){
+                currentTrip.setTripMatePrizeList(mAdapter.getTripMateList());
+                onBackPressed();
+            }else{
+                Toast.makeText(TripTransportMatesActivity.this, getString(R.string.message_ko), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private boolean saveTransportMates() {
+
+        final boolean[] success = {false};
         try {
 
-            //TODO No deberia ser necesario coger y actualizar la lista de nuevo
-//            final List<TripMatePrize> tripTransportMateList = currentTripTransport.getTripMatePrizeList();
-
-            for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
+            for(final TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
                 if(tripMatePrize!=null){
                     tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {
                         @Override
-                        public void done(CloudObject tripMatePrizeSaved, CloudException t) throws CloudException {
-                            //TODO Grabacion correcta de amigos? Se actualizará solo? Hara falta hacer algo?
-/*
-                            TripMatePrize tripMatePrize = new TripMatePrize(tripMatePrizeSaved);
-                            tripTransportMateList.add(tripMatePrize);
-*/
+                        public void done(CloudObject tripMatePrizeSaved, CloudException e) throws CloudException {
+                            if(tripMatePrizeSaved!=null){
+                                success[0] =true;
+                            }else{
+                                success[0] =false;
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
             }
-            //TODO Es necesario actualizar el transporte con la nueva lista de tripmateprizes? Yo creo que no
-/*
-            currentTripTransport.save(new CloudObjectCallback() {
-                @Override
-                public void done(CloudObject x, CloudException t) throws CloudException {
-                }
-            });
-*/
         } catch (CloudException e) {
             e.printStackTrace();
         }
-
+        return success[0];
     }
 
     private void sharePrize() {

@@ -115,15 +115,15 @@ public class ListTripTransportAdapter extends ArrayAdapter<TripTransport> {
                 holder.columnDate.setText(mData.get(position).getDateFrom());
                 holder.columnOrigin.setText(mData.get(position).getFrom());
                 holder.columnDestination.setText(mData.get(position).getTo());
-                if(mContext.getString(R.string.bus).equals(mData.get(position).getTypeTransport().getTransportName())){
+                if(mContext.getString(R.string.bus).equals(mData.get(position).getTypeTransport())){
                     holder.columnTransport.setImageResource(R.drawable.bus);
-                } else if(mContext.getString(R.string.plane).equals(mData.get(position).getTypeTransport().getTransportName())){
+                } else if(mContext.getString(R.string.plane).equals(mData.get(position).getTypeTransport())){
                     holder.columnTransport.setImageResource(R.drawable.plane);
-                } else if(mContext.getString(R.string.train).equals(mData.get(position).getTypeTransport().getTransportName())){
+                } else if(mContext.getString(R.string.train).equals(mData.get(position).getTypeTransport())){
                     holder.columnTransport.setImageResource(R.drawable.train);
-                } else if(mContext.getString(R.string.boat).equals(mData.get(position).getTypeTransport().getTransportName())){
+                } else if(mContext.getString(R.string.boat).equals(mData.get(position).getTypeTransport())){
                     holder.columnTransport.setImageResource(R.drawable.boat);
-                } else if(mContext.getString(R.string.car).equals(mData.get(position).getTypeTransport().getTransportName())) {
+                } else if(mContext.getString(R.string.car).equals(mData.get(position).getTypeTransport())) {
                     holder.columnTransport.setImageResource(R.drawable.car);
                 }
             } else {

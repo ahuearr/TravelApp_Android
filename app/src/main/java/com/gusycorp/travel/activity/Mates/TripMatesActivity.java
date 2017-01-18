@@ -141,7 +141,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
                                 @Override
                                 public void done(CloudObject tripMateSaved, CloudException t) throws CloudException {
                                     final TripMate tripMate = new TripMate(tripMateSaved);
-                                    List<TripMate> tripMateList = currentTrip.getTripMateList();
+                                    ArrayList<TripMate> tripMateList = currentTrip.getTripMateList();
                                     tripMateList.add(tripMate);
                                     currentTrip.setTripMateList(tripMateList);
                                     currentTrip.getTrip().save(new CloudObjectCallback() {

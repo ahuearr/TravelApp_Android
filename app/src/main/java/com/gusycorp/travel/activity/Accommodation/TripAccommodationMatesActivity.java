@@ -1,13 +1,16 @@
 package com.gusycorp.travel.activity.Accommodation;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.activity.MenuActivity;
+import com.gusycorp.travel.activity.Transport.TripTransportMatesActivity;
 import com.gusycorp.travel.adapter.ListTripActivitiesMateAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
@@ -39,8 +42,8 @@ public class TripAccommodationMatesActivity extends MenuActivity implements View
 
     private Trip currentTrip;
     private TripAccommodation currentTripAcommodation = new TripAccommodation();
-    private List<TripMate> tripMates;
-    List<TripMate> tripMatefromTripMatePrize = new ArrayList<TripMate>();
+    private List<String> tripMates;
+    ArrayList<String> tripMatefromTripMatePrize = new ArrayList<String>();
 
     private Double prize = 0.0;
 
@@ -70,7 +73,7 @@ public class TripAccommodationMatesActivity extends MenuActivity implements View
         activityNameText.setText(tripAccommodationName);
         prize = currentTripAcommodation.getPrize()==null ? 0 : currentTripAcommodation.getPrize();
         sharePrize.setText(Double.toString(prize));
-        tripMates = new ArrayList<TripMate>();
+        tripMates = new ArrayList<String>();
         listView=(ListView)findViewById(R.id.mates_list);
 
     }
@@ -85,7 +88,7 @@ public class TripAccommodationMatesActivity extends MenuActivity implements View
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.save_button:
-                saveAccommodationMates();
+                new Save().execute();
                 break;
             case R.id.share_button:
                 sharePrize();
@@ -102,35 +105,33 @@ public class TripAccommodationMatesActivity extends MenuActivity implements View
 
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        List<TripMate> tripMateList = currentTrip.getTripMateList();
+        ArrayList<TripMate> tripMateList = currentTrip.getTripMateList();
+        for(TripMate tripMate : tripMateList){
+            tripMates.add(tripMate.getId());
+        }
 
-        tripMates.addAll(tripMateList);
-
-        final List<TripMatePrize> tripAccommodationMateList = currentTripAcommodation.getTripMatePrizeList();
+        final ArrayList<TripMatePrize> tripAccommodationMateList = currentTrip.getTripMatePrize(Constants.PARENTTYPE_ACCOMODATION, currentTripAcommodation.getId());
 
         for(TripMatePrize tripMatePrize : tripAccommodationMateList){
             mAdapter.addItem(tripMatePrize);
-            tripMatefromTripMatePrize.add(tripMatePrize.getTripMate());
+            tripMatefromTripMatePrize.add(tripMatePrize.getTripMateId());
         }
 
         for(TripMate tripMate : tripMateList){
-            if(!tripMatefromTripMatePrize.contains(tripMate)){
+            if(!tripMatefromTripMatePrize.contains(tripMate.getId())){
                 TripMatePrize tripMatePrize = new TripMatePrize();
                 try {
-                    tripMatePrize.setTripMate(tripMate);
                     tripMatePrize.setPrize(BigDecimal.ZERO.doubleValue());
+                    tripMatePrize.setTripMateId(tripMate.getId());
+                    tripMatePrize.setParentId(currentTripAcommodation.getId());
+                    tripMatePrize.setParentType(Constants.PARENTTYPE_ACCOMODATION);
+                    tripMatePrize.setTripId(currentTrip.getId());
+                    tripMatePrize.setMateUsername(tripMate.getUsername());
                     tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {
                         @Override
                         public void done(CloudObject tripMatePrizeSaved, CloudException t) throws CloudException {
                             TripMatePrize tripMatePrize = new TripMatePrize(tripMatePrizeSaved);
                             tripAccommodationMateList.add(tripMatePrize);
-                            //TODO La siguiente linea añadira el amigo o hara un append de la lista entera con el nuevo amigo duplicando los existentes?
-                            currentTripAcommodation.setTripMatePrizeList(tripAccommodationMateList);
-                            currentTripAcommodation.getTripAccommodation().save(new CloudObjectCallback() {
-                                @Override
-                                public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
-                                }
-                            });
                         }
                     });
                 } catch (CloudException e) {
@@ -142,36 +143,49 @@ public class TripAccommodationMatesActivity extends MenuActivity implements View
         listView.setAdapter(mAdapter);
     }
 
-    private void saveAccommodationMates() {
+    private class Save extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+
+            return saveAccommodationMates();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if(result){
+                currentTrip.setTripMatePrizeList(mAdapter.getTripMateList());
+                onBackPressed();
+            }else{
+                Toast.makeText(TripAccommodationMatesActivity.this, getString(R.string.message_ko), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private boolean saveAccommodationMates() {
+
+        final boolean[] success = {false};
         try {
-            //TODO No deberia ser necesario coger y actualizar la lista de nuevo
-//            final List<TripMatePrize> tripAccommodationMateList = currentTripAcommodation.getTripMatePrizeList();
-            for(TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
+
+            for(final TripMatePrize tripMatePrize : mAdapter.getTripMateList()){
                 if(tripMatePrize!=null){
                     tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {
                         @Override
-                        public void done(CloudObject tripMatePrizeSaved, CloudException t) throws CloudException {
-                            //TODO Grabacion correcta de amigos? Se actualizará solo? Hara falta hacer algo?
-/*
-                            TripMatePrize tripMatePrize = new TripMatePrize(tripMatePrizeSaved);
-                            tripAccommodationMateList.add(tripMatePrize);
-*/
+                        public void done(CloudObject tripMatePrizeSaved, CloudException e) throws CloudException {
+                            if(tripMatePrizeSaved!=null){
+                                success[0] =true;
+                            }else{
+                                success[0] =false;
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
             }
-            //TODO Es necesario actualizar el alojamiento con la nueva lista de tripmateprizes? Yo creo que no
-/*
-            currentTripAcommodation.save(new CloudObjectCallback() {
-                @Override
-                public void done(CloudObject x, CloudException t) throws CloudException {
-                }
-            });
-*/
         } catch (CloudException e) {
             e.printStackTrace();
         }
-
+        return success[0];
     }
 
     private void sharePrize() {

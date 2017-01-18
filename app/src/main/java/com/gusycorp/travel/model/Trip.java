@@ -16,6 +16,7 @@ import org.joda.time.DateTime;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectArrayCallback;
 import io.cloudboost.CloudObjectCallback;
 import io.cloudboost.CloudQuery;
 
@@ -23,6 +24,11 @@ public class Trip extends ITObject{
 
 	private static String TABLENAME = Constants.TAG_TRIPMODEL;
 	private CloudObject trip;
+	private ArrayList<TripTransport> tripTransportList;
+	private ArrayList<TripAccommodation> tripAccommodationList;
+	private ArrayList<TripCalendar> tripCalendarList;
+	private ArrayList<TripMate> tripMateList;
+	private ArrayList<TripMatePrize> tripMatePrizeList;
 
 	public Trip() {
 		trip = new CloudObject(TABLENAME);
@@ -100,77 +106,115 @@ public class Trip extends ITObject{
 		trip.set(Constants.ORGANIZERID, organizerId);
 	}
 
-	public List<TripAccommodation> getTripAccommodationList(){
-		Object[] objectArray = trip.getArray(Constants.TRIPACCOMMODATION);
-		TripAccommodation[] array = Arrays.copyOf(objectArray, objectArray.length, TripAccommodation[].class);
-		return Arrays.asList(array);
+	public ArrayList<TripAccommodation> getTripAccommodationList(){
+		return tripAccommodationList;
 	}
 
-	public void setTripAccommodationList (List<TripAccommodation> tripAccommodationList) throws CloudException {
-		CloudObject[] tripAccommodationListObjects = new CloudObject[tripAccommodationList.size()];
-		tripAccommodationList.toArray(tripAccommodationListObjects);
-		trip.set(Constants.TRIPACCOMMODATION, tripAccommodationListObjects);
+	public void setTripAccommodationList (ArrayList<TripAccommodation> tripAccommodationList) {
+		this.tripAccommodationList = tripAccommodationList;
 	}
 
-	public CloudObject[] getTripTransportArray(){
-		Object[] objectArray = trip.getArray(Constants.TRIPTRANSPORT);
-		return Arrays.copyOf(objectArray, objectArray.length, CloudObject[].class);
-	}
-
-	public List<TripTransport> getTripTransportList(){
-		CloudObject[] objectArray = getArray(trip,Constants.TRIPTRANSPORT);
-		if(objectArray!=null){
-			TripTransport[] array = Arrays.copyOf(objectArray, objectArray.length, TripTransport[].class);
-			return Arrays.asList(array);
-		}else{
-			return new ArrayList<TripTransport>();
+	public void setTripAccommodationList (CloudObject[] tripAccommodationArray) {
+		ArrayList<TripAccommodation> tripAccommodationList = new ArrayList<TripAccommodation>();
+		for(int i=0;i<tripAccommodationArray.length;i++){
+			tripAccommodationList.add(new TripAccommodation(tripAccommodationArray[i]));
 		}
+		this.tripAccommodationList = tripAccommodationList;
 	}
 
-	public void setTripTransportList (List<TripTransport> tripTransportList) throws CloudException {
-		CloudObject[] tripTransportListObjects = new CloudObject[tripTransportList.size()];
-		tripTransportList.toArray(tripTransportListObjects);
-		trip.set(Constants.TRIPTRANSPORT, tripTransportListObjects);
+	public ArrayList<TripTransport> getTripTransportList(){
+		return tripTransportList;
 	}
 
-	public List<TripCalendar> getTripCalendarList(){
-		Object[] objectArray = trip.getArray(Constants.TRIPCALENDAR);
-		TripCalendar[] array = Arrays.copyOf(objectArray, objectArray.length, TripCalendar[].class);
-		return Arrays.asList(array);
+	public void setTripTransportList (ArrayList<TripTransport> tripTransportList) {
+		this.tripTransportList = tripTransportList;
 	}
 
-	public void setTripCalendarList (List<TripCalendar> tripCalendarList) throws CloudException {
-		CloudObject[] tripCalendarListObjects = new CloudObject[tripCalendarList.size()];
-		tripCalendarList.toArray(tripCalendarListObjects);
-		trip.set(Constants.TRIPCALENDAR, tripCalendarListObjects);
-	}
-
-	public List<TripMate> getTripMateList(){
-		Object[] objectArray = trip.getArray(Constants.TRIPMATE);
-		TripMate[] array = Arrays.copyOf(objectArray, objectArray.length, TripMate[].class);
-		return Arrays.asList(array);
-	}
-
-	public void setTripMateList (List<TripMate> tripMateList) throws CloudException {
-		CloudObject[] tripMateListObjects = new CloudObject[tripMateList.size()];
-		for(int i=0;i<tripMateList.size();i++){
-			tripMateListObjects[i] = tripMateList.get(i).getTripMate();
+	public void setTripTransportList (CloudObject[] tripTransportArray) {
+		ArrayList<TripTransport> tripTransportList = new ArrayList<TripTransport>();
+		for(int i=0;i<tripTransportArray.length;i++){
+			tripTransportList.add(new TripTransport(tripTransportArray[i]));
 		}
-		trip.set(Constants.TRIPMATE, tripMateListObjects);
+		this.tripTransportList = tripTransportList;
 	}
 
-	public static void findTripInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
-		CloudQuery query = new CloudQuery(TABLENAME);
-		query.findById(objectId, new CloudObjectCallback(){
-			@Override
-			public void done(CloudObject obj, CloudException e) throws CloudException {
-				if(obj != null){
-					callback.done(obj, e);
-				} else {
-					callback.done(null, e);
+	public ArrayList<TripCalendar> getTripCalendarList(){
+		return tripCalendarList;
+	}
+
+	public void setTripCalendarList (ArrayList<TripCalendar> tripCalendarList){
+		this.tripCalendarList = tripCalendarList;
+	}
+
+	public void setTripCalendarList (CloudObject[] tripCalendarArray) {
+		ArrayList<TripCalendar> tripCalendarList = new ArrayList<TripCalendar>();
+		for(int i=0;i<tripCalendarArray.length;i++){
+			tripCalendarList.add(new TripCalendar(tripCalendarArray[i]));
+		}
+		this.tripCalendarList = tripCalendarList;
+	}
+
+	public ArrayList<TripMate> getTripMateList(){
+		return tripMateList;
+	}
+
+	public void setTripMateList (ArrayList<TripMate> tripMateList) {
+		this.tripMateList = tripMateList;
+	}
+
+	public void setTripMateList (CloudObject[] tripMateArray) {
+		ArrayList<TripMate> tripMateList = new ArrayList<TripMate>();
+		for(int i=0;i<tripMateArray.length;i++){
+			tripMateList.add(new TripMate(tripMateArray[i]));
+		}
+		this.tripMateList = tripMateList;
+	}
+
+	public ArrayList<TripMatePrize> getTripMatePrizeList(){
+		return tripMatePrizeList;
+	}
+
+	public void setTripMatePrizeList (ArrayList<TripMatePrize> tripMatePrizeList) {
+		this.tripMatePrizeList = tripMatePrizeList;
+	}
+
+	public void setTripMatePrizeList (CloudObject[] tripMatePrizeArray) {
+		ArrayList<TripMatePrize> tripMatePrizeList = new ArrayList<TripMatePrize>();
+		for(int i=0;i<tripMatePrizeArray.length;i++){
+			tripMatePrizeList.add(new TripMatePrize(tripMatePrizeArray[i]));
+		}
+		this.tripMatePrizeList = tripMatePrizeList;
+	}
+
+	public ArrayList<String> getTripMateIds(){
+		ArrayList<String> tripMateIdsList = new ArrayList<String>();
+		for(TripMate tripMate : this.getTripMateList()){
+			tripMateIdsList.add(tripMate.getId());
+		}
+		return tripMateIdsList;
+	}
+
+	public ArrayList<String> getTripMatePrizeIds(String parentType, String parentId){
+		ArrayList<String> tripMatePrizeIdsList = new ArrayList<String>();
+		for(TripMatePrize tripMatePrize : this.getTripMatePrizeList()){
+			if(parentType.equals(tripMatePrize.getParentType()) && parentId.equals(tripMatePrize.getParentId())){
+				tripMatePrizeIdsList.add(tripMatePrize.getId());
+			}
+		}
+		return tripMatePrizeIdsList;
+	}
+
+	public ArrayList<TripMatePrize> getTripMatePrize(String parentType, String parentId){
+		ArrayList<TripMatePrize> tripMatePrizeList = new ArrayList<TripMatePrize>();
+
+		for(TripMatePrize tripMatePrize : this.tripMatePrizeList){
+			if(tripMatePrize!=null){
+				if(parentType.equals(tripMatePrize.getParentType()) && parentId.equals(tripMatePrize.getParentId())){
+					tripMatePrizeList.add(tripMatePrize);
 				}
 			}
-		});
+		}
+		return tripMatePrizeList;
 	}
 
 /*
