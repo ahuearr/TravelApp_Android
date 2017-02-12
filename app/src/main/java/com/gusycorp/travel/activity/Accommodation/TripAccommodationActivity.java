@@ -1,6 +1,7 @@
 package com.gusycorp.travel.activity.Accommodation;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -129,9 +130,9 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 						tripAccommodation.setPrize(Double.parseDouble(prize.getText().toString()));
 						tripAccommodation.setTripId(currentTrip.getId());
 						if(objectId!=null){
-							update();
+                            new Save().execute(Constants.UPDATE);
 						} else {
-							save();
+                            new Save().execute(Constants.SAVE);
 						}
 					} catch (CloudException e) {
 						e.printStackTrace();
@@ -149,35 +150,65 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 		}
 	}
 
-	private void save() throws CloudException {
-		tripAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
-			@Override
-			public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
-				tripAccommodation = new TripAccommodation(tripAccommodationSaved);
-				ArrayList<TripAccommodation> tripAccommodations = currentTrip.getTripAccommodationList();
-				//TODO La siguiente linea añadira el registro o hara un append de la lista entera con el nuevo registro duplicando los existentes?
-				tripAccommodations.add(tripAccommodation);
-				currentTrip.setTripAccommodationList(tripAccommodations);
-				currentTrip.getTrip().save(new CloudObjectCallback() {
-					@Override
-					public void done(CloudObject tripSaved, CloudException t) throws CloudException {
-						Trip trip = new Trip(tripSaved);
-						app.setCurrentTrip(trip);
-						goOK();
-					}
-				});
-			}
-		});
-	}
+    private class Save extends AsyncTask<Integer, Void, Integer> {
 
-	private void update() throws CloudException {
-		tripAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
-			@Override
-			public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
-				//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??
-				goOK();
-			}
-		});
+        int saveType;
+        @Override
+        protected Integer doInBackground(Integer... params) {
+
+            saveType = params[0];
+
+            switch(saveType){
+                case 0: //Save
+                    save();
+                    return 0;
+                case 1:  //Update
+                    update();
+                    return 1;
+            }
+            return 2;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if(result<=2){
+                goOK();
+            }
+        }
+    }
+
+
+    private void save(){
+        try {
+            tripAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
+                @Override
+                public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
+                    if(tripAccommodationSaved!=null){
+                        TripAccommodation tripAccommodation = new TripAccommodation(tripAccommodationSaved);
+                        ArrayList<TripAccommodation> tripAccommodationList = currentTrip.getTripAccommodationList();
+                        tripAccommodationList.add(tripAccommodation);
+                        currentTrip.setTripAccommodationList(tripAccommodationList);
+                        app.setCurrentTrip(currentTrip);
+                    }else{
+                        t.printStackTrace();
+                    }
+                }
+            });
+        } catch (CloudException e) {
+            e.printStackTrace();
+        }
+    }
+
+	private void update(){
+        try {
+            tripAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
+                @Override
+                public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
+                }
+            });
+        } catch (CloudException e) {
+            e.printStackTrace();
+        }
 	}
 	private boolean checkMandatory(){
 		if(viewIsEmpty(place) || viewIsEmpty(city)
