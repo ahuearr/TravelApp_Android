@@ -29,6 +29,8 @@ public class Trip extends ITObject{
 	private ArrayList<TripCalendar> tripCalendarList;
 	private ArrayList<TripMate> tripMateList;
 	private ArrayList<TripMatePrize> tripMatePrizeList;
+	String dateIni;
+	String dateFin;
 
 	public Trip() {
 		trip = new CloudObject(TABLENAME);
@@ -59,17 +61,37 @@ public class Trip extends ITObject{
 	}
 
 	public String getDateIni() throws ParseException {
-		return dfDate.print(getDate(trip.getString(Constants.DATEINI)));
+		String date;
+		try{
+			date = trip.getString(Constants.DATEINI);
+			return dfDate.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateIni;
+			return date;
+		}
 	}
 
+	public void setDateIni(String dateIni){
+		this.dateIni = dateIni;
+	}
 	public void setDateIni(DateTime dateIni) throws CloudException {
 		trip.set(Constants.DATEINI, dateIni);
 	}
 
 	public String getDateFin() throws ParseException {
-		return dfDate.print(getDate(trip.getString(Constants.DATEFIN)));
+		String date;
+		try{
+			date = trip.getString(Constants.DATEFIN);
+			return dfDate.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateFin;
+			return date;
+		}
 	}
 
+	public void setDateFin(String dateFin){
+		this.dateFin = dateFin;
+	}
 	public void setDateFin(DateTime dateFin) throws CloudException {
 		trip.set(Constants.DATEFIN, dateFin);
 	}

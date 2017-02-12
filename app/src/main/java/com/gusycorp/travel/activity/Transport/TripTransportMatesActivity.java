@@ -1,6 +1,5 @@
 package com.gusycorp.travel.activity.Transport;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +10,6 @@ import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.activity.MenuActivity;
-import com.gusycorp.travel.activity.Trip.TripActivity;
-import com.gusycorp.travel.activity.Trip.TripEditActivity;
 import com.gusycorp.travel.adapter.ListTripActivitiesMateAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
@@ -24,12 +21,10 @@ import com.gusycorp.travel.util.Constants;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
-import io.cloudboost.CloudUser;
 
 public class TripTransportMatesActivity extends MenuActivity implements View.OnClickListener{
 
@@ -84,7 +79,7 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     @Override
     public void onResume() {
         super.onResume();
-        getTripMates(currentTrip.getId());
+        new GetTripMates().execute();
     }
 
     @Override
@@ -99,7 +94,21 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
         }
     }
 
-    private void getTripMates(String tripObjectId) {
+    private class GetTripMates extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            getTripMates();
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            listView.setAdapter(mAdapter);
+        }
+    }
+
+    private void getTripMates() {
 
         mAdapter = new ListTripActivitiesMateAdapter(TripTransportMatesActivity.this,
                 R.layout.row_list_activities_mate_trip, new ArrayList<TripMatePrize>(), app.isOrganizer());
@@ -143,7 +152,6 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
                 mAdapter.addItem(tripMatePrize);
             }
         }
-        listView.setAdapter(mAdapter);
     }
 
     private class Save extends AsyncTask<String, Void, Boolean> {

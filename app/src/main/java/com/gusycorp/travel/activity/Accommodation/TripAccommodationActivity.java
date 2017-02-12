@@ -118,8 +118,10 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 					try{
 						DateTime date = df.parseDateTime(dateArrival.getText().toString());
 						tripAccommodation.setDateFrom(date);
+						tripAccommodation.setDateFrom(dateArrival.getText().toString());
 						date = df.parseDateTime(dateDepart.getText().toString());
 						tripAccommodation.setDateTo(date);
+						tripAccommodation.setDateTo(dateDepart.getText().toString());
 						tripAccommodation.setPlace(place.getText().toString());
 						tripAccommodation.setCity(city.getText().toString());
 						tripAccommodation.setAddress(address.getText().toString());

@@ -22,6 +22,8 @@ public class TripAccommodation extends ITObject {
 
 	private static String TABLENAME = Constants.TAG_TRIPACCOMMODATIONMODEL;
 	private CloudObject tripAccommodation;
+	private String dateFrom;
+	private String dateTo;
 
 	public TripAccommodation() {
 		tripAccommodation = new CloudObject(TABLENAME);
@@ -44,17 +46,37 @@ public class TripAccommodation extends ITObject {
 	}
 
 	public String getDateFrom() throws ParseException {
-		return dfDate.print(getDate(tripAccommodation.getString(Constants.DATEFROM)));
+		String date;
+		try{
+			date = tripAccommodation.getString(Constants.DATEFROM);
+			return dfDate.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateFrom;
+			return date;
+		}
 	}
 
+	public void setDateFrom(String dateFrom){
+		this.dateFrom = dateFrom;
+	}
 	public void setDateFrom(DateTime dateFrom) throws CloudException {
 		tripAccommodation.set(Constants.DATEFROM, dateFrom);
 	}
 
 	public String getDateTo() throws ParseException {
-		return dfDate.print(getDate(tripAccommodation.getString(Constants.DATETO)));
+		String date;
+		try{
+			date = tripAccommodation.getString(Constants.DATETO);
+			return dfDate.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateTo;
+			return date;
+		}
 	}
 
+	public void setDateTo(String dateTo){
+		this.dateTo=dateTo;
+	}
 	public void setDateTo(DateTime dateTo) throws CloudException {
 		tripAccommodation.set(Constants.DATETO, dateTo);
 	}

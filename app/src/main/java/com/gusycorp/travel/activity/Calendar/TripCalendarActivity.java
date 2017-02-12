@@ -110,6 +110,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 					try{
 						DateTime dateActivity = df.parseDateTime(date.getText().toString());
 						tripCalendar.setDate(dateActivity);
+						tripCalendar.setDate(date.getText().toString());
 						tripCalendar.setActivity(activity.getText().toString());
 						tripCalendar.setPlace(place.getText().toString());
 						tripCalendar.setCity(city.getText().toString());

@@ -120,8 +120,10 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 						trip.setTripName(tripNameText.getText().toString());
 						DateTime date = df.parseDateTime(dateIniText.getText().toString());
 						trip.setDateIni(date);
+						trip.setDateIni(dateIniText.getText().toString());
 						date = df.parseDateTime(dateFinText.getText().toString());
 						trip.setDateFin(date);
+						trip.setDateFin(dateFinText.getText().toString());
 						List<String> destinyList = Arrays.asList(destinyNameText.getText().toString().split(","));
 						List<String> destinyListTrimmed = new ArrayList<>();
 						for(String destiny : destinyList){

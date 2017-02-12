@@ -144,8 +144,10 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 					try{
 						DateTime date = df.parseDateTime(dateDepart.getText().toString());
 						tripTransport.setDateFrom(date);
+						tripTransport.setDateFrom(dateDepart.getText().toString());
 						date = df.parseDateTime(dateArrival.getText().toString());
 						tripTransport.setDateTo(date);
+						tripTransport.setDateTo(dateArrival.getText().toString());
 						tripTransport.setFrom(cityDepart.getText().toString());
 						tripTransport.setTo(cityArrival.getText().toString());
 						tripTransport.setPrize(Double.parseDouble(prize.getText().toString()));
@@ -228,8 +230,6 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 			tripTransport.getTripTransport().save(new CloudObjectCallback() {
 				@Override
 				public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
-					//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??
-					goOK();
 				}
 			});
 		} catch (CloudException e) {

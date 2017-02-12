@@ -22,6 +22,7 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 
 	private static String TABLENAME = Constants.TAG_TRIPCALENDARMODEL;
 	private CloudObject tripCalendar;
+	String date;
 
 	public TripCalendar(){
 		tripCalendar = new CloudObject(TABLENAME);
@@ -44,9 +45,17 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 	}
 
 	public String getDate() throws ParseException {
-		return dfDate.print(getDate(tripCalendar.getString(Constants.DATE)));
+		String date;
+		try{
+			date = tripCalendar.getString(Constants.DATE);
+			return dfDate.print(getDate(date));
+		}catch (ClassCastException e){
+			date = this.date;
+			return date;
+		}
 	}
 
+	public void setDate(String date){ this.date=date;}
 	public void setDate(DateTime date) throws CloudException {
 		tripCalendar.set(Constants.DATE, date);
 	}

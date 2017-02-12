@@ -22,6 +22,8 @@ public class TripTransport extends ITObject {
 
 	private static String TABLENAME = Constants.TAG_TRIPTRANSPORTMODEL;
 	private CloudObject tripTransport;
+	private String dateFrom;
+	private String dateTo;
 
 	public TripTransport(){
 		tripTransport = new CloudObject(TABLENAME);
@@ -44,17 +46,37 @@ public class TripTransport extends ITObject {
 	}
 
 	public String getDateFrom() throws ParseException {
-		return dfTime.print(getDate(tripTransport.getString(Constants.DATEFROM)));
+		String date;
+		try{
+			date = tripTransport.getString(Constants.DATEFROM);
+			return dfTime.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateFrom;
+			return date;
+		}
 	}
 
+	public void setDateFrom(String dateFrom){
+		this.dateFrom = dateFrom;
+	}
 	public void setDateFrom(DateTime dateFrom) throws CloudException {
 		tripTransport.set(Constants.DATEFROM, dateFrom);
 	}
 
 	public String getDateTo() throws ParseException {
-		return dfTime.print(getDate(tripTransport.getString(Constants.DATETO)));
+		String date;
+		try{
+			date = tripTransport.getString(Constants.DATETO);
+			return dfTime.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateTo;
+			return date;
+		}
 	}
 
+	public void setDateTo(String dateTo){
+		this.dateTo=dateTo;
+	}
 	public void setDateTo(DateTime dateTo) throws CloudException {
 		tripTransport.set(Constants.DATETO, dateTo);
 	}

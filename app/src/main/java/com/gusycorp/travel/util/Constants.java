@@ -3,8 +3,8 @@ package com.gusycorp.travel.util;
 public class Constants {
 
 	public final static String DATE_MASK_DATABASE = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-	public final static String DATE_MASK = "dd/MM/yyyy HH:mm";
-	public final static String ONLY_DATE_MASK = "dd/MM/yyyy";
+	public final static String DATE_MASK = "dd-MM-yyyy HH:mm";
+	public final static String ONLY_DATE_MASK = "dd-MM-yyyy";
 
 	// Adapters
 	public final static String TAG_LISTRIPADAPTER = "ListTripAdapter";
