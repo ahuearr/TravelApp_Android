@@ -142,12 +142,12 @@ public class TripTransportActivity extends MenuActivity implements OnClickListen
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						DateTime date = df.parseDateTime(dateDepart.getText().toString());
+						DateTime date = df.parseDateTime(dateDepart.getText().toString().replaceAll("/", "-"));
 						tripTransport.setDateFrom(date);
-						tripTransport.setDateFrom(dateDepart.getText().toString());
-						date = df.parseDateTime(dateArrival.getText().toString());
+						tripTransport.setDateFrom(dateDepart.getText().toString().replaceAll("/", "-"));
+						date = df.parseDateTime(dateArrival.getText().toString().replaceAll("/", "-"));
 						tripTransport.setDateTo(date);
-						tripTransport.setDateTo(dateArrival.getText().toString());
+						tripTransport.setDateTo(dateArrival.getText().toString().replaceAll("/", "-"));
 						tripTransport.setFrom(cityDepart.getText().toString());
 						tripTransport.setTo(cityArrival.getText().toString());
 						tripTransport.setPrize(Double.parseDouble(prize.getText().toString()));

@@ -116,12 +116,12 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						DateTime date = df.parseDateTime(dateArrival.getText().toString());
+						DateTime date = df.parseDateTime(dateArrival.getText().toString().replaceAll("/", "-"));
 						tripAccommodation.setDateFrom(date);
-						tripAccommodation.setDateFrom(dateArrival.getText().toString());
-						date = df.parseDateTime(dateDepart.getText().toString());
+						tripAccommodation.setDateFrom(dateArrival.getText().toString().replaceAll("/", "-"));
+						date = df.parseDateTime(dateDepart.getText().toString().replaceAll("/", "-"));
 						tripAccommodation.setDateTo(date);
-						tripAccommodation.setDateTo(dateDepart.getText().toString());
+						tripAccommodation.setDateTo(dateDepart.getText().toString().replaceAll("/", "-"));
 						tripAccommodation.setPlace(place.getText().toString());
 						tripAccommodation.setCity(city.getText().toString());
 						tripAccommodation.setAddress(address.getText().toString());

@@ -108,9 +108,9 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						DateTime dateActivity = df.parseDateTime(date.getText().toString());
+						DateTime dateActivity = df.parseDateTime(date.getText().toString().replaceAll("/", "-"));
 						tripCalendar.setDate(dateActivity);
-						tripCalendar.setDate(date.getText().toString());
+						tripCalendar.setDate(date.getText().toString().replaceAll("/", "-"));
 						tripCalendar.setActivity(activity.getText().toString());
 						tripCalendar.setPlace(place.getText().toString());
 						tripCalendar.setCity(city.getText().toString());
