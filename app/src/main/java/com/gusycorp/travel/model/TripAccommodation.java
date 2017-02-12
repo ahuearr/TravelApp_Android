@@ -82,11 +82,11 @@ public class TripAccommodation extends ITObject {
 	}
 
 	public DateTime getDateFromDate() throws ParseException {
-		return getDate(getDateFrom());
+		return dfDate.parseDateTime(getDateFrom());
 	}
 
 	public DateTime getDateToDate() throws ParseException {
-		return getDate(getDateTo());
+		return dfDate.parseDateTime(getDateTo());
 	}
 
 	public String getPlace() {

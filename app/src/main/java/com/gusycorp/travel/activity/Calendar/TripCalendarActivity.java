@@ -1,6 +1,7 @@
 package com.gusycorp.travel.activity.Calendar;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -51,7 +52,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 
 	TravelApplication app;
 
-	private DateTimeFormatter df = DateTimeFormat.forPattern(Constants.ONLY_DATE_MASK);
+	private DateTimeFormatter df = DateTimeFormat.forPattern(Constants.DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +117,13 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 						tripCalendar.setCity(city.getText().toString());
 						tripCalendar.setPrize(Double.parseDouble(prize.getText().toString()));
 						tripCalendar.setIsActivity(true);
+                        tripCalendar.setTripId(currentTrip.getId());
 
-						if(objectId!=null){
-							update();
-						} else {
-							save();
-						}
+                        if(objectId!=null){
+                            new Save().execute(Constants.UPDATE);
+                        } else {
+                            new Save().execute(Constants.SAVE);
+                        }
 					} catch (CloudException e) {
 						e.printStackTrace();
 					} catch (Exception e) {
@@ -138,30 +140,53 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 		}
 	}
 
+    private class Save extends AsyncTask<Integer, Void, Integer> {
+
+        int saveType;
+        @Override
+        protected Integer doInBackground(Integer... params) {
+
+            saveType = params[0];
+
+            switch(saveType){
+                case 0: //Save
+                    save();
+                    return 0;
+                case 1:  //Update
+                    update();
+                    return 1;
+            }
+            return 2;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if(result<=2){
+                goOK();
+            }
+        }
+    }
+
 	private void save(){
 		try {
 			tripCalendar.getTripCalendar().save(new CloudObjectCallback() {
 				@Override
 				public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
-					tripCalendar = new TripCalendar(tripCalendarSaved);
-					ArrayList<TripCalendar> tripCalendars = currentTrip.getTripCalendarList();
-					tripCalendars.add(tripCalendar);
-					currentTrip.setTripCalendarList(tripCalendars);
-					currentTrip.getTrip().save(new CloudObjectCallback() {
-						@Override
-						public void done(CloudObject tripSaved, CloudException t) throws CloudException {
-							Trip trip = new Trip(tripSaved);
-							app.setCurrentTrip(trip);
-							goOK();
-						}
-					});
-				}
+                    if (tripCalendarSaved != null) {
+                        TripCalendar tripCalendar = new TripCalendar(tripCalendarSaved);
+                        ArrayList<TripCalendar> tripCalendars = currentTrip.getTripCalendarList();
+                        tripCalendars.add(tripCalendar);
+                        currentTrip.setTripCalendarList(tripCalendars);
+                        app.setCurrentTrip(currentTrip);
+                    } else {
+                        t.printStackTrace();
+                    }
+                }
 			});
 		} catch (CloudException e) {
 			e.printStackTrace();
 		}
 
-		goOK();
 	}
 
 	private void update() {
@@ -169,8 +194,6 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 			tripCalendar.getTripCalendar().save(new CloudObjectCallback() {
 				@Override
 				public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
-					//TODO Con Parse no era necesario actualizar el currentTrip. Con Cloudboost??
-					goOK();
 				}
 			});
 		} catch (CloudException e) {

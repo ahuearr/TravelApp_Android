@@ -104,7 +104,7 @@ public class ListTripCalendarAdapter extends ArrayAdapter<TripCalendar> {
                 holder = (ListTripCalendarAdapter.ViewHolder) convertView.getTag();
             }
             if (mData.get(position) != null) {
-                holder.columnDate.setText(mData.get(position).getDate());
+                holder.columnDate.setText(mData.get(position).getDateC());
                 holder.columnActivity.setText(mData.get(position).getActivity());
             } else {
                 holder.columnDate.setText(mDataHeader.get(position).get(Constants.TRIPCALENDARLIST_COLUMN_ONE));

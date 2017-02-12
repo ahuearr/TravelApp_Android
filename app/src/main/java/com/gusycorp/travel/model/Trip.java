@@ -97,11 +97,11 @@ public class Trip extends ITObject{
 	}
 
 	public DateTime getDateIniDate() throws ParseException {
-		return getDate(getDateIni());
+        return dfDate.parseDateTime(getDateIni());
 	}
 
 	public DateTime getDateFinDate() throws ParseException {
-		return getDate(getDateFin());
+        return dfDate.parseDateTime(getDateFin());
 	}
 
 	public List<String> getDestinyName() {

@@ -82,11 +82,11 @@ public class TripTransport extends ITObject {
 	}
 
 	public DateTime getDateFromDate() throws ParseException {
-		return getDate(getDateFrom());
+		return dfTime.parseDateTime(getDateFrom());
 	}
 
 	public DateTime getDateToDate() throws ParseException {
-		return getDate(getDateTo());
+		return dfTime.parseDateTime(getDateTo());
 	}
 
 	public String getFrom() {

@@ -124,7 +124,7 @@ public class TripCalendarMatesActivity extends MenuActivity implements View.OnCl
                     tripMatePrize.setPrize(BigDecimal.ZERO.doubleValue());
                     tripMatePrize.setTripMateId(tripMate.getId());
                     tripMatePrize.setParentId(currentTripCalendar.getId());
-                    tripMatePrize.setParentType(Constants.PARENTTYPE_TRANSPORT);
+                    tripMatePrize.setParentType(Constants.PARENTTYPE_CALENDAR);
                     tripMatePrize.setTripId(currentTrip.getId());
                     tripMatePrize.setMateUsername(tripMate.getUsername());
                     tripMatePrize.getTripMatePrize().save(new CloudObjectCallback() {

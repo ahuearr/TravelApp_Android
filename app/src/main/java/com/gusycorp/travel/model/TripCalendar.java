@@ -1,5 +1,7 @@
 package com.gusycorp.travel.model;
 
+import android.util.Log;
+
 import com.gusycorp.travel.util.Constants;
 
 import org.joda.time.DateTime;
@@ -22,7 +24,7 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 
 	private static String TABLENAME = Constants.TAG_TRIPCALENDARMODEL;
 	private CloudObject tripCalendar;
-	String date;
+	String dateC;
 
 	public TripCalendar(){
 		tripCalendar = new CloudObject(TABLENAME);
@@ -44,24 +46,29 @@ public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 		return tripCalendar.getId();
 	}
 
-	public String getDate() throws ParseException {
-		String date;
+	public String getDateC() throws ParseException {
+		String dateC;
 		try{
-			date = tripCalendar.getString(Constants.DATE);
-			return dfDate.print(getDate(date));
+			dateC = tripCalendar.getString(Constants.DATE);
+			return dfTime.print(getDate(dateC));
 		}catch (ClassCastException e){
-			date = this.date;
-			return date;
+			dateC = this.dateC;
+            String dateWithHour = dateC;
+            dateWithHour = dateWithHour.split(" ")[0];
+            if(dateC.equals(dateWithHour)){
+                dateC=dateC+" 00:00";
+            }
+			return dateC;
 		}
 	}
 
-	public void setDate(String date){ this.date=date;}
+	public void setDate(String dateC){ this.dateC=dateC;}
 	public void setDate(DateTime date) throws CloudException {
 		tripCalendar.set(Constants.DATE, date);
 	}
 
 	public DateTime getDateDate() throws ParseException {
-		return getDate(getDate());
+		return dfTime.parseDateTime(getDateC());
 	}
 	public String getActivity() {
 		return tripCalendar.getString(Constants.ACTIVITY);

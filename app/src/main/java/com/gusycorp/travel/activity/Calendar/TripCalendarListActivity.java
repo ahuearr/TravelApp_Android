@@ -219,6 +219,7 @@ public class TripCalendarListActivity extends MenuActivity {
                         && calendar.get(Calendar.MONTH) == month
                         && calendar.get(Calendar.YEAR) == year) {
                     itemCalendar.setDate(itemTransport.getDateFromDate());
+                    itemCalendar.setDate(itemTransport.getDateFrom());
                     itemCalendar.setActivity(getString(R.string.transportDepartureFrom) + " " + itemTransport.getFrom());
                     itemCalendar.setPlace(itemTransport.getFrom());
                     itemCalendar.setPrize(itemTransport.getPrize());
@@ -231,6 +232,7 @@ public class TripCalendarListActivity extends MenuActivity {
                         && calendar.get(Calendar.MONTH) == month
                         && calendar.get(Calendar.YEAR) == year) {
                     itemCalendar.setDate(itemTransport.getDateToDate());
+                    itemCalendar.setDate(itemTransport.getDateTo());
                     itemCalendar.setActivity(getString(R.string.transportArrivalTo) + " " + itemTransport.getTo());
                     itemCalendar.setPlace(itemTransport.getTo());
                     itemCalendar.setPrize(itemTransport.getPrize());
@@ -247,6 +249,7 @@ public class TripCalendarListActivity extends MenuActivity {
                         && calendar.get(Calendar.MONTH) == month
                         && calendar.get(Calendar.YEAR) == year) {
                     itemCalendar.setDate(itemAccommodation.getDateFromDate());
+                    itemCalendar.setDate(itemAccommodation.getDateFrom());
                     itemCalendar.setActivity(getString(R.string.accommodationArrivalTo) + " " + itemAccommodation.getPlace());
                     itemCalendar.setPlace(itemAccommodation.getPlace());
                     itemCalendar.setCity(itemAccommodation.getCity());
@@ -260,6 +263,7 @@ public class TripCalendarListActivity extends MenuActivity {
                         && calendar.get(Calendar.MONTH) == month
                         && calendar.get(Calendar.YEAR) == year) {
                     itemCalendar.setDate(itemAccommodation.getDateToDate());
+                    itemCalendar.setDate(itemAccommodation.getDateTo());
                     itemCalendar.setActivity(getString(R.string.accommodationDepartureFrom) + " " + itemAccommodation.getPlace());
                     itemCalendar.setPlace(itemAccommodation.getPlace());
                     itemCalendar.setCity(itemAccommodation.getCity());
@@ -284,7 +288,7 @@ public class TripCalendarListActivity extends MenuActivity {
                             app.setCurrentTripCalendar(tripCalendar);
                             Intent intent = new Intent(TripCalendarListActivity.this, TripCalendarActivity.class);
                             intent.putExtra(Constants.OBJECTID, tripCalendar.getId());
-                            intent.putExtra(Constants.DATE, tripCalendar.getDate());
+                            intent.putExtra(Constants.DATE, tripCalendar.getDateC());
                             intent.putExtra(Constants.ACTIVITY, tripCalendar.getActivity());
                             intent.putExtra(Constants.PLACE, tripCalendar.getPlace());
                             intent.putExtra(Constants.CITY, tripCalendar.getCity());
