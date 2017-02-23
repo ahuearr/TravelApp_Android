@@ -108,20 +108,38 @@ public class HomeActivity extends ListActivity {
 	@Override
 	public void onBackPressed()
 	{
-		if (currentUser != null) {
-			try {
-				currentUser.logOut(new CloudUserCallback() {
-                    @Override
-                    public void done(CloudUser user, CloudException e) throws CloudException {
-						Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
-						startActivity(in);
-						finish();
-                    }
-                });
-			} catch (CloudException e) {
-				e.printStackTrace();
+		new LogOut().execute();
+	}
+
+	private class LogOut extends AsyncTask<String, Void, Integer> {
+
+		@Override
+		protected Integer doInBackground(String... params) {
+
+			if (currentUser != null) {
+				try {
+					currentUser.logOut(new CloudUserCallback() {
+						@Override
+						public void done(CloudUser user, CloudException e) throws CloudException {
+						}
+					});
+				} catch (CloudException e) {
+					e.printStackTrace();
+					return 1;
+				}
+			}
+			return 0;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			if(result==0){
+				Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
+				startActivity(in);
+				finish();
 			}
 		}
+
 	}
 
 	private class Find extends AsyncTask<String, Void, Integer> {

@@ -220,7 +220,7 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
                 // to figure out what went wrong
                 return 1;
             }
-            return null;
+            return 0;
         }
 
         @Override
