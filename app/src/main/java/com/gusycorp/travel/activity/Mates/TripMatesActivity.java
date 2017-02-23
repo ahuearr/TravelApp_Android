@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity.Mates;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,6 +43,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
 
     private Trip currentTrip;
     private List<TripMate> tripMates;
+    private TripMate tripMate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +83,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             case R.id.add_mate_trip:
                 String mate = mateText.getText().toString();
                 if(!"".equals(mate)){
-                    try {
-                        addMateToTrip(mate);
-                    } catch (CloudException e) {
-                        e.printStackTrace();
-                    }
+                    new AddMate().execute(mate);
                 } else {
                     Toast.makeText(this, getString(R.string.user_not_exists), Toast.LENGTH_LONG).show();
                 }
@@ -118,7 +116,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
         });
     }
 
-    private void addMateToTrip(String mate) throws CloudException {
+    private int addMateToTrip(String mate) throws CloudException {
         boolean existsMate = false;
         for(TripMate tripMate : tripMates){
             if(mate.equals(tripMate.getUsername())){
@@ -131,12 +129,12 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             query.find(new CloudObjectArrayCallback() {
                 public void done(CloudObject[] userList, final CloudException e) {
                     if (userList != null) {
-                        CloudUser user = (CloudUser) userList[0];
-                        final TripMate tripMate = new TripMate();
+                        tripMate = new TripMate();
                         try {
-                            tripMate.setUserId(user.getId());
-                            tripMate.setUserName(user.get(Constants.USERNAME).toString());
+                            tripMate.setUserId(userList[0].getId());
+                            tripMate.setUserName(userList[0].get(Constants.USERNAME).toString());
                             tripMate.setOrganizer(false);
+                            tripMate.setTripId(currentTrip.getId());
                             tripMate.getTripMate().save(new CloudObjectCallback() {
                                 @Override
                                 public void done(CloudObject tripMateSaved, CloudException t) throws CloudException {
@@ -149,8 +147,6 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
                                         public void done(CloudObject tripSaved, CloudException t) throws CloudException {
                                             currentTrip = new Trip(tripSaved);
                                             tripMates.add(tripMate);
-                                            mAdapter.addItem(tripMate);
-                                            mAdapter.notifyDataSetChanged();
                                         }
                                     });
                                 }
@@ -163,8 +159,32 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
                     }
                 }
             });
-        } else {
-            Toast.makeText(this, getString(R.string.user_appened_yet), Toast.LENGTH_LONG).show();
+        }else{
+            return -1;
+        }
+        return 0;
+    }
+
+    private class AddMate extends AsyncTask<String, Void, Integer> {
+
+        String mate;
+        @Override
+        protected Integer doInBackground(String... params) {
+            mate = params[0];
+            try {
+                return addMateToTrip(mate);
+            } catch (CloudException e) {
+                e.printStackTrace();
+                return -1;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            if(integer==0){
+                mAdapter.addItem(tripMate);
+                mAdapter.notifyDataSetChanged();
+            }
         }
     }
 
