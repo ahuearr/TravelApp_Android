@@ -1,11 +1,10 @@
 package com.gusycorp.travel.activity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,20 +13,25 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.Login.TripLoginActivity;
+import com.gusycorp.travel.activity.Trip.TripActivity;
+import com.gusycorp.travel.activity.Trip.TripEditActivity;
 import com.gusycorp.travel.adapter.ListTripAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectArrayCallback;
+import io.cloudboost.CloudQuery;
+import io.cloudboost.CloudUser;
+import io.cloudboost.CloudUserCallback;
 
 public class HomeActivity extends ListActivity {
 
-	ParseUser currentUser;
+	CloudUser currentUser;
 	TripMate currentTripMate;
 
 	private ListTripAdapter mAdapter;
@@ -41,8 +45,8 @@ public class HomeActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 
-		currentUser = ParseUser.getCurrentUser();
-		userObjectId = currentUser.getObjectId();
+		currentUser = CloudUser.getcurrentUser();
+		userObjectId = currentUser.getId();
 
 		add = (Button) findViewById(R.id.add_transport_trip);
 		add.setOnClickListener(new View.OnClickListener() {
@@ -67,34 +71,7 @@ public class HomeActivity extends ListActivity {
 	private void getTrips() {
 		mAdapter = new ListTripAdapter(HomeActivity.this,
 				R.layout.row_list_trip, new ArrayList<Trip>());
-		List<ParseQuery<Trip>> parseQueryList = new ArrayList<>();
-		ParseQuery<Trip> queryTripMates = ParseQuery.getQuery(Constants.TAG_TRIPMODEL);
-		queryTripMates.whereEqualTo(Constants.USER, currentUser);
-		parseQueryList.add(queryTripMates);
-		ParseQuery<Trip> queryTripOrganizer = ParseQuery.getQuery(Constants.TAG_TRIPMODEL);
-		queryTripOrganizer.whereEqualTo(Constants.ORGANIZERID, userObjectId);
-		parseQueryList.add(queryTripOrganizer);
-
-		ParseQuery<Trip> mainQuery = ParseQuery.or(parseQueryList);
-		mainQuery.findInBackground( new FindCallback<Trip>() {
-			public void done(List<Trip> tripList, ParseException e) {
-				mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
-				for (Trip trip : tripList) {
-					if (Constants.VALUE_STATUS_FUTURE.equals(trip
-							.getStatus())) {
-						mAdapter.addItem(trip);
-					}
-				}
-				mAdapter.addSectionHeaderItem(getString(R.string.past_trips));
-				for (Trip trip : tripList) {
-					if (Constants.VALUE_STATUS_PAST.equals(trip
-							.getStatus())) {
-						mAdapter.addItem(trip);
-					}
-				}
-				setListAdapter(mAdapter);
-			}
-		});
+		new Find().execute();
 	}
 
 	@Override
@@ -123,7 +100,7 @@ public class HomeActivity extends ListActivity {
 		Trip trip = (Trip) l.getAdapter().getItem(position);
 		if (trip != null) {
 			Intent intent = new Intent(this, TripActivity.class);
-			intent.putExtra("tripObjectId", trip.getObjectId());
+			intent.putExtra("tripObjectId", trip.getId());
 			startActivity(intent);
 		}
 	}
@@ -131,11 +108,86 @@ public class HomeActivity extends ListActivity {
 	@Override
 	public void onBackPressed()
 	{
-		if (currentUser != null) {
-			currentUser.logOut();
-			Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
-			startActivity(in);
-			finish();
+		new LogOut().execute();
+	}
+
+	private class LogOut extends AsyncTask<String, Void, Integer> {
+
+		@Override
+		protected Integer doInBackground(String... params) {
+
+			if (currentUser != null) {
+				try {
+					currentUser.logOut(new CloudUserCallback() {
+						@Override
+						public void done(CloudUser user, CloudException e) throws CloudException {
+						}
+					});
+				} catch (CloudException e) {
+					e.printStackTrace();
+					return 1;
+				}
+			}
+			return 0;
 		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			if(result==0){
+				Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
+				startActivity(in);
+				finish();
+			}
+		}
+
+	}
+
+	private class Find extends AsyncTask<String, Void, Integer> {
+
+		@Override
+		protected Integer doInBackground(String... params) {
+
+			CloudQuery queryTrip = new CloudQuery(Constants.TAG_TRIPMODEL);
+			queryTrip.equalTo(Constants.USER, currentUser);
+			CloudQuery queryTripOrganizer = new CloudQuery(Constants.TAG_TRIPMODEL);
+			queryTripOrganizer.equalTo(Constants.ORGANIZERID, userObjectId);
+
+			CloudQuery mainQuery = null;
+			try {
+				mainQuery = CloudQuery.or(queryTrip, queryTripOrganizer);
+				mainQuery.find(new CloudObjectArrayCallback() {
+					public void done(CloudObject[] tripListCloudObject, CloudException e) {
+						mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
+						for (CloudObject tripCloudObject : tripListCloudObject) {
+							Trip trip = new Trip(tripCloudObject);
+							if (Constants.VALUE_STATUS_FUTURE.equals(trip
+									.getStatus())) {
+								mAdapter.addItem(trip);
+							}
+						}
+						mAdapter.addSectionHeaderItem(getString(R.string.past_trips));
+						for (CloudObject tripCloudObject : tripListCloudObject) {
+							Trip trip = new Trip(tripCloudObject);
+							if (Constants.VALUE_STATUS_PAST.equals(trip
+									.getStatus())) {
+								mAdapter.addItem(trip);
+							}
+						}
+					}
+				});
+			} catch (CloudException e) {
+				e.printStackTrace();
+				return 1;
+			}
+			return 0;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			if(result==0){
+				setListAdapter(mAdapter);
+			}
+		}
+
 	}
 }

@@ -15,7 +15,8 @@ import android.widget.TextView;
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.util.Constants;
-import com.parse.ParseUser;
+
+import io.cloudboost.CloudUser;
 
 public class ListTripAdapter extends ArrayAdapter<Trip> {
 
@@ -99,7 +100,7 @@ public class ListTripAdapter extends ArrayAdapter<Trip> {
 		}
 		if (mData.get(position) != null) {
 			holder.textView.setText(mData.get(position).getTripName());
-			if(ParseUser.getCurrentUser().getObjectId().equals(mData.get(position).getOrganizerId())){
+			if(CloudUser.getcurrentUser().getId().equals(mData.get(position).getOrganizerId())){
 				holder.roleView.setImageResource(R.drawable.organizer);
 			} else {
 				holder.roleView.setImageResource(R.drawable.mates);

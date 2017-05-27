@@ -1,6 +1,7 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Calendar;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,16 +13,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.util.Constants;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
 
 
 public class TripCalendarActivity extends MenuActivity implements OnClickListener{
@@ -41,7 +52,7 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 
 	TravelApplication app;
 
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+	private DateTimeFormatter df = DateTimeFormat.forPattern(Constants.DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,20 +109,24 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						Date dateActivity = df.parse(date.getText().toString());
-						tripCalendar.put(Constants.DATE, dateActivity);
-						tripCalendar.put(Constants.ACTIVITY, activity.getText().toString());
-						tripCalendar.put(Constants.PLACE, place.getText().toString());
-						tripCalendar.put(Constants.CITY, city.getText().toString());
-						tripCalendar.put(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
-						tripCalendar.put(Constants.ISACTIVITY, true);
+						DateTime dateActivity = df.parseDateTime(date.getText().toString().replaceAll("/", "-"));
+						tripCalendar.setDate(dateActivity);
+						tripCalendar.setDate(date.getText().toString().replaceAll("/", "-"));
+						tripCalendar.setActivity(activity.getText().toString());
+						tripCalendar.setPlace(place.getText().toString());
+						tripCalendar.setCity(city.getText().toString());
+						tripCalendar.setPrize(Double.parseDouble(prize.getText().toString()));
+						tripCalendar.setIsActivity(true);
+                        tripCalendar.setTripId(currentTrip.getId());
 
-						if(objectId!=null){
-							update();
-						} else {
-							save();
-						}
-					} catch (java.text.ParseException e){
+                        if(objectId!=null){
+                            new Save().execute(Constants.UPDATE);
+                        } else {
+                            new Save().execute(Constants.SAVE);
+                        }
+					} catch (CloudException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else{
@@ -125,23 +140,63 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 		}
 	}
 
+    private class Save extends AsyncTask<Integer, Void, Integer> {
+
+        int saveType;
+        @Override
+        protected Integer doInBackground(Integer... params) {
+
+            saveType = params[0];
+
+            switch(saveType){
+                case 0: //Save
+                    save();
+                    return 0;
+                case 1:  //Update
+                    update();
+                    return 1;
+            }
+            return 2;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if(result<=2){
+                goOK();
+            }
+        }
+    }
+
 	private void save(){
 		try {
-			tripCalendar.save();
-			ParseRelation<TripCalendar> tripCalendarRelation = currentTrip.getRelation(Constants.TRIPCALENDAR);
-			tripCalendarRelation.add(tripCalendar);
-			currentTrip.save();
-		} catch (ParseException e) {
+			tripCalendar.getTripCalendar().save(new CloudObjectCallback() {
+				@Override
+				public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
+                    if (tripCalendarSaved != null) {
+                        TripCalendar tripCalendar = new TripCalendar(tripCalendarSaved);
+                        ArrayList<TripCalendar> tripCalendars = currentTrip.getTripCalendarList();
+                        tripCalendars.add(tripCalendar);
+                        currentTrip.setTripCalendarList(tripCalendars);
+                        app.setCurrentTrip(currentTrip);
+                    } else {
+                        t.printStackTrace();
+                    }
+                }
+			});
+		} catch (CloudException e) {
 			e.printStackTrace();
 		}
 
-		goOK();
 	}
 
 	private void update() {
 		try {
-			tripCalendar.save();
-		} catch (ParseException e) {
+			tripCalendar.getTripCalendar().save(new CloudObjectCallback() {
+				@Override
+				public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
+				}
+			});
+		} catch (CloudException e) {
 			e.printStackTrace();
 		}
 

@@ -1,6 +1,7 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Accommodation;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,16 +13,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
 
 
 public class TripAccommodationActivity extends MenuActivity implements OnClickListener{
@@ -43,7 +53,7 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 
 	TravelApplication app;
 
-	private DateFormat df = new SimpleDateFormat(Constants.ONLY_DATE_MASK);
+	private DateTimeFormatter df = DateTimeFormat.forPattern(Constants.ONLY_DATE_MASK);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,22 +117,26 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						Date date = df.parse(dateArrival.getText().toString());
-						tripAccommodation.put(Constants.DATEFROM, date);
-						date = df.parse(dateDepart.getText().toString());
-						tripAccommodation.put(Constants.DATETO, date);
-						tripAccommodation.put(Constants.PLACE, place.getText().toString());
-						tripAccommodation.put(Constants.CITY, city.getText().toString());
-						tripAccommodation.put(Constants.ADDRESS, address.getText().toString());
-						tripAccommodation.put(Constants.NUMROOMS, Integer.parseInt(numRooms.getText().toString()));
-						tripAccommodation.put(Constants.PRIZE, Double.parseDouble(prize.getText().toString()));
-
+						DateTime date = df.parseDateTime(dateArrival.getText().toString().replaceAll("/", "-"));
+						tripAccommodation.setDateFrom(date);
+						tripAccommodation.setDateFrom(dateArrival.getText().toString().replaceAll("/", "-"));
+						date = df.parseDateTime(dateDepart.getText().toString().replaceAll("/", "-"));
+						tripAccommodation.setDateTo(date);
+						tripAccommodation.setDateTo(dateDepart.getText().toString().replaceAll("/", "-"));
+						tripAccommodation.setPlace(place.getText().toString());
+						tripAccommodation.setCity(city.getText().toString());
+						tripAccommodation.setAddress(address.getText().toString());
+						tripAccommodation.setNumRooms(Integer.parseInt(numRooms.getText().toString()));
+						tripAccommodation.setPrize(Double.parseDouble(prize.getText().toString()));
+						tripAccommodation.setTripId(currentTrip.getId());
 						if(objectId!=null){
-							update();
+                            new Save().execute(Constants.UPDATE);
 						} else {
-							save();
+                            new Save().execute(Constants.SAVE);
 						}
-					} catch (java.text.ParseException e){
+					} catch (CloudException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else{
@@ -136,27 +150,65 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 		}
 	}
 
-	private void save(){
-		try {
-			tripAccommodation.save();
-			ParseRelation<TripAccommodation> tripAccommodationRelation = currentTrip.getRelation(Constants.TRIPACCOMMODATION);
-			tripAccommodationRelation.add(tripAccommodation);
-			currentTrip.save();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+    private class Save extends AsyncTask<Integer, Void, Integer> {
 
-		goOK();
-	}
+        int saveType;
+        @Override
+        protected Integer doInBackground(Integer... params) {
 
-	private void update() {
-		try {
-			tripAccommodation.save();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+            saveType = params[0];
 
-		goOK();
+            switch(saveType){
+                case 0: //Save
+                    save();
+                    return 0;
+                case 1:  //Update
+                    update();
+                    return 1;
+            }
+            return 2;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if(result<=2){
+                goOK();
+            }
+        }
+    }
+
+
+    private void save(){
+        try {
+            tripAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
+                @Override
+                public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
+                    if(tripAccommodationSaved!=null){
+                        TripAccommodation tripAccommodation = new TripAccommodation(tripAccommodationSaved);
+                        ArrayList<TripAccommodation> tripAccommodationList = currentTrip.getTripAccommodationList();
+                        tripAccommodationList.add(tripAccommodation);
+                        currentTrip.setTripAccommodationList(tripAccommodationList);
+                        app.setCurrentTrip(currentTrip);
+                    }else{
+                        t.printStackTrace();
+                    }
+                }
+            });
+        } catch (CloudException e) {
+            e.printStackTrace();
+        }
+    }
+
+	private void update(){
+        try {
+            tripAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
+                @Override
+                public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
+                }
+            });
+        } catch (CloudException e) {
+            e.printStackTrace();
+        }
 	}
 	private boolean checkMandatory(){
 		if(viewIsEmpty(place) || viewIsEmpty(city)

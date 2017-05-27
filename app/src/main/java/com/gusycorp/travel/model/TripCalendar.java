@@ -1,66 +1,171 @@
 package com.gusycorp.travel.model;
 
+import android.util.Log;
+
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+
+import org.joda.time.DateTime;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@ParseClassName("TripCalendar")
-public class TripCalendar extends ParseObject implements Comparable<TripCalendar> {
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudQuery;
 
-	private static String TAG = Constants.TAG_TRIPCALENDARMODEL;
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+public class TripCalendar extends ITObject implements Comparable<TripCalendar> {
 
-	public String getDate() {
-		if(getDate(Constants.DATE)==null){
-			return null;
-		}
-		return df.format(getDate(Constants.DATE));
+	private static String TABLENAME = Constants.TAG_TRIPCALENDARMODEL;
+	private CloudObject tripCalendar;
+	String dateC;
+
+	public TripCalendar(){
+		tripCalendar = new CloudObject(TABLENAME);
 	}
 
-	public Date getDateDate(){
-		return getDate(Constants.DATE);
+	public TripCalendar(CloudObject tripCalendar){
+		this.tripCalendar = tripCalendar;
+	}
+
+	public CloudObject getTripCalendar(){
+		return tripCalendar;
+	}
+
+	public void setTripCalendar(CloudObject tripCalendar){
+		this.tripCalendar = tripCalendar;
+	}
+
+	public String getId() {
+		return tripCalendar.getId();
+	}
+
+	public String getDateC() throws ParseException {
+		String dateC;
+		try{
+			dateC = tripCalendar.getString(Constants.DATE);
+			return dfTime.print(getDate(dateC));
+		}catch (ClassCastException e){
+			dateC = this.dateC;
+            String dateWithHour = dateC;
+            dateWithHour = dateWithHour.split(" ")[0];
+            if(dateC.equals(dateWithHour)){
+                dateC=dateC+" 00:00";
+            }
+			return dateC;
+		}
+	}
+
+	public void setDate(String dateC){ this.dateC=dateC;}
+	public void setDate(DateTime date) throws CloudException {
+		tripCalendar.set(Constants.DATE, date);
+	}
+
+	public DateTime getDateDate() throws ParseException {
+		return dfTime.parseDateTime(getDateC());
 	}
 	public String getActivity() {
-		return getString(Constants.ACTIVITY);
+		return tripCalendar.getString(Constants.ACTIVITY);
+	}
+
+	public void setActivity(String activity) throws CloudException {
+		tripCalendar.set(Constants.ACTIVITY, activity);
 	}
 
 	public String getPlace() {
-		return getString(Constants.PLACE);
+		return tripCalendar.getString(Constants.PLACE);
+	}
+
+	public void setPlace(String place) throws CloudException {
+		tripCalendar.set(Constants.PLACE, place);
 	}
 
 	public String getCity() {
-		return getString(Constants.CITY);
+		return tripCalendar.getString(Constants.CITY);
 	}
 
-	public Double getPrize() { return getDouble(Constants.PRIZE);}
+	public void setCity(String city) throws CloudException {
+		tripCalendar.set(Constants.CITY, city);
+	}
 
-	public Boolean isActivity() { return getBoolean(Constants.ISACTIVITY); }
+	public Double getPrize() {
+		try{
+			return tripCalendar.getDouble(Constants.PRIZE);
+		}catch (ClassCastException e){
+			return (double)tripCalendar.getInteger(Constants.PRIZE);
+		}
+	}
 
-	public Double getLatitude() { return getDouble(Constants.LATITUDE);}
+	public void setPrize(Double prize) throws CloudException {
+		tripCalendar.set(Constants.PRIZE, prize);
+	}
 
-	public Double getLongitude() { return getDouble(Constants.LONGITUDE);}
+	public Boolean isActivity() {
+		return tripCalendar.getBoolean(Constants.ISACTIVITY);
+	}
 
-	public static void findTripCalendarInBackground(String objectId,
-			final GetCallback<TripCalendar> callback) {
-		ParseQuery<TripCalendar> tripCalendar = ParseQuery.getQuery(TripCalendar.class);
-		tripCalendar.whereEqualTo(Constants.OBJECTID, objectId);
-		tripCalendar.getFirstInBackground(new GetCallback<TripCalendar>() {
+	public void setIsActivity(Boolean isActivity) throws CloudException {
+		tripCalendar.set(Constants.ISACTIVITY, isActivity);
+	}
+
+	public Double getLatitude() {
+		try{
+			return tripCalendar.getDouble(Constants.LATITUDE);
+		}catch (ClassCastException e){
+			return (double)tripCalendar.getInteger(Constants.LATITUDE);
+		}
+	}
+
+	public void setLatitude(Double latitude) throws CloudException {
+		tripCalendar.set(Constants.LATITUDE, latitude);
+	}
+
+	public Double getLongitude() {
+		try{
+			return tripCalendar.getDouble(Constants.LONGITUDE);
+		}catch (ClassCastException e){
+			return (double)tripCalendar.getInteger(Constants.LONGITUDE);
+		}
+	}
+
+	public void setLongitude(Double longitude) throws CloudException {
+		tripCalendar.set(Constants.LONGITUDE, longitude);
+	}
+
+	public List<TripMatePrize> getTripMatePrizeList(){
+		Object[] objectArray = tripCalendar.getArray(Constants.TRIPMATEPRIZE);
+		TripMatePrize[] array = Arrays.copyOf(objectArray, objectArray.length, TripMatePrize[].class);
+		return Arrays.asList(array);
+	}
+
+	public String getTripId(){
+		return tripCalendar.getString(Constants.TRIPID);
+	}
+
+	public void setTripId(String tripId) throws CloudException {
+		tripCalendar.set(Constants.TRIPID, tripId);
+	}
+
+	public void setTripMatePrizeList (List<TripMatePrize> tripMatePrizeList) throws CloudException {
+		CloudObject[] tripMatePrizeListObjects = new CloudObject[tripMatePrizeList.size()];
+		tripMatePrizeList.toArray(tripMatePrizeListObjects);
+		tripCalendar.set(Constants.TRIPMATEPRIZE, tripMatePrizeList);
+	}
+
+
+	public static void findTripCalendarInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		query.findById(objectId, new CloudObjectCallback(){
 			@Override
-			public void done(TripCalendar tripCalendar, ParseException e) {
-
-				if (e == null) {
-					callback.done(tripCalendar, null);
+			public void done(CloudObject obj, CloudException e) throws CloudException {
+				if(obj != null){
+					callback.done(obj, e);
 				} else {
 					callback.done(null, e);
 				}
@@ -68,28 +173,44 @@ public class TripCalendar extends ParseObject implements Comparable<TripCalendar
 		});
 	}
 
+/*
 	public static void findTripCalendarListByFieldsInBackground(
-			Map<String, Object> filter, final FindCallback<TripCalendar> callback) {
-		ParseQuery<TripCalendar> tripCalendar = ParseQuery.getQuery(TripCalendar.class);
+			Map<String, Object> filter, final ITObjectArrayCallback<TripCalendar> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
 		Iterator it = filter.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			tripCalendar.whereEqualTo((String) e.getKey(), e.getValue());
+			query.equalTo((String) e.getKey(), e.getValue());
 		}
-		tripCalendar.findInBackground(new FindCallback<TripCalendar>() {
+		query.find(new ITObjectArrayCallback<TripCalendar>() {
 			@Override
-			public void done(List<TripCalendar> tripCalendarList, ParseException e) {
+			public void done(TripCalendar[] tripCalendarList, CloudException e) throws CloudException {
 				if (e == null) {
 					callback.done(tripCalendarList, null);
 				} else {
 					callback.done(null, e);
 				}
 			}
+
+			@Override
+			public void done(CloudObject[] obj, CloudException e) throws CloudException {
+				if (e == null) {
+					callback.done(obj, null);
+				} else {
+					callback.done(null, e);
+				}
+			}
 		});
 	}
+*/
 
 	@Override
 	public int compareTo(TripCalendar another) {
-		return this.getDateDate().compareTo(another.getDateDate());
+		try {
+			return this.getDateDate().compareTo(another.getDateDate());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

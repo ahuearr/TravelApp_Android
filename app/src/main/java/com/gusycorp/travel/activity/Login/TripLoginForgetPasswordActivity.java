@@ -1,7 +1,8 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Login;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,17 +11,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudStringCallback;
+import io.cloudboost.CloudUser;
+import io.cloudboost.CloudUserCallback;
 
 /**
  * Created by agustin.huerta on 25/08/2015.
  */
-public class TripLoginForgetParsePasswordActivity extends Activity {
+public class TripLoginForgetPasswordActivity extends Activity {
     EditText et_forgetpassword = null;
     Button btn_submitforgetpassword = null;
-    String password = null;
+    String email = null;
 
 
     @Override
@@ -35,7 +38,7 @@ public class TripLoginForgetParsePasswordActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                password = et_forgetpassword.getText().toString();
+                email = et_forgetpassword.getText().toString();
                 checkEmailID();
             }
         });
@@ -43,40 +46,53 @@ public class TripLoginForgetParsePasswordActivity extends Activity {
     }
 
     protected void checkEmailID() {
-        if (TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(email)) {
             et_forgetpassword.setError(getString(R.string.error_field_required));
-        } else if (!password.contains("@")) {
+        } else if (!email.contains("@")) {
             et_forgetpassword.setError(getString(R.string.error_invalid_email));
         }
         else
-            forgotPassword(password);
-    }
-
-    public void forgotPassword(String email) {
-        ParseUser.requestPasswordResetInBackground(email, new UserForgotPasswordCallback());
-    }
-
-    private class UserForgotPasswordCallback implements RequestPasswordResetCallback {
-        public UserForgotPasswordCallback(){
-            super();
-        }
-
-        @Override
-        public void done(ParseException e) {
-            if (e == null) {
-                Toast.makeText(getApplicationContext(), getString(R.string.link_password_ok), Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), getString(R.string.link_password_ko), Toast.LENGTH_LONG).show();
-            }
-        }
+            new ForgotPassword().execute(email);
     }
 
     @Override
     public void onBackPressed()
     {
-        Intent in =  new Intent(TripLoginForgetParsePasswordActivity.this,TripLoginActivity.class);
+        Intent in =  new Intent(TripLoginForgetPasswordActivity.this,TripLoginActivity.class);
         startActivity(in);
         finish();
     }
 
+    private class ForgotPassword extends AsyncTask<String, Void, Integer> {
+
+        private String email;
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            email=params[0];
+
+            try {
+                CloudUser.resetPassword("email", new CloudStringCallback() {
+                    @Override
+                    public void done(String msg, CloudException e) {
+                        if (msg != null) {
+                            //reset email email sent
+                        }
+                    }
+                });
+            } catch (CloudException e) {
+                return 1;
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if(result==0){
+                Toast.makeText(getApplicationContext(), getString(R.string.link_password_ok), Toast.LENGTH_LONG).show();
+            }else if(result==1){
+                Toast.makeText(getApplicationContext(), getString(R.string.link_password_ko), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

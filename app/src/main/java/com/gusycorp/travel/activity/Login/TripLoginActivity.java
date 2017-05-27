@@ -1,10 +1,11 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Login;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -15,16 +16,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.HomeActivity;
 import com.gusycorp.travel.util.ConnectionDetector;
-import com.gusycorp.travel.util.Constants;
 import com.gusycorp.travel.util.Utils;
-import com.parse.LogInCallback;
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import java.util.Locale;
+
+import io.cloudboost.CloudApp;
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudUser;
+import io.cloudboost.CloudUserCallback;
 
 /**
  * Created by agustin.huerta on 25/08/2015.
@@ -46,9 +47,6 @@ public class TripLoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        //Initializing Parse SDK
-        onCreateParse();
 
         // creating connection detector class instance
         cd = new ConnectionDetector(getApplicationContext());
@@ -96,7 +94,7 @@ public class TripLoginActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent in =  new Intent(TripLoginActivity.this,TripLoginForgetParsePasswordActivity.class);
+                Intent in =  new Intent(TripLoginActivity.this,TripLoginForgetPasswordActivity.class);
                 startActivity(in);
                 finish();
             }
@@ -105,11 +103,6 @@ public class TripLoginActivity extends Activity {
 
 
     }
-
-    public void onCreateParse() {
-        Parse.initialize(this, Utils.APPLICATION_ID, Utils.PARSE_KEY);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -149,7 +142,7 @@ public class TripLoginActivity extends Activity {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password.
+        // Check for a valid email.
         if (TextUtils.isEmpty(password)) {
             mPasswordEditText.setError(getString(R.string.error_field_required));
             focusView = mPasswordEditText;
@@ -173,31 +166,17 @@ public class TripLoginActivity extends Activity {
             focusView.requestFocus();
         } else {
             // perform the user login attempt.
-            login(username.toLowerCase(Locale.getDefault()), password);
+            new Login().execute(username.toLowerCase(Locale.getDefault()), password);
         }
     }
 
-    private void login(String lowerCase, String password) {
-        ParseUser.logInInBackground(lowerCase, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if (e == null)
-                    loginSuccessful(user);
-                else
-                    loginUnSuccessful();
-            }
-        });
-
-    }
-
-    protected void loginSuccessful(ParseUser user) {
+    protected void loginSuccessful(CloudUser user) {
         Intent in =  new Intent(TripLoginActivity.this,HomeActivity.class);
         startActivity(in);
         finish();
     }
     protected void loginUnSuccessful() {
         // TODO Auto-generated method stub
-        Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
         showAlertDialog(TripLoginActivity.this,getString(R.string.login), getString(R.string.login_password_incorrect), false);
     }
 
@@ -229,6 +208,42 @@ public class TripLoginActivity extends Activity {
         alertDialog.show();
     }
 
+    private class Login extends AsyncTask<String, Void, Integer> {
+
+        private String username;
+        private String password;
+
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            username=params[0];
+            password=params[1];
+
+            CloudUser user = new CloudUser();
+            user.setUserName(username);
+            user.setPassword(password);
+            try {
+                user.logIn(new CloudUserCallback() {
+                    @Override
+                    public void done(CloudUser user, CloudException e) throws CloudException {
+                        if (user != null) {
+                            loginSuccessful(user);
+                        }
+                    }
+                });
+            } catch (CloudException e) {
+                return 1;
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if(result==1){
+                loginUnSuccessful();
+            }
+        }
+    }
 
 
 

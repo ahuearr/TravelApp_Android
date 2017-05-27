@@ -1,12 +1,6 @@
 package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,36 +9,78 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudQuery;
+
 /**
  * Created by agustin.huerta on 27/08/2015.
  */
-@ParseClassName("TripMate")
-public class TripMate extends ParseObject {
+public class TripMate extends ITObject{
 
-    private static String TAG = Constants.TAG_TRIPMATEMODEL;
+    private static String TABLENAME = Constants.TAG_TRIPMATEMODEL;
+    private CloudObject tripMate;
+
+    public TripMate(){
+        tripMate = new CloudObject(TABLENAME);
+    }
+
+    public TripMate(CloudObject tripMate){
+        this.tripMate = tripMate;
+    }
+
+    public CloudObject getTripMate(){
+        return tripMate;
+    }
+
+    public void setTripMate(CloudObject tripMate){
+        this.tripMate = tripMate;
+    }
+
+    public String getId() {
+        return tripMate.getId();
+    }
 
     public String getUserId() {
-        return getString(Constants.USERID);
+        return tripMate.getString(Constants.USERID);
+    }
+
+    public void setUserId(String userId) throws CloudException {
+        tripMate.set(Constants.USERID, userId);
     }
 
     public String getUsername() {
-        return getString(Constants.USERNAME);
+        return tripMate.getString(Constants.USERNAME);
+    }
+
+    public void setUserName(String userName) throws CloudException {
+        tripMate.set(Constants.USERNAME, userName);
     }
 
     public Boolean getOrganizer() {
-        return getBoolean(Constants.ORGANIZER);
+        return tripMate.getBoolean(Constants.ORGANIZER);
     }
 
-    public static void findTripMateInBackground(String objectId,
-                                                         final GetCallback<TripMate> callback) {
-        ParseQuery<TripMate> TripMateQuery = ParseQuery.getQuery(TripMate.class);
-        TripMateQuery.whereEqualTo(Constants.OBJECTID, objectId);
-        TripMateQuery.getFirstInBackground(new GetCallback<TripMate>() {
-            @Override
-            public void done(TripMate tripMate, ParseException e) {
+    public void setOrganizer(Boolean organizer) throws CloudException {
+        tripMate.set(Constants.ORGANIZER, organizer);
+    }
 
-                if (e == null) {
-                    callback.done(tripMate, null);
+    public String getTripId(){
+        return tripMate.getString(Constants.TRIPID);
+    }
+
+    public void setTripId(String tripId) throws CloudException {
+        tripMate.set(Constants.TRIPID, tripId);
+    }
+
+    public static void findTripMateInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
+        CloudQuery query = new CloudQuery(TABLENAME);
+        query.findById(objectId, new CloudObjectCallback(){
+            @Override
+            public void done(CloudObject obj, CloudException e) throws CloudException {
+                if(obj != null){
+                    callback.done(obj, e);
                 } else {
                     callback.done(null, e);
                 }
@@ -52,23 +88,34 @@ public class TripMate extends ParseObject {
         });
     }
 
+/*
     public static void findTripMateListByFieldsInBackground(
-            Map<String, Object> filter, final FindCallback<TripMate> callback) {
-        ParseQuery<TripMate> tripMateQuery = ParseQuery.getQuery(TripMate.class);
+            Map<String, Object> filter, final ITObjectArrayCallback<TripMate> callback) throws CloudException {
+        CloudQuery query = new CloudQuery(TABLENAME);
         Iterator it = filter.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
-            tripMateQuery.whereEqualTo((String) e.getKey(), e.getValue());
+            query.equalTo((String) e.getKey(), e.getValue());
         }
-        tripMateQuery.findInBackground(new FindCallback<TripMate>() {
+        query.find(new ITObjectArrayCallback<TripMate>() {
             @Override
-            public void done(List<TripMate> tripMateList, ParseException e) {
+            public void done(TripMate[] tripMateList, CloudException e) throws CloudException {
                 if (e == null) {
                     callback.done(tripMateList, null);
                 } else {
                     callback.done(null, e);
                 }
             }
+            @Override
+            public void done(CloudObject[] obj, CloudException e) throws CloudException {
+                if (e == null) {
+                    callback.done(obj, null);
+                } else {
+                    callback.done(null, e);
+                }
+            }
         });
     }
+*/
+
 }

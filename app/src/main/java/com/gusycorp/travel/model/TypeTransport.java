@@ -1,64 +1,93 @@
 package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@ParseClassName("TypeTransport")
-public class TypeTransport extends ParseObject {
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectArrayCallback;
+import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudQuery;
 
-	private static String TAG = Constants.TAG_TRIPMODEL;
+public class TypeTransport extends ITObject {
+
+	private static String TABLENAME = Constants.TAG_TYPETRANSPORTMODEL;
+	private CloudObject typeTransport;
+
+	public TypeTransport(){
+		typeTransport = new CloudObject(TABLENAME);
+	}
+
+	public TypeTransport(CloudObject typeTransport){
+		this.typeTransport = typeTransport;
+	}
+
+	public CloudObject getTypeTransport(){
+		return typeTransport;
+	}
+
+	public void setTypeTransport(CloudObject typeTransport){
+		this.typeTransport = typeTransport;
+	}
+
+	public String getId() {
+		return typeTransport.getId();
+	}
 
 	public String getTransportName() {
-		return getString(Constants.TRANSPORTNAME);
-	}
-	public String getTransportImageName() {
-		return getString(Constants.TRANSPORTIMAGENAME);
+		return typeTransport.getString(Constants.TRANSPORTNAME);
 	}
 
-	public static void findTypeTransportInBackground(String objectId,
-													 final GetCallback<TypeTransport> callback) {
-		ParseQuery<TypeTransport> TypeTransportQuery = ParseQuery.getQuery(TypeTransport.class);
-		TypeTransportQuery.whereEqualTo(Constants.OBJECTID, objectId);
-		TypeTransportQuery.getFirstInBackground(new GetCallback<TypeTransport>() {
+	public void setTransportName(String transportName) throws CloudException {
+		typeTransport.set(Constants.TRANSPORTNAME, transportName);
+	}
+
+	public String getTransportImageName() {
+		return typeTransport.getString(Constants.TRANSPORTIMAGENAME);
+	}
+
+	public void setTransportImageName(String transportImageName) throws CloudException {
+		typeTransport.set(Constants.TRANSPORTIMAGENAME, transportImageName);
+	}
+
+	public static void findTypeTransportInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		query.findById(objectId, new CloudObjectCallback(){
 			@Override
-			public void done(TypeTransport trip, ParseException e) {
-				if (e == null) {
-					callback.done(trip, null);
+			public void done(CloudObject obj, CloudException e) throws CloudException {
+				if(obj != null){
+					callback.done(obj, null);
 				} else {
-					callback.done(null, e);
+					callback.done(null,e);
 				}
 			}
 		});
+
 	}
 
 	public static void findTypeTransportListByFieldsInBackground(
-			Map<String, Object> filter, final FindCallback<TypeTransport> callback) {
-		ParseQuery<TypeTransport> TypeTransportQuery = ParseQuery.getQuery(TypeTransport.class);
+			Map<String, Object> filter, final CloudObjectArrayCallback callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
 		Iterator it = filter.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			TypeTransportQuery.whereEqualTo((String) e.getKey(), e.getValue());
+			query.equalTo((String) e.getKey(), e.getValue());
 		}
-		TypeTransportQuery.findInBackground(new FindCallback<TypeTransport>() {
+		query.find(new CloudObjectArrayCallback() {
 			@Override
-			public void done(List<TypeTransport> tripList, ParseException e) {
+			public void done(CloudObject[] obj, CloudException e) throws CloudException {
 				if (e == null) {
-					callback.done(tripList, null);
+					callback.done(obj, null);
 				} else {
 					callback.done(null, e);
 				}
 			}
 		});
 	}
+
 
 	@Override
 	public String toString() {

@@ -1,84 +1,213 @@
 package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+
+import org.joda.time.DateTime;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@ParseClassName("TripTransport")
-public class TripTransport extends ParseObject {
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudQuery;
 
-	private static String TAG = Constants.TAG_TRIPTRANSPORTMODEL;
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+public class TripTransport extends ITObject {
 
-	public String getDateFrom() {
-		if(getDate(Constants.DATEFROM)==null){
-			return null;
+	private static String TABLENAME = Constants.TAG_TRIPTRANSPORTMODEL;
+	private CloudObject tripTransport;
+	private String dateFrom;
+	private String dateTo;
+
+	public TripTransport(){
+		tripTransport = new CloudObject(TABLENAME);
+	}
+
+	public TripTransport(CloudObject tripTransport){
+		this.tripTransport = tripTransport;
+	}
+
+	public CloudObject getTripTransport(){
+		return tripTransport;
+	}
+
+	public void setTripTransport(CloudObject tripTransport){
+		this.tripTransport = tripTransport;
+	}
+
+	public String getId() {
+		return tripTransport.getId();
+	}
+
+	public String getDateFrom() throws ParseException {
+		String date;
+		try{
+			date = tripTransport.getString(Constants.DATEFROM);
+			return dfTime.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateFrom;
+			return date;
 		}
-		return df.format(getDate(Constants.DATEFROM));
 	}
 
-	public String getDateTo() {
+	public void setDateFrom(String dateFrom){
+		this.dateFrom = dateFrom;
+	}
+	public void setDateFrom(DateTime dateFrom) throws CloudException {
+		tripTransport.set(Constants.DATEFROM, dateFrom);
+	}
 
-		if(getDate(Constants.DATETO)==null){
-			return null;
+	public String getDateTo() throws ParseException {
+		String date;
+		try{
+			date = tripTransport.getString(Constants.DATETO);
+			return dfTime.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateTo;
+			return date;
 		}
-		return df.format(getDate(Constants.DATETO));
 	}
 
-	public Date getDateFromDate() {
-		return getDate(Constants.DATEFROM);
+	public void setDateTo(String dateTo){
+		this.dateTo=dateTo;
+	}
+	public void setDateTo(DateTime dateTo) throws CloudException {
+		tripTransport.set(Constants.DATETO, dateTo);
 	}
 
-	public Date getDateToDate() {
+	public DateTime getDateFromDate() throws ParseException {
+		return dfTime.parseDateTime(getDateFrom());
+	}
 
-		return getDate(Constants.DATETO);
+	public DateTime getDateToDate() throws ParseException {
+		return dfTime.parseDateTime(getDateTo());
 	}
 
 	public String getFrom() {
-		return getString(Constants.FROM);
+		return tripTransport.getString(Constants.FROM);
+	}
+
+	public void setFrom(String from) throws CloudException {
+		tripTransport.set(Constants.FROM, from);
 	}
 
 	public String getTo() {
-		return getString(Constants.TO);
+		return tripTransport.getString(Constants.TO);
 	}
 
-	public Double getPrize() { return getDouble(Constants.PRIZE);}
-
-	public String getLocator() { return getString(Constants.LOCATOR);}
-
-	public TypeTransport getTypeTransport(){
-		return (TypeTransport) getParseObject(Constants.TYPETRANSPORT);
+	public void setTo(String to) throws CloudException {
+		tripTransport.set(Constants.TO, to);
 	}
 
-	public Double getLatitudeFrom() { return getDouble(Constants.LATITUDEFROM);}
+	public Double getPrize() {
+		try{
+			return tripTransport.getDouble(Constants.PRIZE);
+		}catch(ClassCastException e){
+			return (double) tripTransport.getInteger(Constants.PRIZE);
+		}
+	}
 
-	public Double getLongtiudeFrom() { return getDouble(Constants.LONGITUDEFROM);}
+	public void setPrize(Double prize) throws CloudException {
+		tripTransport.set(Constants.PRIZE, prize);
+	}
 
-	public Double getLatitudeTo() { return getDouble(Constants.LATITUDETO);}
+	public String getLocator() {
+		return tripTransport.getString(Constants.LOCATOR);
+	}
 
-	public Double getLongtiudeTo() { return getDouble(Constants.LONGITUDETO);}
+	public void setLocator(String locator) throws CloudException {
+		tripTransport.set(Constants.LOCATOR, locator);
+	}
 
-	public static void findTripTransportInBackground(String objectId,
-			final GetCallback<TripTransport> callback) {
-		ParseQuery<TripTransport> TripTransportQuery = ParseQuery.getQuery(TripTransport.class);
-		TripTransportQuery.whereEqualTo(Constants.OBJECTID, objectId);
-		TripTransportQuery.getFirstInBackground(new GetCallback<TripTransport>() {
+	public String getTypeTransport(){
+		return tripTransport.getString(Constants.TYPETRANSPORT);
+	}
+
+	public void setTypeTransport(String typeTransport) throws CloudException {
+		tripTransport.set(Constants.TYPETRANSPORT, typeTransport);
+	}
+
+	public Double getLatitudeFrom() {
+		try{
+			return tripTransport.getDouble(Constants.LATITUDEFROM);
+		}catch (ClassCastException e){
+			return (double)tripTransport.getInteger(Constants.LATITUDEFROM);
+		}
+	}
+
+	public void setLatitudeFrom(Double latitudeFrom) throws CloudException {
+		tripTransport.set(Constants.LATITUDEFROM, latitudeFrom);
+	}
+
+	public Double getLongitudeFrom() {
+		try{
+			return tripTransport.getDouble(Constants.LONGITUDEFROM);
+		}catch (ClassCastException e){
+			return (double)tripTransport.getInteger(Constants.LONGITUDEFROM);
+		}
+	}
+
+	public void setLongitudeFrom(Double longitudeFrom) throws CloudException {
+		tripTransport.set(Constants.LONGITUDEFROM, longitudeFrom);
+	}
+
+	public Double getLatitudeTo() {
+		try{
+			return tripTransport.getDouble(Constants.LATITUDETO);
+		}catch (ClassCastException e){
+			return (double)tripTransport.getInteger(Constants.LATITUDETO);
+		}
+	}
+
+	public void setLatitudeTo(Double latitudeTo) throws CloudException {
+		tripTransport.set(Constants.LATITUDETO, latitudeTo);
+	}
+
+	public Double getLongitudeTo() {
+		try{
+			return tripTransport.getDouble(Constants.LONGITUDETO);
+		}catch (ClassCastException e){
+			return (double)tripTransport.getInteger(Constants.LONGITUDETO);
+		}
+	}
+
+	public void setLongitudeTo(Double longitudeTo) throws CloudException {
+		tripTransport.set(Constants.LONGITUDETO, longitudeTo);
+	}
+
+	public String getTripId(){
+		return tripTransport.getString(Constants.TRIPID);
+	}
+
+	public void setTripId(String tripId) throws CloudException {
+		tripTransport.set(Constants.TRIPID, tripId);
+	}
+
+	public List<TripMatePrize> getTripMatePrizeList(){
+		Object[] objectArray = tripTransport.getArray(Constants.TRIPMATEPRIZE);
+		TripMatePrize[] array = Arrays.copyOf(objectArray, objectArray.length, TripMatePrize[].class);
+		return Arrays.asList(array);
+	}
+
+	public void setTripMatePrizeList (List<TripMatePrize> tripMatePrizeList) throws CloudException {
+		CloudObject[] tripMatePrizeListObjects = new CloudObject[tripMatePrizeList.size()];
+		tripMatePrizeList.toArray(tripMatePrizeListObjects);
+		tripTransport.set(Constants.TRIPMATEPRIZE, tripMatePrizeListObjects);
+	}
+
+	public static void findTripTransportInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		query.findById(objectId, new CloudObjectCallback(){
 			@Override
-			public void done(TripTransport tripTransport, ParseException e) {
-
-				if (e == null) {
-					callback.done(tripTransport, null);
+			public void done(CloudObject obj, CloudException e) throws CloudException {
+				if(obj != null){
+					callback.done(obj, e);
 				} else {
 					callback.done(null, e);
 				}
@@ -86,23 +215,35 @@ public class TripTransport extends ParseObject {
 		});
 	}
 
+/*
 	public static void findTripTransportListByFieldsInBackground(
-			Map<String, Object> filter, final FindCallback<TripTransport> callback) {
-		ParseQuery<TripTransport> TripTransportQuery = ParseQuery.getQuery(TripTransport.class);
+			Map<String, Object> filter, final ITObjectArrayCallback<TripTransport> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
 		Iterator it = filter.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			TripTransportQuery.whereEqualTo((String) e.getKey(), e.getValue());
+			query.equalTo((String) e.getKey(), e.getValue());
 		}
-		TripTransportQuery.findInBackground(new FindCallback<TripTransport>() {
+		query.find(new ITObjectArrayCallback<TripTransport>() {
 			@Override
-			public void done(List<TripTransport> tripTransportList, ParseException e) {
+			public void done(TripTransport[] tripTransportList, CloudException e) throws CloudException {
 				if (e == null) {
 					callback.done(tripTransportList, null);
 				} else {
 					callback.done(null, e);
 				}
 			}
+
+			@Override
+			public void done(CloudObject[] obj, CloudException e) throws CloudException {
+				if (e == null) {
+					callback.done(obj, null);
+				} else {
+					callback.done(null, e);
+				}
+			}
 		});
 	}
+*/
+
 }

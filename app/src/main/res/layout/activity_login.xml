@@ -20,9 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/usernameHint"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text="ahuearr"/>
+        android:maxLines="1"/>
 
     <EditText
         android:id="@+id/password"

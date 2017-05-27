@@ -12,6 +12,7 @@ import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.util.Constants;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,34 +80,38 @@ public class ListTripCalendarAdapter extends ArrayAdapter<TripCalendar> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ListTripCalendarAdapter.ViewHolder holder = null;
-        int rowType = getItemViewType(position);
+        try{
+            ListTripCalendarAdapter.ViewHolder holder = null;
+            int rowType = getItemViewType(position);
 
-        if (convertView == null) {
-            holder = new ListTripCalendarAdapter.ViewHolder();
-            switch (rowType) {
-                case TYPE_ITEM:
-                    convertView = mInflater.inflate(R.layout.row_list_calendar_trip, null);
-                    holder.columnDate = (TextView) convertView.findViewById(R.id.calendar_date);
-                    holder.columnActivity = (TextView) convertView.findViewById(R.id.calendar_activity);
-                    break;
-                case TYPE_SEPARATOR:
-                    convertView = mInflater
-                            .inflate(R.layout.header_list_calendar_trip, null);
-                    holder.columnDate = (TextView) convertView.findViewById(R.id.header_calendar_date);
-                    holder.columnActivity = (TextView) convertView.findViewById(R.id.header_calendar_activity);
-                    break;
+            if (convertView == null) {
+                holder = new ListTripCalendarAdapter.ViewHolder();
+                switch (rowType) {
+                    case TYPE_ITEM:
+                        convertView = mInflater.inflate(R.layout.row_list_calendar_trip, null);
+                        holder.columnDate = (TextView) convertView.findViewById(R.id.calendar_date);
+                        holder.columnActivity = (TextView) convertView.findViewById(R.id.calendar_activity);
+                        break;
+                    case TYPE_SEPARATOR:
+                        convertView = mInflater
+                                .inflate(R.layout.header_list_calendar_trip, null);
+                        holder.columnDate = (TextView) convertView.findViewById(R.id.header_calendar_date);
+                        holder.columnActivity = (TextView) convertView.findViewById(R.id.header_calendar_activity);
+                        break;
+                }
+                convertView.setTag(holder);
+            } else {
+                holder = (ListTripCalendarAdapter.ViewHolder) convertView.getTag();
             }
-            convertView.setTag(holder);
-        } else {
-            holder = (ListTripCalendarAdapter.ViewHolder) convertView.getTag();
-        }
-        if (mData.get(position) != null) {
-            holder.columnDate.setText(mData.get(position).getDate());
-            holder.columnActivity.setText(mData.get(position).getActivity());
-        } else {
-            holder.columnDate.setText(mDataHeader.get(position).get(Constants.TRIPCALENDARLIST_COLUMN_ONE));
-            holder.columnActivity.setText(mDataHeader.get(position).get(Constants.TRIPCALENDARLIST_COLUMN_TWO));
+            if (mData.get(position) != null) {
+                holder.columnDate.setText(mData.get(position).getDateC());
+                holder.columnActivity.setText(mData.get(position).getActivity());
+            } else {
+                holder.columnDate.setText(mDataHeader.get(position).get(Constants.TRIPCALENDARLIST_COLUMN_ONE));
+                holder.columnActivity.setText(mDataHeader.get(position).get(Constants.TRIPCALENDARLIST_COLUMN_TWO));
+            }
+        }catch(ParseException e){
+            e.printStackTrace();
         }
 
         return convertView;

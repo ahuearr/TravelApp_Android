@@ -36,59 +36,59 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripActivity"
+            android:name=".activity.Trip.TripActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripEditActivity"
+            android:name=".activity.Trip.TripEditActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripTransportListActivity"
+            android:name=".activity.Transport.TripTransportListActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripTransportActivity"
+            android:name=".activity.Transport.TripTransportActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripTransportMatesActivity"
+            android:name=".activity.Transport.TripTransportMatesActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripAccommodationListActivity"
+            android:name=".activity.Accommodation.TripAccommodationListActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripAccommodationActivity"
+            android:name=".activity.Accommodation.TripAccommodationActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripAccommodationMatesActivity"
+            android:name=".activity.Accommodation.TripAccommodationMatesActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripCalendarListActivity"
+            android:name=".activity.Calendar.TripCalendarListActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripCalendarActivity"
+            android:name=".activity.Calendar.TripCalendarActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripCalendarMatesActivity"
+            android:name=".activity.Calendar.TripCalendarMatesActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripMapActivity"
+            android:name=".activity.Map.TripMapActivity"
             android:label="@string/title_activity_trip_map" >
         </activity>
         <activity
-            android:name=".activity.TripMatesActivity"
+            android:name=".activity.Mates.TripMatesActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripLoginActivity"
+            android:name=".activity.Login.TripLoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -97,11 +97,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.TripLoginForgetParsePasswordActivity"
+            android:name=".activity.Login.TripLoginForgetPasswordActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activity.TripLoginSignUpActivity"
+            android:name=".activity.Login.TripLoginSignUpActivity"
             android:label="@string/app_name" >
         </activity>
 

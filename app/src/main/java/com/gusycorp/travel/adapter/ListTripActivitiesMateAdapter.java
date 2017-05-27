@@ -1,6 +1,8 @@
 package com.gusycorp.travel.adapter;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
+
+import io.cloudboost.CloudException;
 
 /**
  * Created by agustin.huerta on 24/07/2015.
@@ -111,25 +115,59 @@ public class ListTripActivitiesMateAdapter extends ArrayAdapter<TripMatePrize> {
             holder = (ListTripActivitiesMateAdapter.ViewHolder) convertView.getTag();
         }
         if (mData.get(position) != null) {
-            holder.mateUser.setText(mData.get(position).getTripMate().getUsername());
+            holder.mateUser.setText(mData.get(position).getMateUsername());
             holder.matePrize.setText(Double.toString(mData.get(position).getPrize()));
             holder.matePrize.setId(position);
 
+            holder.matePrize.addTextChangedListener(new MyTextWatcher(convertView, position));
+/*
             holder.matePrize.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus) {
                         final int position = v.getId();
                         final EditText matePrize = (EditText) v;
                         double prize = StringUtils.isNotBlank(matePrize.getText().toString()) ? Double.parseDouble(matePrize.getText().toString()) : 0.0;
-                        mData.get(position).put(Constants.PRIZE, prize);
+                        try {
+                            mData.get(position).setPrize(prize);
+                        } catch (CloudException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
+*/
         }
 
         return convertView;
     }
 
+    private class MyTextWatcher implements TextWatcher{
+
+        private View view;
+        private int position;
+        private MyTextWatcher(View view, int position) {
+            this.view = view;
+            this.position = position;
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            //do nothing
+        }
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            //do nothing
+        }
+        public void afterTextChanged(Editable s) {
+
+            double prize = StringUtils.isNotBlank(s.toString()) ? Double.parseDouble(s.toString()) : 0.0;
+            try {
+                mData.get(position).setPrize(prize);
+            } catch (CloudException e) {
+                e.printStackTrace();
+            }
+
+            return;
+        }
+    }
     public static class ViewHolder {
         TextView mateUser;
         EditText matePrize;

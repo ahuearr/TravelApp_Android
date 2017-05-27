@@ -1,81 +1,189 @@
 package com.gusycorp.travel.model;
 
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+
+import org.joda.time.DateTime;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@ParseClassName("TripAccommodation")
-public class TripAccommodation extends ParseObject {
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
+import io.cloudboost.CloudQuery;
 
-	private static String TAG = Constants.TAG_TRIPACCOMMODATIONMODEL;
-	private DateFormat df = new SimpleDateFormat(Constants.DATE_MASK);
+public class TripAccommodation extends ITObject {
 
-	public String getDateFrom() {
-		if(getDate(Constants.DATEFROM)==null){
-			return null;
+	private static String TABLENAME = Constants.TAG_TRIPACCOMMODATIONMODEL;
+	private CloudObject tripAccommodation;
+	private String dateFrom;
+	private String dateTo;
+
+	public TripAccommodation() {
+		tripAccommodation = new CloudObject(TABLENAME);
+	}
+
+	public TripAccommodation(CloudObject tripAccommodation){
+		this.tripAccommodation = tripAccommodation;
+	}
+
+	public CloudObject getTripAccommodation(){
+		return tripAccommodation;
+	}
+
+	public void setTripAccommodation(CloudObject tripAccommodation){
+		this.tripAccommodation = tripAccommodation;
+	}
+
+	public String getId() {
+		return tripAccommodation.getId();
+	}
+
+	public String getDateFrom() throws ParseException {
+		String date;
+		try{
+			date = tripAccommodation.getString(Constants.DATEFROM);
+			return dfDate.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateFrom;
+			return date;
 		}
-		return df.format(getDate(Constants.DATEFROM));
 	}
 
-	public String getDateTo() {
+	public void setDateFrom(String dateFrom){
+		this.dateFrom = dateFrom;
+	}
+	public void setDateFrom(DateTime dateFrom) throws CloudException {
+		tripAccommodation.set(Constants.DATEFROM, dateFrom);
+	}
 
-		if(getDate(Constants.DATETO)==null){
-			return null;
+	public String getDateTo() throws ParseException {
+		String date;
+		try{
+			date = tripAccommodation.getString(Constants.DATETO);
+			return dfDate.print(getDate(date));
+		}catch (ClassCastException e){
+			date = dateTo;
+			return date;
 		}
-		return df.format(getDate(Constants.DATETO));
 	}
 
-	public Date getDateFromDate() {
-		return getDate(Constants.DATEFROM);
+	public void setDateTo(String dateTo){
+		this.dateTo=dateTo;
+	}
+	public void setDateTo(DateTime dateTo) throws CloudException {
+		tripAccommodation.set(Constants.DATETO, dateTo);
 	}
 
-	public Date getDateToDate() {
-		return getDate(Constants.DATETO);
+	public DateTime getDateFromDate() throws ParseException {
+		return dfDate.parseDateTime(getDateFrom());
+	}
+
+	public DateTime getDateToDate() throws ParseException {
+		return dfDate.parseDateTime(getDateTo());
 	}
 
 	public String getPlace() {
-		return getString(Constants.PLACE);
+		return tripAccommodation.getString(Constants.PLACE);
+	}
+
+	public void setPlace(String place) throws CloudException {
+		tripAccommodation.set(Constants.PLACE, place);
 	}
 
 	public String getCity() {
-		return getString(Constants.CITY);
+		return tripAccommodation.getString(Constants.CITY);
+	}
+
+	public void setCity(String city) throws CloudException {
+		tripAccommodation.set(Constants.CITY, city);
 	}
 
 	public String getAddress() {
-		return getString(Constants.ADDRESS);
+		return tripAccommodation.getString(Constants.ADDRESS);
+	}
+
+	public void setAddress(String address) throws CloudException {
+		tripAccommodation.set(Constants.ADDRESS, address);
 	}
 
 	public Integer getNumRooms() {
-		return getInt(Constants.NUMROOMS);
+		return tripAccommodation.getInteger(Constants.NUMROOMS);
 	}
 
-	public Double getPrize() { return getDouble(Constants.PRIZE);}
+	public void setNumRooms(Integer numRooms) throws CloudException {
+		tripAccommodation.set(Constants.NUMROOMS, numRooms);
+	}
 
-	public Double getLatitude() { return getDouble(Constants.LATITUDE);}
+	public Double getPrize() {
+		try{
+			return tripAccommodation.getDouble(Constants.PRIZE);
+		}catch (ClassCastException e){
+			return (double)tripAccommodation.getInteger(Constants.PRIZE);
+		}
+	}
 
-	public Double getLongtiude() { return getDouble(Constants.LONGITUDE);}
+	public void setPrize(Double prize) throws CloudException {
+		tripAccommodation.set(Constants.PRIZE, prize);
+	}
 
-	public static void findTripAccommodationInBackground(String objectId,
-			final GetCallback<TripAccommodation> callback) {
-		ParseQuery<TripAccommodation> TripAccommodationQuery = ParseQuery.getQuery(TripAccommodation.class);
-		TripAccommodationQuery.whereEqualTo(Constants.OBJECTID, objectId);
-		TripAccommodationQuery.getFirstInBackground(new GetCallback<TripAccommodation>() {
+	public Double getLatitude() {
+		try{
+			return tripAccommodation.getDouble(Constants.LATITUDE);
+		}catch (ClassCastException e){
+			return (double)tripAccommodation.getInteger(Constants.LATITUDE);
+		}
+	}
+
+	public void setLatitude(Double latitude) throws CloudException {
+		tripAccommodation.set(Constants.LATITUDE, latitude);
+	}
+
+	public Double getLongitude() {
+		try{
+			return tripAccommodation.getDouble(Constants.LONGITUDE);
+		}catch (ClassCastException e){
+			return (double)tripAccommodation.getInteger(Constants.LONGITUDE);
+		}
+	}
+
+	public void setLongitude(Double longitude) throws CloudException {
+		tripAccommodation.set(Constants.LONGITUDE, longitude);
+	}
+
+	public String getTripId(){
+		return tripAccommodation.getString(Constants.TRIPID);
+	}
+
+	public void setTripId(String tripId) throws CloudException {
+		tripAccommodation.set(Constants.TRIPID, tripId);
+	}
+
+	public List<TripMatePrize> getTripMatePrizeList(){
+		Object[] objectArray = tripAccommodation.getArray(Constants.TRIPMATEPRIZE);
+		TripMatePrize[] array = Arrays.copyOf(objectArray, objectArray.length, TripMatePrize[].class);
+		return Arrays.asList(array);
+	}
+
+	public void setTripMatePrizeList (List<TripMatePrize> tripMatePrizeList) throws CloudException {
+		CloudObject[] tripMatePrizeListObjects = new CloudObject[tripMatePrizeList.size()];
+		tripMatePrizeList.toArray(tripMatePrizeListObjects);
+		tripAccommodation.set(Constants.TRIPMATEPRIZE, tripMatePrizeList);
+	}
+
+	public static void findTripAccommodationInBackground(String objectId, final CloudObjectCallback callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
+		query.findById(objectId, new CloudObjectCallback(){
 			@Override
-			public void done(TripAccommodation tripAccommodation, ParseException e) {
-
-				if (e == null) {
-					callback.done(tripAccommodation, null);
+			public void done(CloudObject obj, CloudException e) throws CloudException {
+				if(obj != null){
+					callback.done(obj, e);
 				} else {
 					callback.done(null, e);
 				}
@@ -83,23 +191,35 @@ public class TripAccommodation extends ParseObject {
 		});
 	}
 
+/*
 	public static void findTripAccommodationListByFieldsInBackground(
-			Map<String, Object> filter, final FindCallback<TripAccommodation> callback) {
-		ParseQuery<TripAccommodation> tripAccomodationQuery = ParseQuery.getQuery(TripAccommodation.class);
+			Map<String, Object> filter, final ITObjectArrayCallback<TripAccommodation> callback) throws CloudException {
+		CloudQuery query = new CloudQuery(TABLENAME);
 		Iterator it = filter.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			tripAccomodationQuery.whereEqualTo((String) e.getKey(), e.getValue());
+			query.equalTo((String) e.getKey(), e.getValue());
 		}
-		tripAccomodationQuery.findInBackground(new FindCallback<TripAccommodation>() {
+		query.find(new ITObjectArrayCallback<TripAccommodation>() {
 			@Override
-			public void done(List<TripAccommodation> tripAccommodationList, ParseException e) {
+			public void done(TripAccommodation[] tripAccommodationList, CloudException e) throws CloudException {
 				if (e == null) {
 					callback.done(tripAccommodationList, null);
 				} else {
 					callback.done(null, e);
 				}
 			}
+
+			@Override
+			public void done(CloudObject[] obj, CloudException e) throws CloudException {
+				if (e == null) {
+					callback.done(obj, null);
+				} else {
+					callback.done(null, e);
+				}
+			}
 		});
 	}
+*/
+
 }

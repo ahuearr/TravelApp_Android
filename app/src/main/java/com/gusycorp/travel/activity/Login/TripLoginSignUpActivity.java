@@ -1,10 +1,11 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Login;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,12 +14,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.HomeActivity;
 import com.gusycorp.travel.util.ConnectionDetector;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
-
-import com.parse.ParseException;
 import java.util.Locale;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudUser;
+import io.cloudboost.CloudUserCallback;
 
 /**
  * Created by agustin.huerta on 25/08/2015.
@@ -97,7 +99,7 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
         mPassword = mPasswordEditText.getText().toString();
         mConfirmPassword = mConfirmPasswordEditText.getText().toString();
 
-        // Check for a valid confirm password.
+        // Check for a valid confirm email.
         if (TextUtils.isEmpty(mConfirmPassword)) {
             mConfirmPasswordEditText.setError(getString(R.string.error_field_required));
             focusView = mConfirmPasswordEditText;
@@ -107,7 +109,7 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
             focusView = mPasswordEditText;
             cancel = true;
         }
-        // Check for a valid password.
+        // Check for a valid email.
         if (TextUtils.isEmpty(mPassword)) {
             mPasswordEditText.setError(getString(R.string.error_field_required));
             focusView = mPasswordEditText;
@@ -137,33 +139,11 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             Toast.makeText(getApplicationContext(),getString(R.string.signUp), Toast.LENGTH_SHORT).show();
-            signUp(mUsername.toLowerCase(Locale.getDefault()), mEmail, mPassword);
+            new SignUp().execute(mUsername.toLowerCase(Locale.getDefault()), mEmail, mPassword);
+            //signUp(mUsername.toLowerCase(Locale.getDefault()), mEmail, mPassword);
 
         }
 
-    }
-
-    private void signUp(final String mUsername, String mEmail, String mPassword) {
-        Toast.makeText(getApplicationContext(), mUsername + " - " + mEmail, Toast.LENGTH_SHORT).show();
-        ParseUser user = new ParseUser();
-        user.setUsername(mUsername);
-        user.setPassword(mPassword);
-        user.setEmail(mEmail);
-
-        user.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    signUpMsg(getString(R.string.cuenta_creada));
-                    Intent in = new Intent(getApplicationContext(),HomeActivity.class);
-                    startActivity(in);
-                } else {
-                    e.printStackTrace();
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
-                    signUpMsg(getString(R.string.cuenta_existente));
-                }
-            }
-        });
     }
 
     protected void signUpMsg(String msg) {
@@ -208,4 +188,47 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
         finish();
     }
 
+    private class SignUp extends AsyncTask <String, Void, Integer> {
+
+        private String mUsername;
+        private String mEmail;
+        private String mPassword;
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            mUsername = params[0];
+            mEmail = params[1];
+            mPassword = params[2];
+            CloudUser user = new CloudUser();
+            user.setUserName(mUsername);
+            user.setPassword(mPassword);
+            user.setEmail(mEmail);
+
+            try {
+                user.signUp(new CloudUserCallback() {
+                    @Override
+                    public void done(CloudUser user, CloudException e) throws CloudException {
+                        if (user != null) {
+                            Intent in = new Intent(getApplicationContext(), HomeActivity.class);
+                            startActivity(in);
+                        }
+                    }
+                });
+            } catch (CloudException e) {
+                e.printStackTrace();
+                // Sign up didn't succeed. Look at the ParseException
+                // to figure out what went wrong
+                return 1;
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if(result==1){
+                signUpMsg(getString(R.string.cuenta_existente));
+            }
+        }
+
+    }
 }

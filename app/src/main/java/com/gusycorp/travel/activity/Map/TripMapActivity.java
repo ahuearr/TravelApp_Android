@@ -1,4 +1,4 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Map;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,9 +21,6 @@ import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -39,6 +36,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import io.cloudboost.CloudException;
+import io.cloudboost.CloudObject;
+import io.cloudboost.CloudObjectCallback;
 
 public class TripMapActivity extends FragmentActivity {
 
@@ -96,61 +97,23 @@ public class TripMapActivity extends FragmentActivity {
         tripAccommodations.clear();
         tripCalendars.clear();
 
-        ParseRelation<TripCalendar> tripCalendar = currentTrip.getRelation(Constants.TRIPCALENDAR);
-        ParseRelation<TripTransport> tripTransport = currentTrip.getRelation(Constants.TRIPTRANSPORT);
-        ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIPACCOMMODATION);
-
-        findTransports(tripCalendar, tripTransport, tripAccommodation);
+        findAll();
     }
 
-    private void findTransports(final ParseRelation<TripCalendar> tripCalendar,
-                                ParseRelation<TripTransport> tripTransport,
-                                final ParseRelation<TripAccommodation> tripAccommodation) {
-        tripTransport.getQuery().findInBackground(new FindCallback<TripTransport>() {
-            public void done(List<TripTransport> tripTransportList, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    tripTransports.addAll(tripTransportList);
-                }
-
-                findAccommodations(tripCalendar, tripAccommodation);
-            }
-        });
-    }
-
-    private void findAccommodations(final ParseRelation<TripCalendar> tripCalendar,
-                                    ParseRelation<TripAccommodation> tripAccommodation) {
-        tripAccommodation.getQuery().findInBackground(new FindCallback<TripAccommodation>() {
-            public void done(List<TripAccommodation> tripAccommodationList, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    tripAccommodations.addAll(tripAccommodationList);
-                }
-
-                findCalendars(tripCalendar);
-            }
-        });
-    }
-
-    private void findCalendars(ParseRelation<TripCalendar> tripCalendar) {
-        tripCalendar.getQuery().findInBackground(new FindCallback<TripCalendar>() {
-            public void done(List<TripCalendar> tripCalendarList, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    tripCalendars.addAll(tripCalendarList);
-                    setUpMap();
-                }
-            }
-        });
+    private void findAll() {
+        List<TripTransport> tripTransportList = currentTrip.getTripTransportList();
+        tripTransports.addAll(tripTransportList);
+        List<TripAccommodation> tripAccommodationList = currentTrip.getTripAccommodationList();
+        tripAccommodations.addAll(tripAccommodationList);
+        List<TripCalendar> tripCalendarList = currentTrip.getTripCalendarList();
+        tripCalendars.addAll(tripCalendarList);
+        setUpMap();
     }
 
     private void setUpMap() {
         for(TripTransport item : tripTransports){
             Double latitudeFrom = item.getLatitudeFrom();
-            Double longitudeFrom = item.getLongtiudeFrom();
+            Double longitudeFrom = item.getLongitudeFrom();
             if(latitudeFrom!=null && latitudeFrom!=0.0 && longitudeFrom!=null && longitudeFrom!=0.0){
                 mMap.addMarker(new MarkerOptions().position(new LatLng(latitudeFrom, longitudeFrom)).title(getString(R.string.transportDepartureFrom) + " " + item.getFrom()));
             } else {
@@ -161,11 +124,15 @@ public class TripMapActivity extends FragmentActivity {
                         LatLng placePosition = new LatLng(address.getLatitude(),
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
-                        item.put(Constants.LATITUDEFROM, address.getLatitude());
-                        item.put(Constants.LONGITUDEFROM, address.getLongitude());
                         try {
-                            item.save();
-                        } catch (ParseException e) {
+                            item.setLatitudeFrom(address.getLatitude());
+                            item.setLongitudeFrom(address.getLongitude());
+                            item.getTripTransport().save(new CloudObjectCallback() {
+                                @Override
+                                public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
+                                }
+                            });
+                        } catch (CloudException e) {
                             e.printStackTrace();
                         }
                     } else {
@@ -174,7 +141,7 @@ public class TripMapActivity extends FragmentActivity {
                 }
             }
             Double latitudeTo = item.getLatitudeTo();
-            Double longitudeTo = item.getLongtiudeTo();
+            Double longitudeTo = item.getLongitudeTo();
             if(latitudeFrom!=null && latitudeFrom!=0.0 && latitudeTo!=null && longitudeTo!=0.0){
                 mMap.addMarker(new MarkerOptions().position(new LatLng(latitudeTo, longitudeTo)).title(getString(R.string.transportArrivalTo) + " " + item.getTo()));
             } else {
@@ -185,11 +152,15 @@ public class TripMapActivity extends FragmentActivity {
                         LatLng placePosition = new LatLng(address.getLatitude(),
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
-                        item.put(Constants.LATITUDETO, address.getLatitude());
-                        item.put(Constants.LONGITUDETO, address.getLongitude());
                         try {
-                            item.save();
-                        } catch (ParseException e) {
+                            item.setLatitudeTo(address.getLatitude());
+                            item.setLongitudeTo(address.getLongitude());
+                            item.getTripTransport().save(new CloudObjectCallback() {
+                                @Override
+                                public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
+                                }
+                            });
+                        } catch (CloudException e) {
                             e.printStackTrace();
                         }
                     } else {
@@ -201,7 +172,7 @@ public class TripMapActivity extends FragmentActivity {
 
         for(TripAccommodation item : tripAccommodations){
             Double latitude = item.getLatitude();
-            Double longitude = item.getLongtiude();
+            Double longitude = item.getLongitude();
             if(latitude!=null && latitude!=0.0 && longitude!=null && longitude!=0.0){
                 mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getPlace()+" "+item.getAddress()+" "+item.getCity()));
             } else {
@@ -212,11 +183,15 @@ public class TripMapActivity extends FragmentActivity {
                         LatLng placePosition = new LatLng(address.getLatitude(),
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
-                        item.put(Constants.LATITUDE, address.getLatitude());
-                        item.put(Constants.LONGITUDE, address.getLongitude());
                         try {
-                            item.save();
-                        } catch (ParseException e) {
+                            item.setLatitude(address.getLatitude());
+                            item.setLongitude(address.getLongitude());
+                            item.getTripAccommodation().save(new CloudObjectCallback() {
+                                @Override
+                                public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
+                                }
+                            });
+                        } catch (CloudException e) {
                             e.printStackTrace();
                         }
                     } else {
@@ -239,11 +214,15 @@ public class TripMapActivity extends FragmentActivity {
                         LatLng placePosition = new LatLng(address.getLatitude(),
                                 address.getLongitude());
                         mMap.addMarker(new MarkerOptions().position(placePosition).title(place));
-                        item.put(Constants.LATITUDE, address.getLatitude());
-                        item.put(Constants.LONGITUDE, address.getLongitude());
                         try {
-                            item.save();
-                        } catch (ParseException e) {
+                            item.setLatitude(address.getLatitude());
+                            item.setLongitude(address.getLongitude());
+                            item.getTripCalendar().save(new CloudObjectCallback() {
+                                @Override
+                                public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
+                                }
+                            });
+                        } catch (CloudException e) {
                             e.printStackTrace();
                         }
                     } else {
@@ -489,40 +468,56 @@ public class TripMapActivity extends FragmentActivity {
                     case Constants.TAG_TRIPTRANSPORTMODEL:
                         TripTransport itemTransport = (TripTransport) item;
                         if(Constants.FROM.equals(fromOrTo)){
-                            itemTransport.put(Constants.LATITUDEFROM, address.getLatitude());
-                            itemTransport.put(Constants.LONGITUDEFROM, address.getLongitude());
                             try {
-                                itemTransport.save();
-                            } catch (ParseException e) {
+                                itemTransport.setLatitudeFrom(address.getLatitude());
+                                itemTransport.setLongitudeFrom(address.getLongitude());
+                                itemTransport.getTripTransport().save(new CloudObjectCallback() {
+                                    @Override
+                                    public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
+                                    }
+                                });
+                            } catch (CloudException e) {
                                 e.printStackTrace();
                             }
                         }else{
-                            itemTransport.put(Constants.LATITUDETO, address.getLatitude());
-                            itemTransport.put(Constants.LONGITUDETO, address.getLongitude());
                             try {
-                                itemTransport.save();
-                            } catch (ParseException e) {
+                                itemTransport.setLatitudeTo(address.getLatitude());
+                                itemTransport.setLongitudeTo(address.getLongitude());
+                                itemTransport.getTripTransport().save(new CloudObjectCallback() {
+                                    @Override
+                                    public void done(CloudObject tripTransportSaved, CloudException t) throws CloudException {
+                                    }
+                                });
+                            } catch (CloudException e) {
                                 e.printStackTrace();
                             }
                         }
                         break;
                     case Constants.TAG_TRIPACCOMMODATIONMODEL:
                         TripAccommodation itemAccommodation = (TripAccommodation) item;
-                        itemAccommodation.put(Constants.LATITUDE, address.getLatitude());
-                        itemAccommodation.put(Constants.LONGITUDE, address.getLongitude());
                         try {
-                            itemAccommodation.save();
-                        } catch (ParseException e) {
+                            itemAccommodation.setLatitude(address.getLatitude());
+                            itemAccommodation.setLongitude(address.getLongitude());
+                            itemAccommodation.getTripAccommodation().save(new CloudObjectCallback() {
+                                @Override
+                                public void done(CloudObject tripAccommodationSaved, CloudException t) throws CloudException {
+                                }
+                            });
+                        } catch (CloudException e) {
                             e.printStackTrace();
                         }
                         break;
                     case Constants.TAG_TRIPCALENDARMODEL:
                         TripCalendar itemCalendar = (TripCalendar) item;
-                        itemCalendar.put(Constants.LATITUDE, address.getLatitude());
-                        itemCalendar.put(Constants.LONGITUDE, address.getLongitude());
                         try {
-                            itemCalendar.save();
-                        } catch (ParseException e) {
+                            itemCalendar.setLatitude(address.getLatitude());
+                            itemCalendar.setLongitude(address.getLongitude());
+                            itemCalendar.getTripCalendar().save(new CloudObjectCallback() {
+                                @Override
+                                public void done(CloudObject tripCalendarSaved, CloudException t) throws CloudException {
+                                }
+                            });
+                        } catch (CloudException e) {
                             e.printStackTrace();
                         }
                         break;

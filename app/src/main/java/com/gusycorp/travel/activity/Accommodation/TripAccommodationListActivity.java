@@ -1,4 +1,4 @@
-package com.gusycorp.travel.activity;
+package com.gusycorp.travel.activity.Accommodation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +9,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.adapter.ListTripAccommodationAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +60,7 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
     @Override
     public void onResume() {
         super.onResume();
-        getTripAccommodations(currentTrip.getObjectId());
+        getTripAccommodations(currentTrip.getId());
     }
 
     @Override
@@ -86,36 +85,32 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
         itemHeader.put(Constants.TRIPACCOMMODATIONLIST_COLUMN_FOUR, getString(R.string.checkout));
         mAdapter.addSectionHeaderItem(itemHeader);
 
-        ParseRelation<TripAccommodation> tripAccommodation = currentTrip.getRelation(Constants.TRIPACCOMMODATION);
+        List<TripAccommodation> tripAccommodationList = currentTrip.getTripAccommodationList();
 
-        tripAccommodation.getQuery().findInBackground(new FindCallback<TripAccommodation>() {
-            public void done(List<TripAccommodation> tripAccommodationList, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    for (TripAccommodation tripAccommodation : tripAccommodationList) {
-                        mAdapter.addItem(tripAccommodation);
+        for (TripAccommodation tripAccommodation : tripAccommodationList) {
+            mAdapter.addItem(tripAccommodation);
+        }
+        listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try{
+                    TripAccommodation tripAccommodation = (TripAccommodation) listView.getAdapter().getItem(position);
+                    if (tripAccommodation != null) {
+                        app.setCurrentTripAccommodation(tripAccommodation);
+                        Intent intent = new Intent(TripAccommodationListActivity.this, TripAccommodationActivity.class);
+                        intent.putExtra(Constants.OBJECTID, tripAccommodation.getId());
+                        intent.putExtra(Constants.PLACE, tripAccommodation.getPlace());
+                        intent.putExtra(Constants.CITY, tripAccommodation.getCity());
+                        intent.putExtra(Constants.DATEFROM, tripAccommodation.getDateFrom());
+                        intent.putExtra(Constants.DATETO, tripAccommodation.getDateTo());
+                        intent.putExtra(Constants.ADDRESS, tripAccommodation.getAddress());
+                        intent.putExtra(Constants.NUMROOMS, tripAccommodation.getNumRooms());
+                        intent.putExtra(Constants.PRIZE, tripAccommodation.getPrize());
+                        startActivity(intent);
                     }
-                    listView.setAdapter(mAdapter);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            TripAccommodation tripAccommodation = (TripAccommodation) listView.getAdapter().getItem(position);
-                            if (tripAccommodation != null) {
-                                app.setCurrentTripAccommodation(tripAccommodation);
-                                Intent intent = new Intent(TripAccommodationListActivity.this, TripAccommodationActivity.class);
-                                intent.putExtra(Constants.OBJECTID, tripAccommodation.getObjectId());
-                                intent.putExtra(Constants.PLACE, tripAccommodation.getPlace());
-                                intent.putExtra(Constants.CITY, tripAccommodation.getCity());
-                                intent.putExtra(Constants.DATEFROM, tripAccommodation.getDateFrom());
-                                intent.putExtra(Constants.DATETO, tripAccommodation.getDateTo());
-                                intent.putExtra(Constants.ADDRESS, tripAccommodation.getAddress());
-                                intent.putExtra(Constants.NUMROOMS, tripAccommodation.getNumRooms());
-                                intent.putExtra(Constants.PRIZE, tripAccommodation.getPrize());
-                                startActivity(intent);
-                            }
-                        }
-                    });
+                }catch(ParseException e){
+                    e.printStackTrace();
                 }
             }
         });
