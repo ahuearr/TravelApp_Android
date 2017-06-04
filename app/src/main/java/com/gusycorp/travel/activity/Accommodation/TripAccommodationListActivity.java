@@ -65,6 +65,7 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()){
             case R.id.add_accommodation_trip:
                 Intent intent = new Intent(TripAccommodationListActivity.this, TripAccommodationActivity.class);

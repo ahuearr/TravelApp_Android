@@ -114,6 +114,7 @@ public class TripCalendarListActivity extends MenuActivity {
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()){
             case R.id.add_calendar_trip:
                 Intent intent = new Intent(TripCalendarListActivity.this, TripCalendarActivity.class);

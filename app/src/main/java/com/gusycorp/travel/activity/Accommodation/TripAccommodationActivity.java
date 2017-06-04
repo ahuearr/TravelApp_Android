@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity.Accommodation;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -28,13 +31,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
 
 
-public class TripAccommodationActivity extends MenuActivity implements OnClickListener{
+public class TripAccommodationActivity extends Activity implements OnClickListener{
 
 	private EditText place;
 	private EditText city;
@@ -117,11 +121,14 @@ public class TripAccommodationActivity extends MenuActivity implements OnClickLi
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						DateTime date = df.parseDateTime(dateArrival.getText().toString().replaceAll("/", "-"));
-						tripAccommodation.setDateFrom(date);
+						LocalDateTime localDate = LocalDateTime.parse(dateArrival.getText().toString().replaceAll("/", "-"), df);
+						DateTime date = localDate.toDateTime(DateTimeZone.getDefault());
+						int offsetInMilliseconds = TimeZone.getDefault().getOffset(date.getMillis());
+						tripAccommodation.setDateFrom(date.plusMillis(offsetInMilliseconds));
 						tripAccommodation.setDateFrom(dateArrival.getText().toString().replaceAll("/", "-"));
-						date = df.parseDateTime(dateDepart.getText().toString().replaceAll("/", "-"));
-						tripAccommodation.setDateTo(date);
+						localDate = LocalDateTime.parse(dateDepart.getText().toString().replaceAll("/", "-"), df);
+						date = localDate.toDateTime(DateTimeZone.getDefault());
+						tripAccommodation.setDateTo(date.plusMillis(offsetInMilliseconds));
 						tripAccommodation.setDateTo(dateDepart.getText().toString().replaceAll("/", "-"));
 						tripAccommodation.setPlace(place.getText().toString());
 						tripAccommodation.setCity(city.getText().toString());

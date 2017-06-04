@@ -79,6 +79,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()){
             case R.id.add_mate_trip:
                 String mate = mateText.getText().toString();

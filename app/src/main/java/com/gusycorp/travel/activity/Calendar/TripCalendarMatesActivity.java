@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity.Calendar;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -28,7 +29,7 @@ import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
 
-public class TripCalendarMatesActivity extends MenuActivity implements View.OnClickListener{
+public class TripCalendarMatesActivity extends Activity implements View.OnClickListener{
 
     private Button save;
     private Button share;
@@ -209,6 +210,5 @@ public class TripCalendarMatesActivity extends MenuActivity implements View.OnCl
     public void onBackPressed()
     {
         super.onBackPressed();
-        menus.clear();
     }
 }

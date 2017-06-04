@@ -66,6 +66,7 @@ public class TripTransportListActivity extends MenuActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()){
             case R.id.add_transport_trip:
                 Intent intent = new Intent(TripTransportListActivity.this, TripTransportActivity.class);

@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity.Calendar;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.util.Constants;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -29,13 +32,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
 
 
-public class TripCalendarActivity extends MenuActivity implements OnClickListener{
+public class TripCalendarActivity extends Activity implements OnClickListener{
 
 	private EditText date;
 	private EditText activity;
@@ -109,8 +113,10 @@ public class TripCalendarActivity extends MenuActivity implements OnClickListene
 			case R.id.save_button:
 				if(checkMandatory()){
 					try{
-						DateTime dateActivity = df.parseDateTime(date.getText().toString().replaceAll("/", "-"));
-						tripCalendar.setDate(dateActivity);
+						LocalDateTime localDate = LocalDateTime.parse(date.getText().toString().replaceAll("/", "-"), df);
+						DateTime dateActivity = localDate.toDateTime(DateTimeZone.getDefault());
+						int offsetInMilliseconds = TimeZone.getDefault().getOffset(dateActivity.getMillis());
+						tripCalendar.setDate(dateActivity.plusMillis(offsetInMilliseconds));
 						tripCalendar.setDate(date.getText().toString().replaceAll("/", "-"));
 						tripCalendar.setActivity(activity.getText().toString());
 						tripCalendar.setPlace(place.getText().toString());

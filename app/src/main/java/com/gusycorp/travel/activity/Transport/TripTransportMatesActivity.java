@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity.Transport;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -26,7 +27,7 @@ import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
 
-public class TripTransportMatesActivity extends MenuActivity implements View.OnClickListener{
+public class TripTransportMatesActivity extends Activity implements View.OnClickListener{
 
     private Button save;
     private Button share;
@@ -220,6 +221,5 @@ public class TripTransportMatesActivity extends MenuActivity implements View.OnC
     public void onBackPressed()
     {
         super.onBackPressed();
-        menus.clear();
     }
 }
