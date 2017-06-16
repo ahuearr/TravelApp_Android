@@ -75,7 +75,9 @@ public class MenuActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(final View v) {
-        seleccionarMenu(this, v.getId(), findClass(v.getId()));
+        if(findClass(v.getId())!=null){
+            seleccionarMenu(this, v.getId(), findClass(v.getId()));
+        }
     }
 
     public void seleccionarMenu(final Activity context, final int id,
