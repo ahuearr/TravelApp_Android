@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity.Mates;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +31,7 @@ import io.cloudboost.CloudObjectCallback;
 import io.cloudboost.CloudQuery;
 import io.cloudboost.CloudUser;
 
-public class TripMatesActivity extends MenuActivity implements View.OnClickListener{
+public class TripMatesActivity extends Activity implements View.OnClickListener{
 
     private Button addMateTrip;
     private TextView tripNameText;
@@ -64,7 +65,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
 
         addMateTrip.setOnClickListener(this);
 
-        tripName = currentTrip.getTripName();
+        String tripName = currentTrip.getTripName();
         tripNameText.setText(tripName);
         tripMates = new ArrayList<TripMate>();
         listView=(ListView)findViewById(R.id.mates_list);
@@ -79,7 +80,6 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        super.onClick(v);
         switch (v.getId()){
             case R.id.add_mate_trip:
                 String mate = mateText.getText().toString();
@@ -119,6 +119,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
 
     private int addMateToTrip(String mate) throws CloudException {
         boolean existsMate = false;
+        final int[] error = {0};
         for(TripMate tripMate : tripMates){
             if(mate.equals(tripMate.getUsername())){
                 existsMate = true;
@@ -129,7 +130,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             query.equalTo(Constants.USERNAME, mate);
             query.find(new CloudObjectArrayCallback() {
                 public void done(CloudObject[] userList, final CloudException e) {
-                    if (userList != null) {
+                    if (userList != null && userList.length>0) {
                         tripMate = new TripMate();
                         try {
                             tripMate.setUserId(userList[0].getId());
@@ -153,17 +154,18 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
                                 }
                             });
                         } catch (CloudException e1) {
+                            error[0] = -3;
                             e1.printStackTrace();
                         }
                     } else {
-                        e.printStackTrace();
+                        error[0] = -2;
                     }
                 }
             });
         }else{
             return -1;
         }
-        return 0;
+        return error[0];
     }
 
     private class AddMate extends AsyncTask<String, Void, Integer> {
@@ -185,14 +187,14 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             if(integer==0){
                 mAdapter.addItem(tripMate);
                 mAdapter.notifyDataSetChanged();
+            }else if(integer==-1){
+                Toast.makeText(TripMatesActivity.this, getString(R.string.errorExiste), Toast.LENGTH_LONG).show();
+            }else if(integer==-2){
+                Toast.makeText(TripMatesActivity.this, getString(R.string.errorNoExiste), Toast.LENGTH_LONG).show();
+            }else if(integer==-3){
+                Toast.makeText(TripMatesActivity.this, getString(R.string.errorAgregando), Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-        menus.clear();
-    }
 }

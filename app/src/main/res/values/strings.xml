@@ -79,6 +79,10 @@
     <string name="share_prize">Dividir</string>
     <string name="prize2">Precio:</string>
 
+    <string name="errorExiste">El usuario ya es compañero de viaje</string>
+    <string name="errorNoExiste">El usuario no existe en la aplicacion</string>
+    <string name="errorAgregando">Error agregando compañero de viaje</string>
+
     <!-- Login/Account creation screen -->
     <string name="welcome">Bienvenido a tu aplicacion de gestion de viajes en grupo</string>
     <string name="signIn">Acceder</string>
