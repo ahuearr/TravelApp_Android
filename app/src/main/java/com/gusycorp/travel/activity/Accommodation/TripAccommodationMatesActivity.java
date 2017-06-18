@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.activity.Transport.TripTransportMatesActivity;
 import com.gusycorp.travel.adapter.ListTripActivitiesMateAdapter;
@@ -19,6 +20,7 @@ import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.model.TripMatePrize;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
 
-public class TripAccommodationMatesActivity extends Activity implements View.OnClickListener{
+public class TripAccommodationMatesActivity extends LoaderActivity implements View.OnClickListener{
 
     private Button save;
     private Button share;
@@ -52,6 +54,8 @@ public class TripAccommodationMatesActivity extends Activity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activities_mates_trip);
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();
@@ -89,6 +93,7 @@ public class TripAccommodationMatesActivity extends Activity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.save_button:
+                showLoader();
                 new Save().execute();
                 break;
             case R.id.share_button:
@@ -142,6 +147,7 @@ public class TripAccommodationMatesActivity extends Activity implements View.OnC
             }
         }
         listView.setAdapter(mAdapter);
+        hideLoader();
     }
 
     private class Save extends AsyncTask<String, Void, Boolean> {
@@ -160,6 +166,7 @@ public class TripAccommodationMatesActivity extends Activity implements View.OnC
             }else{
                 Toast.makeText(TripAccommodationMatesActivity.this, getString(R.string.message_ko), Toast.LENGTH_LONG).show();
             }
+            hideLoader();
         }
     }
 

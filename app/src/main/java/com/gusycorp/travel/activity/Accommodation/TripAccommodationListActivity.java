@@ -15,6 +15,7 @@ import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class TripAccommodationListActivity extends MenuActivity implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accommodation_trip_list);
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();

@@ -15,7 +15,10 @@ import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.activity.HomeActivity;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.util.ConnectionDetector;
+import com.wang.avi.AVLoadingIndicatorView;
+
 import java.util.Locale;
 
 import io.cloudboost.CloudException;
@@ -25,7 +28,7 @@ import io.cloudboost.CloudUserCallback;
 /**
  * Created by agustin.huerta on 25/08/2015.
  */
-public class TripLoginSignUpActivity extends Activity implements View.OnClickListener {
+public class TripLoginSignUpActivity extends LoaderActivity implements View.OnClickListener {
     private EditText mUserNameEditText;
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
@@ -57,6 +60,9 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
         mConfirmPasswordEditText = (EditText) findViewById(R.id.etPasswordConfirm);
 
         mCreateAccountButton = (Button) findViewById(R.id.btnCreateAccount);
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
+
         mCreateAccountButton.setOnClickListener(this);
 
     }
@@ -139,6 +145,7 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             Toast.makeText(getApplicationContext(),getString(R.string.signUp), Toast.LENGTH_SHORT).show();
+            showLoader();
             new SignUp().execute(mUsername.toLowerCase(Locale.getDefault()), mEmail, mPassword);
             //signUp(mUsername.toLowerCase(Locale.getDefault()), mEmail, mPassword);
 
@@ -225,7 +232,12 @@ public class TripLoginSignUpActivity extends Activity implements View.OnClickLis
 
         @Override
         protected void onPostExecute(Integer result) {
-            if(result==1){
+            hideLoader();
+            if (result==0)
+            {
+                signUpMsg(getString(R.string.cuenta_creada));
+            }
+            else if(result==1){
                 signUpMsg(getString(R.string.cuenta_existente));
             }
         }

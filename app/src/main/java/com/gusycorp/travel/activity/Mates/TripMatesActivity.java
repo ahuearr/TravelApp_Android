@@ -12,12 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.adapter.ListTripMateAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ import io.cloudboost.CloudObjectCallback;
 import io.cloudboost.CloudQuery;
 import io.cloudboost.CloudUser;
 
-public class TripMatesActivity extends Activity implements View.OnClickListener{
+public class TripMatesActivity extends MenuActivity implements View.OnClickListener{
 
     private Button addMateTrip;
     private TextView tripNameText;
@@ -50,6 +52,8 @@ public class TripMatesActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mates_trip);
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();
@@ -75,18 +79,21 @@ public class TripMatesActivity extends Activity implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
+        showLoader();
         getTripMates(currentTrip.getId());
     }
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()){
             case R.id.add_mate_trip:
                 String mate = mateText.getText().toString();
                 if(!"".equals(mate)){
+                    showLoader();
                     new AddMate().execute(mate);
                 } else {
-                    Toast.makeText(this, getString(R.string.user_not_exists), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.user_empty), Toast.LENGTH_LONG).show();
                 }
                 break;
         }
@@ -115,6 +122,7 @@ public class TripMatesActivity extends Activity implements View.OnClickListener{
                 //TODO Delete Mate
             }
         });
+        hideLoader();
     }
 
     private int addMateToTrip(String mate) throws CloudException {
@@ -194,7 +202,15 @@ public class TripMatesActivity extends Activity implements View.OnClickListener{
             }else if(integer==-3){
                 Toast.makeText(TripMatesActivity.this, getString(R.string.errorAgregando), Toast.LENGTH_LONG).show();
             }
+            hideLoader();
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        menus.clear();
     }
 
 }

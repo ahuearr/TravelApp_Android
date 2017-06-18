@@ -74,11 +74,10 @@
     <string name="mate">Acompañante</string>
     <string name="username">Usuario</string>
     <string name="rol">Rol</string>
-    <string name="user_not_exists">El usuario no existe</string>
+    <string name="user_empty">Introduzca usuario</string>
     <string name="user_appened_yet">El usuario ya esta agregado al viaje</string>
     <string name="share_prize">Dividir</string>
     <string name="prize2">Precio:</string>
-
     <string name="errorExiste">El usuario ya es compañero de viaje</string>
     <string name="errorNoExiste">El usuario no existe en la aplicacion</string>
     <string name="errorAgregando">Error agregando compañero de viaje</string>

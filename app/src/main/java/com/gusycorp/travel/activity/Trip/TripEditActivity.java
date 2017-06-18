@@ -13,11 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.ITObjectCallback;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -40,7 +42,7 @@ import io.cloudboost.CloudUser;
 
 
 
-public class TripEditActivity extends Activity implements View.OnClickListener{
+public class TripEditActivity extends LoaderActivity implements View.OnClickListener{
 
 	private EditText tripNameText;
 	private EditText dateIniText;
@@ -60,6 +62,8 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 		try{
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_trip_edit);
+
+			avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
 			app = (TravelApplication) getApplication();
 
@@ -132,6 +136,7 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 						trip.setDestinyName(destinyListTrimmed);
 						trip.setStatus(Constants.VALUE_STATUS_FUTURE);
 						trip.setOrganizerId(CloudUser.getcurrentUser().getId());
+						showLoader();
 						new Save().execute();
 					} catch (CloudException e) {
 						e.printStackTrace();
@@ -175,7 +180,7 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 							app.setCurrentTrip(trip);
 						}
 					});
-					return 2;
+					return 0;
 				} else {
 					trip.getTrip().save(new CloudObjectCallback() {
 						@Override
@@ -217,16 +222,19 @@ public class TripEditActivity extends Activity implements View.OnClickListener{
 				}
 			} catch (CloudException e) {
 				e.printStackTrace();
-				return 1;
+				return -1;
 			}
 			return 0;
 		}
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			if(result==2){
-				onBackPressed();
+			if(result==0){
+				Toast.makeText(TripEditActivity.this, getString(R.string.message_ok), Toast.LENGTH_LONG).show();
+			}else if(result==1){
+				Toast.makeText(TripEditActivity.this, getString(R.string.message_ko), Toast.LENGTH_LONG).show();
 			}
+			hideLoader();
 		}
 	}
 

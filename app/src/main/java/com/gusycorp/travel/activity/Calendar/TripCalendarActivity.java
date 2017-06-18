@@ -14,11 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -39,7 +41,7 @@ import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
 
 
-public class TripCalendarActivity extends Activity implements OnClickListener{
+public class TripCalendarActivity extends LoaderActivity implements OnClickListener{
 
 	private EditText date;
 	private EditText activity;
@@ -62,6 +64,8 @@ public class TripCalendarActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_calendar_trip);
+
+		avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
 		app = (TravelApplication) getApplication();
 		currentTrip = app.getCurrentTrip();
@@ -124,7 +128,7 @@ public class TripCalendarActivity extends Activity implements OnClickListener{
 						tripCalendar.setPrize(Double.parseDouble(prize.getText().toString()));
 						tripCalendar.setIsActivity(true);
                         tripCalendar.setTripId(currentTrip.getId());
-
+						showLoader();
                         if(objectId!=null){
                             new Save().execute(Constants.UPDATE);
                         } else {
@@ -170,6 +174,7 @@ public class TripCalendarActivity extends Activity implements OnClickListener{
             if(result<=2){
                 goOK();
             }
+            hideLoader();
         }
     }
 
@@ -205,8 +210,6 @@ public class TripCalendarActivity extends Activity implements OnClickListener{
 		} catch (CloudException e) {
 			e.printStackTrace();
 		}
-
-		goOK();
 	}
 	private boolean checkMandatory(){
 		if(viewIsEmpty(place) || viewIsEmpty(city)

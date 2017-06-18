@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.activity.Trip.TripActivity;
 import com.gusycorp.travel.activity.Trip.TripEditActivity;
@@ -25,6 +26,7 @@ import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.model.TypeTransport;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -45,7 +47,7 @@ import io.cloudboost.CloudObjectCallback;
 import io.cloudboost.CloudUser;
 
 
-public class TripTransportActivity extends Activity implements OnClickListener{
+public class TripTransportActivity extends LoaderActivity implements OnClickListener{
 
 	private Spinner typeTransport;
 	private EditText dateDepart;
@@ -73,6 +75,8 @@ public class TripTransportActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transport_trip);
+
+		avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
 		app = (TravelApplication) getApplication();
 		typeTransportList = app.getTransportTypes();
@@ -162,7 +166,7 @@ public class TripTransportActivity extends Activity implements OnClickListener{
 						tripTransport.setTripId(currentTrip.getId());
 						final TypeTransport typeTransportSelected = (TypeTransport)typeTransport.getSelectedItem();
 						tripTransport.setTypeTransport(typeTransportSelected.getTransportName());
-
+						showLoader();
 						if(objectId!=null){
 							new Save().execute(Constants.UPDATE);
 						} else {
@@ -208,6 +212,7 @@ public class TripTransportActivity extends Activity implements OnClickListener{
 			if(result<=2){
 				goOK();
 			}
+			hideLoader();
 		}
 	}
 
