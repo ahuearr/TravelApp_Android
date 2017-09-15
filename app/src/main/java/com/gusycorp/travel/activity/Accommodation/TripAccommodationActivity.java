@@ -14,11 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -38,7 +40,7 @@ import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
 
 
-public class TripAccommodationActivity extends Activity implements OnClickListener{
+public class TripAccommodationActivity extends LoaderActivity implements OnClickListener{
 
 	private EditText place;
 	private EditText city;
@@ -63,6 +65,8 @@ public class TripAccommodationActivity extends Activity implements OnClickListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_accommodation_trip);
+
+		avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
 		app = (TravelApplication) getApplication();
 		currentTrip = app.getCurrentTrip();
@@ -136,6 +140,7 @@ public class TripAccommodationActivity extends Activity implements OnClickListen
 						tripAccommodation.setNumRooms(Integer.parseInt(numRooms.getText().toString()));
 						tripAccommodation.setPrize(Double.parseDouble(prize.getText().toString()));
 						tripAccommodation.setTripId(currentTrip.getId());
+						showLoader();
 						if(objectId!=null){
                             new Save().execute(Constants.UPDATE);
 						} else {
@@ -181,6 +186,7 @@ public class TripAccommodationActivity extends Activity implements OnClickListen
             if(result<=2){
                 goOK();
             }
+            hideLoader();
         }
     }
 

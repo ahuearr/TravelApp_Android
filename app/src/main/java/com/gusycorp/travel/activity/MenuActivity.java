@@ -18,7 +18,7 @@ import com.gusycorp.travel.application.TravelApplication;
 import java.util.Arrays;
 import java.util.List;
 
-public class MenuActivity extends Activity implements View.OnClickListener {
+public class MenuActivity extends LoaderActivity implements View.OnClickListener {
 
     public static final String URL = "URL";
     public String tripName = "";

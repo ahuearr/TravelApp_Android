@@ -20,6 +20,7 @@ import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.model.TripMatePrize;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
@@ -45,6 +46,8 @@ public class TripActivity extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_trip);
+
+		avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
 		app = (TravelApplication) getApplication();
 
@@ -79,7 +82,6 @@ public class TripActivity extends MenuActivity {
 
 		@Override
 		protected Integer doInBackground(String... params) {
-
 			getTrip();
 			return 0;
 		}
@@ -130,6 +132,7 @@ public class TripActivity extends MenuActivity {
 			}catch(ParseException e){
 				e.printStackTrace();
 			}
+			hideLoader();
 		}
 	}
 

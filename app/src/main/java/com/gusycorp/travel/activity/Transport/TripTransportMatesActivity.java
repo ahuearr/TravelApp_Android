@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.adapter.ListTripActivitiesMateAdapter;
 import com.gusycorp.travel.application.TravelApplication;
@@ -18,6 +19,7 @@ import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.model.TripMatePrize;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
 import io.cloudboost.CloudObjectCallback;
 
-public class TripTransportMatesActivity extends Activity implements View.OnClickListener{
+public class TripTransportMatesActivity extends LoaderActivity implements View.OnClickListener{
 
     private Button save;
     private Button share;
@@ -50,6 +52,8 @@ public class TripTransportMatesActivity extends Activity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activities_mates_trip);
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();
@@ -80,13 +84,14 @@ public class TripTransportMatesActivity extends Activity implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-        new GetTripMates().execute();
+        getTripMates(currentTrip.getId());
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.save_button:
+                showLoader();
                 new Save().execute();
                 break;
             case R.id.share_button:
@@ -95,21 +100,7 @@ public class TripTransportMatesActivity extends Activity implements View.OnClick
         }
     }
 
-    private class GetTripMates extends AsyncTask<String, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            getTripMates();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            listView.setAdapter(mAdapter);
-        }
-    }
-
-    private void getTripMates() {
+    private void getTripMates(String tripObjectId) {
 
         mAdapter = new ListTripActivitiesMateAdapter(TripTransportMatesActivity.this,
                 R.layout.row_list_activities_mate_trip, new ArrayList<TripMatePrize>(), app.isOrganizer());
@@ -153,6 +144,8 @@ public class TripTransportMatesActivity extends Activity implements View.OnClick
                 mAdapter.addItem(tripMatePrize);
             }
         }
+        listView.setAdapter(mAdapter);
+        hideLoader();
     }
 
     private class Save extends AsyncTask<String, Void, Boolean> {
@@ -171,6 +164,7 @@ public class TripTransportMatesActivity extends Activity implements View.OnClick
             }else{
                 Toast.makeText(TripTransportMatesActivity.this, getString(R.string.message_ko), Toast.LENGTH_LONG).show();
             }
+            hideLoader();
         }
     }
 

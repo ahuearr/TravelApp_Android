@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -8,6 +9,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.gusycorp.travel.activity.Calendar.TripCalendarActivity"
     android:orientation="vertical" >
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/loader"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        app:indicatorName="PacmanIndicator"
+        app:indicatorColor="@color/backgroundHeader"/>
 
     <ScrollView
         android:layout_width="match_parent"

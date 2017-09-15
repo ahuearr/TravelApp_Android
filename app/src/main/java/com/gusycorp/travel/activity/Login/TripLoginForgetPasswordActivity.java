@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.LoaderActivity;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudStringCallback;
@@ -20,7 +22,7 @@ import io.cloudboost.CloudUserCallback;
 /**
  * Created by agustin.huerta on 25/08/2015.
  */
-public class TripLoginForgetPasswordActivity extends Activity {
+public class TripLoginForgetPasswordActivity extends LoaderActivity {
     EditText et_forgetpassword = null;
     Button btn_submitforgetpassword = null;
     String email = null;
@@ -33,6 +35,8 @@ public class TripLoginForgetPasswordActivity extends Activity {
 
         et_forgetpassword = (EditText) findViewById(R.id.et_forgetpassword);
         btn_submitforgetpassword = (Button) findViewById(R.id.btn_submitforgetpassword);
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
         btn_submitforgetpassword.setOnClickListener(new View.OnClickListener() {
 
@@ -52,6 +56,7 @@ public class TripLoginForgetPasswordActivity extends Activity {
             et_forgetpassword.setError(getString(R.string.error_invalid_email));
         }
         else
+            showLoader();
             new ForgotPassword().execute(email);
     }
 
@@ -88,6 +93,7 @@ public class TripLoginForgetPasswordActivity extends Activity {
 
         @Override
         protected void onPostExecute(Integer result) {
+            hideLoader();
             if(result==0){
                 Toast.makeText(getApplicationContext(), getString(R.string.link_password_ok), Toast.LENGTH_LONG).show();
             }else if(result==1){

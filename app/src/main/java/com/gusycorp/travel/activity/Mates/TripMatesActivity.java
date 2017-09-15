@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity.Mates;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -11,12 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.activity.MenuActivity;
 import com.gusycorp.travel.adapter.ListTripMateAdapter;
 import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 
 import java.util.ArrayList;
@@ -50,6 +53,8 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mates_trip);
 
+        avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
+
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();
 
@@ -64,7 +69,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
 
         addMateTrip.setOnClickListener(this);
 
-        tripName = currentTrip.getTripName();
+        String tripName = currentTrip.getTripName();
         tripNameText.setText(tripName);
         tripMates = new ArrayList<TripMate>();
         listView=(ListView)findViewById(R.id.mates_list);
@@ -74,6 +79,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
+        showLoader();
         getTripMates(currentTrip.getId());
     }
 
@@ -84,9 +90,10 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             case R.id.add_mate_trip:
                 String mate = mateText.getText().toString();
                 if(!"".equals(mate)){
+                    showLoader();
                     new AddMate().execute(mate);
                 } else {
-                    Toast.makeText(this, getString(R.string.user_not_exists), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.user_empty), Toast.LENGTH_LONG).show();
                 }
                 break;
         }
@@ -115,10 +122,12 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
                 //TODO Delete Mate
             }
         });
+        hideLoader();
     }
 
     private int addMateToTrip(String mate) throws CloudException {
         boolean existsMate = false;
+        final int[] error = {0};
         for(TripMate tripMate : tripMates){
             if(mate.equals(tripMate.getUsername())){
                 existsMate = true;
@@ -129,7 +138,7 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             query.equalTo(Constants.USERNAME, mate);
             query.find(new CloudObjectArrayCallback() {
                 public void done(CloudObject[] userList, final CloudException e) {
-                    if (userList != null) {
+                    if (userList != null && userList.length>0) {
                         tripMate = new TripMate();
                         try {
                             tripMate.setUserId(userList[0].getId());
@@ -153,17 +162,18 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
                                 }
                             });
                         } catch (CloudException e1) {
+                            error[0] = -3;
                             e1.printStackTrace();
                         }
                     } else {
-                        e.printStackTrace();
+                        error[0] = -2;
                     }
                 }
             });
         }else{
             return -1;
         }
-        return 0;
+        return error[0];
     }
 
     private class AddMate extends AsyncTask<String, Void, Integer> {
@@ -185,7 +195,14 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
             if(integer==0){
                 mAdapter.addItem(tripMate);
                 mAdapter.notifyDataSetChanged();
+            }else if(integer==-1){
+                Toast.makeText(TripMatesActivity.this, getString(R.string.errorExiste), Toast.LENGTH_LONG).show();
+            }else if(integer==-2){
+                Toast.makeText(TripMatesActivity.this, getString(R.string.errorNoExiste), Toast.LENGTH_LONG).show();
+            }else if(integer==-3){
+                Toast.makeText(TripMatesActivity.this, getString(R.string.errorAgregando), Toast.LENGTH_LONG).show();
             }
+            hideLoader();
         }
     }
 
@@ -195,4 +212,5 @@ public class TripMatesActivity extends MenuActivity implements View.OnClickListe
         super.onBackPressed();
         menus.clear();
     }
+
 }

@@ -21,6 +21,7 @@ import com.gusycorp.travel.application.TravelApplication;
 import com.gusycorp.travel.model.Trip;
 import com.gusycorp.travel.model.TripMate;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import io.cloudboost.CloudException;
 import io.cloudboost.CloudObject;
@@ -29,7 +30,7 @@ import io.cloudboost.CloudQuery;
 import io.cloudboost.CloudUser;
 import io.cloudboost.CloudUserCallback;
 
-public class HomeActivity extends ListActivity {
+public class HomeActivity extends LoaderListActivity {
 
 	CloudUser currentUser;
 	TripMate currentTripMate;
@@ -44,6 +45,8 @@ public class HomeActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+
+		avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
 		currentUser = CloudUser.getcurrentUser();
 		userObjectId = currentUser.getId();
@@ -65,6 +68,7 @@ public class HomeActivity extends ListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		showLoader();
 		getTrips();
 	}
 
@@ -108,6 +112,7 @@ public class HomeActivity extends ListActivity {
 	@Override
 	public void onBackPressed()
 	{
+		showLoader();
 		new LogOut().execute();
 	}
 
@@ -133,6 +138,7 @@ public class HomeActivity extends ListActivity {
 
 		@Override
 		protected void onPostExecute(Integer result) {
+			hideLoader();
 			if(result==0){
 				Intent in =  new Intent(HomeActivity.this,TripLoginActivity.class);
 				startActivity(in);
@@ -184,6 +190,7 @@ public class HomeActivity extends ListActivity {
 
 		@Override
 		protected void onPostExecute(Integer result) {
+			hideLoader();
 			if(result==0){
 				setListAdapter(mAdapter);
 			}

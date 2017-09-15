@@ -18,6 +18,7 @@ import com.gusycorp.travel.model.TripAccommodation;
 import com.gusycorp.travel.model.TripCalendar;
 import com.gusycorp.travel.model.TripTransport;
 import com.gusycorp.travel.util.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.joda.time.DateTime;
 
@@ -60,6 +61,8 @@ public class TripCalendarListActivity extends MenuActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_calendar_trip_list);
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
         app = (TravelApplication) getApplication();
         currentTrip = app.getCurrentTrip();
@@ -293,6 +296,7 @@ public class TripCalendarListActivity extends MenuActivity {
                             intent.putExtra(Constants.ACTIVITY, tripCalendar.getActivity());
                             intent.putExtra(Constants.PLACE, tripCalendar.getPlace());
                             intent.putExtra(Constants.CITY, tripCalendar.getCity());
+                            intent.putExtra(Constants.PRIZE, tripCalendar.getPrize());
                             intent.putExtra(Constants.ISACTIVITY, tripCalendar.isActivity());
                             startActivity(intent);
                         }

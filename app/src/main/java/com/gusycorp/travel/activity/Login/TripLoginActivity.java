@@ -11,14 +11,17 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gusycorp.travel.R;
 import com.gusycorp.travel.activity.HomeActivity;
+import com.gusycorp.travel.activity.LoaderActivity;
 import com.gusycorp.travel.util.ConnectionDetector;
 import com.gusycorp.travel.util.Utils;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.Locale;
 
@@ -30,7 +33,7 @@ import io.cloudboost.CloudUserCallback;
 /**
  * Created by agustin.huerta on 25/08/2015.
  */
-public class TripLoginActivity extends Activity {
+public class TripLoginActivity extends LoaderActivity {
     Button btn_LoginIn = null;
     Button btn_SignUp = null;
     Button btn_ForgetPass = null;
@@ -47,7 +50,6 @@ public class TripLoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         // creating connection detector class instance
         cd = new ConnectionDetector(getApplicationContext());
 
@@ -57,12 +59,14 @@ public class TripLoginActivity extends Activity {
         mUserNameEditText = (EditText) findViewById(R.id.username);
         mPasswordEditText = (EditText) findViewById(R.id.password);
 
+        avi= (AVLoadingIndicatorView) findViewById(R.id.loader);
 
         btn_LoginIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
+                showLoader();
                 // get Internet status
                 isInternetPresent = cd.isConnectingToInternet();
                 // check for Internet status
@@ -84,6 +88,7 @@ public class TripLoginActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+                showLoader();
                 Intent in =  new Intent(TripLoginActivity.this,TripLoginSignUpActivity.class);
                 startActivity(in);
                 finish();
@@ -94,6 +99,7 @@ public class TripLoginActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+                showLoader();
                 Intent in =  new Intent(TripLoginActivity.this,TripLoginForgetPasswordActivity.class);
                 startActivity(in);
                 finish();
