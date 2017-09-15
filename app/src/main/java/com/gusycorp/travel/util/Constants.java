@@ -16,6 +16,7 @@ public class Constants {
 	public final static String TAG_TRAVELAPPLICACION = "TravelApplication";
 
 	// Model
+	public final static String ID = "id";
 	public final static String OBJECTID = "objectId";
 
 	// Trip

@@ -1,5 +1,6 @@
 package com.gusycorp.travel.activity;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
@@ -153,34 +154,42 @@ public class HomeActivity extends LoaderListActivity {
 		@Override
 		protected Integer doInBackground(String... params) {
 
-			CloudQuery queryTrip = new CloudQuery(Constants.TAG_TRIPMODEL);
-			queryTrip.equalTo(Constants.USER, currentUser);
-			CloudQuery queryTripOrganizer = new CloudQuery(Constants.TAG_TRIPMODEL);
-			queryTripOrganizer.equalTo(Constants.ORGANIZERID, userObjectId);
+			CloudQuery queryTripMate = new CloudQuery(Constants.TAG_TRIPMATEMODEL);
+			queryTripMate.equalTo(Constants.USERID, userObjectId);
 
-			CloudQuery mainQuery = null;
 			try {
-				mainQuery = CloudQuery.or(queryTrip, queryTripOrganizer);
-				mainQuery.find(new CloudObjectArrayCallback() {
-					public void done(CloudObject[] tripListCloudObject, CloudException e) {
-						mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
-						for (CloudObject tripCloudObject : tripListCloudObject) {
-							Trip trip = new Trip(tripCloudObject);
-							if (Constants.VALUE_STATUS_FUTURE.equals(trip
-									.getStatus())) {
-								mAdapter.addItem(trip);
-							}
-						}
-						mAdapter.addSectionHeaderItem(getString(R.string.past_trips));
-						for (CloudObject tripCloudObject : tripListCloudObject) {
-							Trip trip = new Trip(tripCloudObject);
-							if (Constants.VALUE_STATUS_PAST.equals(trip
-									.getStatus())) {
-								mAdapter.addItem(trip);
-							}
+				final ArrayList<Trip> tripArrayList = new ArrayList<>();
+				queryTripMate.find(new CloudObjectArrayCallback() {
+					public void done(CloudObject[] tripMateListCloudObject, CloudException e) throws CloudException {
+						for(CloudObject tripMateObject: tripMateListCloudObject){
+							TripMate tripMate = new TripMate(tripMateObject);
+                            CloudQuery queryTrip = new CloudQuery(Constants.TAG_TRIPMODEL);
+                            queryTrip.equalTo(Constants.ID, tripMate.getTripId());
+                            queryTrip.find(new CloudObjectArrayCallback() {
+                                public void done(CloudObject[] tripListCloudObject, CloudException e) {
+                                    for (CloudObject tripCloudObject : tripListCloudObject) {
+                                        Trip trip = new Trip(tripCloudObject);
+										tripArrayList.add(trip);
+                                    }
+                                }
+                            });
 						}
 					}
 				});
+				mAdapter.addSectionHeaderItem(getString(R.string.future_trips));
+				for(Trip trip : tripArrayList){
+					if (Constants.VALUE_STATUS_FUTURE.equals(trip
+							.getStatus())) {
+						mAdapter.addItem(trip);
+					}
+				}
+				mAdapter.addSectionHeaderItem(getString(R.string.past_trips));
+				for(Trip trip : tripArrayList){
+					if (Constants.VALUE_STATUS_PAST.equals(trip
+							.getStatus())) {
+						mAdapter.addItem(trip);
+					}
+				}
 			} catch (CloudException e) {
 				e.printStackTrace();
 				return 1;
